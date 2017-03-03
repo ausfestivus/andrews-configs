@@ -1,0 +1,37 @@
+# andrews-configs
+Bringing all my dotfiles, ssh keys and other assorted config files into github.
+Based on http://blog.smalleycreative.com/tutorials/using-git-and-github-to-manage-your-dotfiles/
+and http://stefaanlippens.net/bashrc_and_others/ ()
+and https://linux.die.net/Bash-Beginners-Guide/sect_03_01.html (nice intro to the shell files and their operating order)
+and http://stackoverflow.com/questions/415403/whats-the-difference-between-bashrc-bash-profile-and-environment
+and http://stackoverflow.com/questions/908537/if-bash-profile-usually-source-bashrc-any-way-why-not-just-use-bashrc
+
+## Introduction
+This repo contains my configurations for various parts of unixy systems. it includes:
+* dotfiles - a method of quickly building my terminal environments on macOS and Linux machines.
+* ssh - my ssh configurations
+
+## Installation
+To start using these on one of my machines:
+- ensure you have the CLI github token (see password safe)
+- be the user on the target machine (not root)
+- be in the user homedir (not root)
+- run `git clone https://github.com/Diaxion/andrews-configs.git`
+- enter username and access token
+- `~/andrews-configs/dotfiles/makesymlinks.sh`
+
+## TODO
+See todo.md
+
+## Contributing
+Currently closed.
+
+## History
+See: https://github.com/Diaxion/andrews-configs/commits/master
+
+## Credits
+See: https://github.com/Diaxion/andrews-configs/graphs/contributors
+
+## License
+Not licensed for use by anyone.
+Do not use.

@@ -1,0 +1,2 @@
+# ignore all markdown files who's name starts with scratch
+scratch*.md

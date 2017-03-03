@@ -1,0 +1,55 @@
+# OS specific commands below here
+if  [ $OSTYPE == "darwin16" ]
+  # macOS specific commands go here
+  then
+  # taken from http://ianlunn.co.uk/articles/quickly-showhide-hidden-files-mac-os-x-mavericks/
+  # display hidden files
+  alias showhidden="defaults write com.apple.finder AppleShowAllFiles YES"
+  # FIXME - the echo should only happen when the alias is used. #echo "Restart Finder for these changes to take effect"
+  # hide hidden files
+  alias hidehidden="defaults write com.apple.finder AppleShowAllFiles NO"
+  # FIXME - the echo should only happen when the alias is used. #echo "Restart Finder for these changes to take effect"
+  # ------
+  # abest production festivus@gmail.com
+  # nasquith
+  alias nasquith="ssh -i ~/.ssh/id_rsa festivus@192.168.1.1"
+elif [ $OSTYPE == "linux-gnu" ]
+  # Linux specifc commands go here
+  then
+  return 0
+fi
+
+# host specific commands go here
+if [ $HOSTNAME == "grater" ]
+  # shortcut to start window manager on host named grater
+  then
+  alias gui="sudo systemctl start lightdm.service"
+elif [ $HOSTNAME == "barmix" ]
+  # shortcuts for host named barmix
+  then
+  # Diaxion - Azure shortcuts
+  alias azjira="ssh -i ~/Documents/_My\ Projects/201701-Diaxion\ Azure\ Migration/azure-ubuntu-default ubuntu@diapapp01.australiasoutheast.cloudapp.azure.com"
+  alias azconfluence="ssh -i ~/Documents/_My\ Projects/201701-Diaxion\ Azure\ Migration/azure-ubuntu-default ubuntu@diapapp02.australiasoutheast.cloudapp.azure.com"
+  # Diaxion - AWS shortcuts
+fi
+
+# the rest of these apply to all hosts
+# AWS Profile Management Widget
+# taken from https://blog.jayway.com/2015/09/25/aws-cli-profile-management-made-easy/
+#awsAliasesFileLocation=~/._awsAliases
+if [ -f ~/._awsAliases ];  then
+  # if the awsAliasesFileLocation does exist then we want to run it
+  echo "$awsAliasesFileLocation found. Building AWS profile switcher aliases."
+  . ~/._awsAliases
+  # and also set our aliases
+  alias awsall="_awsListAll"
+  alias awsp="_awsSwitchProfile"
+  alias awswho="aws configure list"
+else
+  # if the awsAliasesFileLocation doesnt exist then exit then dont run it
+  #echo "$awsAliasesFileLocation not found. Exiting cleanly."
+  return 0
+fi
+
+## AWS
+# Nothing at the moment
