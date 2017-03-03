@@ -1,7 +1,6 @@
 # TODO
 
 ## dotfiles
-- set git creds
 - \_awsAliases should have a sanity check to be sure aws cli is installed
   - the makesymlinks.sh should only set up \_awsAliases if the AWS CLI is installed.
 - better error/sanity checks in makesymlinks.sh
@@ -15,3 +14,4 @@
 
 # DONE
 - YYYYMMDD - {ITEM}
+- 20170303 - set git creds
