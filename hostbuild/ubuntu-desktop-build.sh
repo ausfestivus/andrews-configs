@@ -20,24 +20,18 @@ sudo add-apt-repository ppa:webupd8team/atom
 
 # Update the package indexes
 echo "Updating apt repo package indexes"
-sudo apt-get update && sudo DEBIAN_FRONTEND=noninteractive apt-get -y -o Dpkg::Options::="--force-confnew" dist-upgrade
+#sudo apt-get update && sudo DEBIAN_FRONTEND=noninteractive apt-get -y -o Dpkg::Options::="--force-confnew" dist-upgrade
+sudo apt-get update && sudo apt-get dist-upgrade
 
-# Install other Ubuntu packages that are useful
-echo "installing some base tools and open-vm-tools-desktop"
+# Install all the packages
+echo "installing our standard packages"
 sudo apt-get -y -o DPkg::Options::="--force-confnew" install open-vm-tools-desktop htop sysstat dstat iotop python python-pip google-chrome-stable atom
 
-# Configure automatic security updates
-echo "configuring auto install of security updates"
-sudo bash -c "cat > /etc/apt/apt.conf.d/20auto-upgrades" << "EOF"
-APT::Periodic::Update-Package-Lists "1";
-APT::Periodic::Unattended-Upgrade "1";
-EOF
-sudo /etc/init.d/unattended-upgrades restart
-
 # Upgrade python-pip
+echo "upgrading pip"
 sudo pip install --upgrade pip
 
-# install AWS cli
+# install AWS cli and aws-shell
 sudp pip install awscli aws-shell
 
 # Disable guest access
@@ -50,5 +44,13 @@ EOF
 # now we clean up left over packages
 sudo apt-get auto-remove
 
+# Configure automatic security updates
+echo "configuring auto install of security updates"
+sudo bash -c "cat > /etc/apt/apt.conf.d/20auto-upgrades" << "EOF"
+APT::Periodic::Update-Package-Lists "1";
+APT::Periodic::Unattended-Upgrade "1";
+EOF
+sudo /etc/init.d/unattended-upgrades restart
+
 # and then restart
-sudo init 6
+#sudo init 6
