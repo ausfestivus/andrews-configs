@@ -1,7 +1,8 @@
 # andrews-configs
 Bringing all my dotfiles, ssh keys and other assorted config files into github.
 Based on http://blog.smalleycreative.com/tutorials/using-git-and-github-to-manage-your-dotfiles/
-Also losely based on https://github.com/natelandau/shell-scripts
+
+Also loosely based on https://github.com/natelandau/shell-scripts
 and http://stefaanlippens.net/bashrc_and_others/ ()
 and https://linux.die.net/Bash-Beginners-Guide/sect_03_01.html (nice intro to the shell files and their operating order)
 and http://stackoverflow.com/questions/415403/whats-the-difference-between-bashrc-bash-profile-and-environment
@@ -10,6 +11,7 @@ and http://stackoverflow.com/questions/908537/if-bash-profile-usually-source-bas
 ## Introduction
 This repo contains my configurations for various parts of unixy systems. it includes:
 * dotfiles - a method of quickly building my terminal environments on macOS and Linux machines.
+* hostbuild - scripts which allow me to quickly setup a macOS or Linux host quickly.
 * ssh - my ssh configurations
 
 ## Installation
@@ -32,6 +34,17 @@ See: https://github.com/andrew-best-diaxion/andrews-configs/commits/master
 
 ## Credits
 See: https://github.com/andrew-best-diaxion/andrews-configs/graphs/contributors
+
+Sites which had contributing examples:
+
+***dotfiles:***
+* Best practice for shell profile dotfiles on macOS: http://stackoverflow.com/questions/4493063/best-practice-for-bash-start-up-files-on-a-mac
+* Ubuntu Set User Profile Under Bash Shell: https://www.cyberciti.biz/faq/ubuntu-linux-user-profile-bash-configuration/
+
+
+
+***bash:***
+* http://kvz.io/blog/2013/11/21/bash-best-practices/
 
 ## License
 Not licensed for use by anyone.

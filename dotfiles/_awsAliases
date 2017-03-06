@@ -2,7 +2,7 @@
 
 function _awsListAll() {
     credentialFileLocation=${AWS_SHARED_CREDENTIALS_FILE};
-    if [ -z $credentialFileLocation ]; then
+    if [ -z $credentialFileLocation ]; then # -z true if the length of "STRING" is zero
         credentialFileLocation=~/.aws/credentials
     fi
     while read line; do

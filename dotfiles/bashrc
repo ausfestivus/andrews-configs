@@ -1,0 +1,20 @@
+# Configure our AWS profile switching shortcut.
+. ~/._awsAliases
+alias awsall="_awsListAll"
+alias awsp="_awsSwitchProfile"
+alias awswho="aws configure list"
+
+# Personal - home shortcuts
+# nasquith
+alias nasquith="ssh -i ~/.ssh/id_rsa festivus@192.168.1.1"
+# Personal - AWS shortcuts
+
+
+# Diaxion - Azure shortcuts
+alias azjira="ssh -i ~/Documents/_My\ Projects/201701-Diaxion\ Azure\ Migration/azure-ubuntu-default ubuntu@diapapp01.australiasoutheast.cloudapp.azure.com"
+alias azconfluence="ssh -i ~/Documents/_My\ Projects/201701-Diaxion\ Azure\ Migration/azure-ubuntu-default ubuntu@diapapp02.australiasoutheast.cloudapp.azure.com"
+# Diaxion - AWS shortcuts
+# none Currently
+
+# Enable AWS command completion
+#complete -C '/Library/Frameworks/Python.framework/Versions/3.5/bin/aws_completer' aws
