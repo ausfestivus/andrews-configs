@@ -1,3 +1,8 @@
+# Enable AWS CLI completion if AWS CLI is installed
+if [ `which aws_completer` ]; then
+  complete -C `which aws_completer` aws
+fi
+
 # Configure our AWS profile switching shortcut if we have it installed
 if [ -f ~/._awsAliases ]; then
   . ~/._awsAliases

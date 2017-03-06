@@ -4,12 +4,12 @@
 ## dotfiles
 - setup \_awsAliases
   - \_awsAliases should have a sanity check to be sure aws cli is installed
-  - the makesymlinks.sh should only set up \_awsAliases if the AWS CLI is installed and
-  - only if the AWS credentials file exists.
+- configure aws_completer if AWS CLI is installed.
 - better error/sanity checks in makesymlinks.sh
 - allow makesymlinks.sh to keep X copies of older dotfiles.
 - makesymlinks.sh should only update dotfiles which are newer
 - need to work out how to bring AWS creds over safely
+- need a login widget that will go and test for pip updates on shell login (similar to the way debian shows you at login)
 - more power to the profile
   - http://tldp.org/LDP/abs/html/sample-bashrc.html
   - more bash profile examples: https://gist.github.com/paulocheque/3667381
@@ -25,4 +25,5 @@
 
 # DONE
 - YYYYMMDD - {ITEM}
+- 20170306 -   - the makesymlinks.sh should only set up \_awsAliases if the AWS CLI is installed and - only if the AWS credentials file exists.
 - 20170303 - set git creds
