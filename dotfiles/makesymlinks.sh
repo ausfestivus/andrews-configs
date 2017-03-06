@@ -27,7 +27,8 @@ domagic ()
 
   # move any existing dotfiles in homedir to dotfiles_old directory, then create symlinks
   for file in $files; do
-    if [$file == "_awsAliases"]; then # if were installing the _awsAliases file
+    echo "Working on $file"
+    if ["$file" == "_awsAliases"]; then # if were installing the _awsAliases file
       # check that AWS CLI is installed and a credentials file exists skip to next if not.
       #TODO # AWS CLI check goes here
       #  Credentials are in place check goes here.
@@ -47,8 +48,6 @@ domagic ()
         break # exit this pass of the loop
         # if one is false then we dont want to drop in our _awsAliases
       fi
-
-
     fi
     echo "Moving existing .$file from ~ to $olddir"
     mv ~/.$file $olddir
