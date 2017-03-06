@@ -1,8 +1,10 @@
-# Configure our AWS profile switching shortcut.
-. ~/._awsAliases
-alias awsall="_awsListAll"
-alias awsp="_awsSwitchProfile"
-alias awswho="aws configure list"
+# Configure our AWS profile switching shortcut if we have it installed
+if [ -f ~/._awsAliases ]; then
+  . ~/._awsAliases
+  alias awsall="_awsListAll"
+  alias awsp="_awsSwitchProfile"
+  alias awswho="aws configure list"
+fi
 
 # Personal - home shortcuts
 # nasquith

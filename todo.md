@@ -4,7 +4,8 @@
 ## dotfiles
 - setup \_awsAliases
   - \_awsAliases should have a sanity check to be sure aws cli is installed
-  - the makesymlinks.sh should only set up \_awsAliases if the AWS CLI is installed.
+  - the makesymlinks.sh should only set up \_awsAliases if the AWS CLI is installed and
+  - only if the AWS credentials file exists.
 - better error/sanity checks in makesymlinks.sh
 - allow makesymlinks.sh to keep X copies of older dotfiles.
 - makesymlinks.sh should only update dotfiles which are newer
