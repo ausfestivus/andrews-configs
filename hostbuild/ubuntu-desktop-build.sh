@@ -41,22 +41,12 @@ sudo -H pip install awscli aws-shell
 
 # Disable guest access
 echo "disabling guest access"
-sudo bash -c "cat /etc/lightdm/lightdm.conf.d/50-no-guest.conf" << "EOF"
-[SeatDefaults]
-allow-guest=false
-EOF
+sudo sh -c 'printf "[Seat:*]\nallow-guest=false\n" > /etc/lightdm/lightdm.conf.d/50-no-guest.conf'
 
 # now we clean up left over packages
-sudo apt-get auto-remove
-
-# Configure automatic security updates
-# 20170307 - already included by default on Ubuntu Desktop.
-#echo "configuring auto install of security updates"
-#sudo bash -c "cat > /etc/apt/apt.conf.d/20auto-upgrades" << "EOF"
-#APT::Periodic::Update-Package-Lists "1";
-#APT::Periodic::Unattended-Upgrade "1";
-#EOF
-#sudo /etc/init.d/unattended-upgrades restart
+echo "cleaning out old packages that are no longer required"
+sudo apt-get -y auto-remove
 
 # and then restart
-#sudo init 6
+echo "restarting"
+sudo init 6

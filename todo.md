@@ -14,12 +14,14 @@
 - Linux
   - See: https://confluence.diaxion.com/display/~abest/Ubuntu+Dev+VM+Build
   - ***BUGS***
-    - 
+    -
 - macOS
   - See: http://burnedpixel.com/blog/beginners-setup-guide-for-ruby-node-git-github-on-your-mac/
 
 
 ## ssh
+- See https://github.com/natelandau/shell-scripts/blob/master/setupScripts/newMacSetup.sh
+  - It has a good function for SSH init.
 
 # DONE
 - YYYYMMDD - {ITEM}
