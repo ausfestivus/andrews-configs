@@ -20,19 +20,24 @@ sudo add-apt-repository ppa:webupd8team/atom
 
 # Update the package indexes
 echo "Updating apt repo package indexes"
-#sudo apt-get update && sudo DEBIAN_FRONTEND=noninteractive apt-get -y -o Dpkg::Options::="--force-confnew" dist-upgrade
-sudo apt-get update && sudo apt-get dist-upgrade
+#sudo apt-get update
+sudo apt-get update
 
 # Install all the packages
 echo "installing our standard packages"
-sudo apt-get -y -o DPkg::Options::="--force-confnew" install open-vm-tools-desktop htop sysstat dstat iotop python python-pip google-chrome-stable atom
+sudo apt-get -y -o DPkg::Options::="--force-confnew" install open-vm-tools-desktop htop sysstat dstat iotop python python-pip google-chrome-stable atom vim
+
+# update all the things
+echo "Applying all system updates"
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y -o Dpkg::Options::="--force-confnew" dist-upgrade
 
 # Upgrade python-pip
 echo "upgrading pip"
-sudo pip install --upgrade pip
+sudo -H pip install --upgrade pip
 
 # install AWS cli and aws-shell
-sudp pip install awscli aws-shell
+echo "installing awscli and aws-shell"
+sudo -H pip install awscli aws-shell
 
 # Disable guest access
 echo "disabling guest access"
@@ -45,12 +50,13 @@ EOF
 sudo apt-get auto-remove
 
 # Configure automatic security updates
-echo "configuring auto install of security updates"
-sudo bash -c "cat > /etc/apt/apt.conf.d/20auto-upgrades" << "EOF"
-APT::Periodic::Update-Package-Lists "1";
-APT::Periodic::Unattended-Upgrade "1";
-EOF
-sudo /etc/init.d/unattended-upgrades restart
+# 20170307 - already included by default on Ubuntu Desktop.
+#echo "configuring auto install of security updates"
+#sudo bash -c "cat > /etc/apt/apt.conf.d/20auto-upgrades" << "EOF"
+#APT::Periodic::Update-Package-Lists "1";
+#APT::Periodic::Unattended-Upgrade "1";
+#EOF
+#sudo /etc/init.d/unattended-upgrades restart
 
 # and then restart
 #sudo init 6
