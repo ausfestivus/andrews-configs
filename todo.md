@@ -1,7 +1,15 @@
 # TODO
-- when a login occurs it should notify you if there are updates pending for pip like apt does on Linux.
+
+## general
+- when a login occurs it should notify you if there are updates pending for pip, brew etc like apt does on Linux.
+- Find a way to keep my configs synced across machines for some apps.
+  - atom (packages and configs)
+  - git (config)
+  - ssh (keys and auth keys)
+- create a windows-desktop-build.ps1
 
 ## dotfiles
+- make sure all the binaries are fully and properly pathed
 - better error/sanity checks in makesymlinks.sh
 - allow makesymlinks.sh to keep X copies of older dotfiles.
 - makesymlinks.sh should only update dotfiles which are newer
@@ -11,12 +19,23 @@
   - more bash profile examples: https://gist.github.com/paulocheque/3667381
 
 ## hostbuild
-- Linux
+- **Linux**
   - See: https://confluence.diaxion.com/display/~abest/Ubuntu+Dev+VM+Build
+  - New packages: mtr
   - ***BUGS***
-    -
-- macOS
-  - See: http://burnedpixel.com/blog/beginners-setup-guide-for-ruby-node-git-github-on-your-mac/
+
+- **macOS**
+  - Build base OS deploy script:
+  See: http://burnedpixel.com/blog/beginners-setup-guide-for-ruby-node-git-github-on-your-mac/ &
+    - make sure all the binaries are fully and properly pathed
+    - build script should prompt for name and email address to use with github.
+  - Base OS Customisations:
+    - disable siri (need to do from CLI) See: https://apple.stackexchange.com/questions/258816/how-to-completely-disable-siri-on-sierra
+  - New alias: StartApps (runs all my default apps)
+  - New brew packages: mtr, vlc
+  - Review the script at https://github.com/andrew-best-diaxion/shell-scripts/blob/master/setupScripts/newMacSetup.sh and see what other smarts I can use in my script.
+  - New Finder configs:
+    `nil`
 
 
 ## ssh
