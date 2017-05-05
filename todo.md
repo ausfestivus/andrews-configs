@@ -35,12 +35,7 @@
   - make sure all the binaries are fully and properly pathed
   - App Store Apps:
     Things Slack Scapple Tweetbot "Microsoft Remote Desktop"
-  - New apps: Chrome "Github Client" 1password Things Atom "Atom Packages" "VMware Fusion" VLC
-    - Chrome https://www.google.com.au/chrome/browser/desktop/#
-    - ~~Github Client: https://central.github.com/mac/latest~~
-    - Atom https://atom.io/download/mac
-    - 1password https://app-updates.agilebits.com/download/OPM4
-    - VLC http://get.videolan.org/vlc/2.2.4/macosx/vlc-2.2.4.dmg
+  - New apps: Chrome "Github Client" 1password Things Atom "Atom Packages" "VMware Fusion" VLC Xmind
   - Atom Packages:
 ```
 Community Packages (18) /Users/andrew/.atom/packages
