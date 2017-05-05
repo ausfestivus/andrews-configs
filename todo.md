@@ -9,6 +9,7 @@
 - create a windows-desktop-build.ps1
 
 ## dotfiles
+- ~~MacOS: Need to make sure that /usr/local/sbin is in the path (for mtr in Brew)~~
 - make sure all the binaries are fully and properly pathed
 - better error/sanity checks in makesymlinks.sh
 - allow makesymlinks.sh to keep X copies of older dotfiles.
@@ -21,21 +22,39 @@
 ## hostbuild
 - **Linux**
   - See: https://confluence.diaxion.com/display/~abest/Ubuntu+Dev+VM+Build
+  - In paragraph `# Disable guest access` we need to do a sanity check that we have a GUI installed.
   - New packages: mtr
   - ***BUGS***
 
-- **macOS**
-  - Build base OS deploy script:
-  See: http://burnedpixel.com/blog/beginners-setup-guide-for-ruby-node-git-github-on-your-mac/ &
-    - make sure all the binaries are fully and properly pathed
-    - build script should prompt for name and email address to use with github.
+- **macOS** Build base OS deploy script:
+
+  See: http://burnedpixel.com/blog/beginners-setup-guide-for-ruby-node-git-github-on-your-mac/
+  - Install python3 and pip http://python-guide-pt-br.readthedocs.io/en/latest/starting/install3/osx/
+  - make sure all the binaries are fully and properly pathed
+  - build script should prompt for name and email address to use with github.
   - Base OS Customisations:
-    - disable siri (need to do from CLI) See: https://apple.stackexchange.com/questions/258816/how-to-completely-disable-siri-on-sierra
-  - New alias: StartApps (runs all my default apps)
-  - New brew packages: mtr, vlc
+    - disable siri (need to do from CLI) See: https://apple.stackexchange.com/questions/258816/how-to-completely-disable-siri-on-sierra  
+  - New apps: vlc
+  - New brew packages: mtr, python3 (which will also give you pip3)
+  - New pip3 packages: beautysh (required by atom-beautify package)
+  - How do we best handle pip3 updates?
+
+```
+Pip, setuptools, and wheel have been installed. To update them
+  pip3 install --upgrade pip setuptools wheel
+
+You can install Python packages with
+  pip3 install <package>
+
+They will install into the site-package directory
+  /usr/local/lib/python3.6/site-packages
+
+See: http://docs.brew.sh/Homebrew-and-Python.html
+```    
+
   - Review the script at https://github.com/andrew-best-diaxion/shell-scripts/blob/master/setupScripts/newMacSetup.sh and see what other smarts I can use in my script.
   - New Finder configs:
-    `nil`
+  - ~~New alias: StartApps (runs all my default apps)~~ WONTFIX
 
 
 ## ssh

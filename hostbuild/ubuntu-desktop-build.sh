@@ -3,7 +3,6 @@
 # configure our base Ubuntu image
 # based on https://confluence.diaxion.com/display/~abest/Ubuntu+Dev+VM+Build
 
-
 # NOTE - not required on a desktop machine.
 #echo "recreating SSH server host keys"
 ## This regenerates our host keys
@@ -20,7 +19,6 @@ sudo add-apt-repository ppa:webupd8team/atom
 
 # Update the package indexes
 echo "Updating apt repo package indexes"
-#sudo apt-get update
 sudo apt-get update
 
 # Install all the packages

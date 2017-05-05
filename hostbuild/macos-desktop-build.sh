@@ -31,11 +31,6 @@ git config --global credential.helper osxkeychain
 # the above article this is based on says to now configure SSH keys for use
 # with github. We wont be using ssh with github.
 
-# Finder Customisations
-defaults write com.apple.finder_FXShowPosixPathInTitle -bool true
-killall Finder
-
 # TODO
-# placeholder for download and install of other standard useful apps on a Dev
-# machine
+# placeholder for download and install of other standard apps
 # dotfiles, github client, atom, atom packages, 1password, chrome, MS Office, Skype For Business,  Things, Slack, Tweetbot, VMware Fusion, VLC,

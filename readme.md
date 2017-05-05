@@ -44,6 +44,9 @@ Sites which had contributing examples:
 * and http://stackoverflow.com/questions/415403/whats-the-difference-between-bashrc-bash-profile-and-environment
 * and http://stackoverflow.com/questions/908537/if-bash-profile-usually-source-bashrc-any-way-why-not-just-use-bashrc
 
+***build***
+* Python on MacOS install: http://python-guide-pt-br.readthedocs.io/en/latest/starting/install3/osx/
+
 ## License
 Not licensed for use by anyone.
 Do not use.
