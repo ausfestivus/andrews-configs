@@ -15,22 +15,37 @@ brew doctor
 # going to ignore that for now as all our PATH stuff occurs via the dotfiles
 # scripts.
 
-# install git
-brew install git
+# install brew packages
+brew install git mtr python3 aws-shell git openssl shellcheck awscli sqlite gdbm nmap readline xz ssh-copy-id wget
 
 # configure git identification
-# Set your username
-git config --global user.name "Andrew Best"
+input "Please enter your full name for Github global config eg Fred Nurk: "
+read githubusername
+input "Please enter the email address you use with your Github account: "
+read githubemail
+echo ""
+git config --global user.name $githubusername # Set your user name
+git config --global user.email $githubemail # Set your email address
+git config --global credential.helper osxkeychain # configure git to use the osxkeychain auth helper
 
-# Set your email address
-# TODO
+# pip3 apps
+pip3 install beautysh
 
-# configure git to use the osxkeychain auth helper
-git config --global credential.helper osxkeychain
+# Other apps:
+# Github desktop
+if [[ ! -e "/Applications/GitHub Desktop.app" ]]; then # If the desktop app is not installed
+  # Download it and install it.
+  wget -O ~/Downloads/GithubDesktop.zip https://central.github.com/mac/latest && /
+  unzip ~/Downloads/GithubDesktop.zip -d /Applications
+fi
 
-# the above article this is based on says to now configure SSH keys for use
-# with github. We wont be using ssh with github.
+# Google Chrome
+if [[ ! -e "/Applications/Google Chrome.app/" ]]; then
+  wget -O ~/Downloads/googlechrome.dmg https://dl.google.com/chrome/mac/stable/GGRO/googlechrome.dmg && /
 
-# TODO
-# placeholder for download and install of other standard apps
-# dotfiles, github client, atom, atom packages, 1password, chrome, MS Office, Skype For Business,  Things, Slack, Tweetbot, VMware Fusion, VLC,
+fi
+https://www.google.com.au/chrome/browser/desktop/
+
+
+
+# Appstore apps
