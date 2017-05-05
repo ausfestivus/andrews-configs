@@ -23,7 +23,7 @@ brew install git
 git config --global user.name "Andrew Best"
 
 # Set your email address
-git config --global user.email "festivus@gmail.com"
+# TODO
 
 # configure git to use the osxkeychain auth helper
 git config --global credential.helper osxkeychain
