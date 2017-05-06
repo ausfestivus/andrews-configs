@@ -250,8 +250,8 @@ function mainScript() {
   function installHomebrewTaps() {
     #brew tap homebrew/dupes
     #brew tap homebrew/versions
-    #brew install argon/mas/mas
-    #brew tap argon/mas
+    brew install argon/mas/mas
+    brew tap argon/mas
     brew tap caskroom/cask
     #brew tap caskroom/fonts
     #brew tap caskroom/versions # Subversion client for MacOS

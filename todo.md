@@ -69,6 +69,7 @@ Community Packages (18) /Users/andrew/.atom/packages
   - How do we best handle pip3 updates?
   - New Finder configs: `none current`
   - ~~New alias: StartApps (runs all my default apps)~~ WONTFIX
+  - Magic to detect when in a VM and install VMware tools?
 
 
 ## ssh
