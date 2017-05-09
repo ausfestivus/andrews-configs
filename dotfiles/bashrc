@@ -1,27 +1,45 @@
-# Enable AWS CLI completion if AWS CLI is installed
-if [ `which aws_completer` ]; then
-  complete -C `which aws_completer` aws
+#!/usr/bin/env bash
+
+if [ $OSTYPE == "darwin16" ]; then # do the needful things on MacOS
+  # taken from http://ianlunn.co.uk/articles/quickly-showhide-hidden-files-mac-os-x-mavericks/
+  alias showhidden="defaults write com.apple.finder AppleShowAllFiles YES" # display hidden files
+  alias hidehidden="defaults write com.apple.finder AppleShowAllFiles NO" # hide hidden files
+
+  # Finder Customisations
+  defaults write com.apple.finder_FXShowPosixPathInTitle -bool true
+  killall Finder
+
+  # adding brew items to $PATH if brew is installed.
+  if [[ -e `which brew` ]]; then
+    export PATH=/usr/local/bin:/usr/local/sbin:$PATH
+  fi
+
+elif [ $OSTYPE == "linux-gnu" ]; then # do the needful things on Linux
+  :
+else # do the needful things on any *nix
+
+  # Enable AWS CLI completion if AWS CLI is installed
+  if [[ -e `which aws_completer` ]]; then
+    complete -C `which aws_completer` aws
+  fi
+
+  # Configure our AWS profile switching shortcut if we have it installed
+  if [[ -f ~/._awsAliases ]]; then
+    # shellcheck source=_awsAliases
+    . ~/._awsAliases
+    alias awsall="_awsListAll"
+    alias awsp="_awsSwitchProfile"
+    alias awswho="aws configure list"
+  fi
+
+  # Personal - home shortcuts
+  # nasquith
+  alias nasquith="ssh -i ~/.ssh/id_rsa festivus@192.168.1.1"
+  # Personal - AWS shortcuts
+  #
+  # Diaxion - Azure shortcuts
+  alias azjira="ssh -i ~/Documents/_My\ Projects/201701-Diaxion\ Azure\ Migration/azure-ubuntu-default ubuntu@diapapp01.australiasoutheast.cloudapp.azure.com"
+  alias azconfluence="ssh -i ~/Documents/_My\ Projects/201701-Diaxion\ Azure\ Migration/azure-ubuntu-default ubuntu@diapapp02.australiasoutheast.cloudapp.azure.com"
+  # Diaxion - AWS shortcuts
+  # none Currently
 fi
-
-# Configure our AWS profile switching shortcut if we have it installed
-if [ -f ~/._awsAliases ]; then
-  . ~/._awsAliases
-  alias awsall="_awsListAll"
-  alias awsp="_awsSwitchProfile"
-  alias awswho="aws configure list"
-fi
-
-# Personal - home shortcuts
-# nasquith
-alias nasquith="ssh -i ~/.ssh/id_rsa festivus@192.168.1.1"
-# Personal - AWS shortcuts
-
-
-# Diaxion - Azure shortcuts
-alias azjira="ssh -i ~/Documents/_My\ Projects/201701-Diaxion\ Azure\ Migration/azure-ubuntu-default ubuntu@diapapp01.australiasoutheast.cloudapp.azure.com"
-alias azconfluence="ssh -i ~/Documents/_My\ Projects/201701-Diaxion\ Azure\ Migration/azure-ubuntu-default ubuntu@diapapp02.australiasoutheast.cloudapp.azure.com"
-# Diaxion - AWS shortcuts
-# none Currently
-
-# Enable AWS command completion
-#complete -C '/Library/Frameworks/Python.framework/Versions/3.5/bin/aws_completer' aws

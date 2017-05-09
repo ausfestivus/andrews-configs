@@ -34,7 +34,7 @@ domagic ()
       #  Credentials are in place check goes here.
       # we check if the env var for the creds file is set OR the file exists
       echo "Working on $file and determining if AWS credentials are defined"
-      if [ -z credentialFileLocation=${AWS_SHARED_CREDENTIALS_FILE} ] || [ -f ~/.aws/credentials ]; then
+      if [ -z credentialFileLocation==${AWS_SHARED_CREDENTIALS_FILE} ] || [ -f ~/.aws/credentials ]; then
         # if one is true we want to put the file in place
         echo "... they are."
         echo "Moving existing .$file from ~ to $olddir"
@@ -63,12 +63,12 @@ if [ $OSTYPE == "darwin16" ]; then
   # macOS specific commands go here
   files=$Macfiles
   echo "Hi, im a Mac and my name is '$HOSTNAME'"
-  domagic
+  domagic #snap our dotfiles into place
 elif [ $OSTYPE == "linux-gnu" ]; then
   # Linux specifc commands go here
   files=$Linuxfiles
   echo "Hi, im a Linux machine and my name is '$HOSTNAME'"
-  domagic
+  domagic #snap our dotfiles into place
 else
   echo "Couldnt work out what we're on."
 fi
