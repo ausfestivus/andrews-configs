@@ -19,7 +19,7 @@ To start using these on one of my machines:
 - `~/andrews-configs/dotfiles/makesymlinks.sh`
 
 ## TODO
-See todo.md
+See https://github.com/andrew-best-diaxion/andrews-configs/issues
 
 ## Contributing
 Currently closed.

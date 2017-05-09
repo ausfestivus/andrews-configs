@@ -250,8 +250,9 @@ function mainScript() {
   function installHomebrewTaps() {
     #brew tap homebrew/dupes
     #brew tap homebrew/versions
-    brew install argon/mas/mas
-    brew tap argon/mas
+    # Note that mas is currently unmaintained and doesnt work with 10.12.4
+    #brew install argon/mas/mas
+    #brew tap argon/mas
     brew tap caskroom/cask
     #brew tap caskroom/fonts
     #brew tap caskroom/versions # Subversion client for MacOS
@@ -609,11 +610,11 @@ function mainScript() {
   #installDropbox
   installHomebrewPackages
   installCaskApps
-  installAppStoreApps
+  #installAppStoreApps # mas is no longer maintained: https://github.com/mas-cli/mas/issues/47
   #installDevApps
   #installRuby
   #installRubyGems
-  configureSSH
+  #configureSSH
   #configureMackup
 }
 
