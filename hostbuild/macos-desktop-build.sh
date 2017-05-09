@@ -321,9 +321,15 @@ function mainScript() {
     LISTINSTALLED="brew cask list"
     INSTALLCOMMAND="brew cask install --appdir=/Applications"
     RECIPES=(
-      google-chrome
       1password
+      atom
+      github-desktop
+      google-chrome
+      microsoft-office
+      skype-for-business
+      things
       vlc
+      xmind
     )
 
     # for item in "${RECIPES[@]}"; do
