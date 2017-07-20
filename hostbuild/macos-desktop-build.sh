@@ -40,7 +40,6 @@ function mainScript() {
     osascript -e "tell application \"Finder\" to POSIX path of (get application file id \"$bundleId\" as alias)" 2>/dev/null ||
     { echo "$FUNCNAME: ERROR: Application with specified bundle ID not found: $bundleId" 1>&2; return 1; }
   }
-
   function brewMaintenance () {
     # brewMaintenance
     # ------------------------------------------------------
@@ -53,7 +52,6 @@ function mainScript() {
       brew upgrade --all
     fi
   }
-
   function brewCleanup () {
     # This function cleans up an initial Homebrew installation
 
@@ -78,7 +76,6 @@ function mainScript() {
       brew cask cleanup
     fi
   }
-
   function doInstall () {
     # Reads a list of items, checks if they are installed, installs
     # those which are needed.
@@ -187,7 +184,6 @@ function mainScript() {
       fi
     fi
   }
-
   # Installation Commands
   # ###################
   function installCommandLineTools() {
@@ -213,7 +209,6 @@ function mainScript() {
     fi
     success "Command Line Tools installed"
   }
-
   function installHomebrew () {
     # Check for Homebrew
     notice "Checking for Homebrew..."
@@ -235,7 +230,6 @@ function mainScript() {
     fi
     success "Homebrew installed"
   }
-
   function checkTaps() {
 
     verbose "Confirming we have required Homebrew taps"
@@ -246,7 +240,6 @@ function mainScript() {
       installHomebrewTaps
     fi
   }
-
   function installHomebrewTaps() {
     #brew tap homebrew/dupes
     #brew tap homebrew/versions
@@ -257,7 +250,6 @@ function mainScript() {
     #brew tap caskroom/fonts
     #brew tap caskroom/versions # Subversion client for MacOS
   }
-
   function installXcode() {
     notice "Checking for XCode..."
     if ! isAppInstalled 'xcode' &>/dev/null; then
@@ -275,10 +267,8 @@ function mainScript() {
       # we also accept the license
       sudo xcodebuild -license accept
     fi
-
     success "XCode installed"
   }
-
   function installDropbox () {
     # This function checks for Dropbox being installed.
     # If it is not found, we install it and its prerequisites
@@ -299,7 +289,6 @@ function mainScript() {
 
     success "Dropbox installed"
   }
-
   function installffmpeg () {
 
     notice "Checking for ffmpeg...."
@@ -310,7 +299,6 @@ function mainScript() {
 
     success "Done ffmpeg installed"
   }
-
   function installCaskApps() {
     unset LISTINSTALLED INSTALLCOMMAND RECIPES
 
@@ -326,6 +314,7 @@ function mainScript() {
       github-desktop
       google-chrome
       microsoft-office
+      skype
       skype-for-business
       things
       vlc
@@ -339,7 +328,6 @@ function mainScript() {
 
     success "Done installing cask apps"
   }
-
   function installAppStoreApps() {
     unset LISTINSTALLED INSTALLCOMMAND RECIPES
 
@@ -357,7 +345,6 @@ function mainScript() {
 
     success "Done installing app store apps"
   }
-
   function installDevApps() {
     unset LISTINSTALLED INSTALLCOMMAND RECIPES
 
@@ -388,7 +375,6 @@ function mainScript() {
 
     success "Done installing dev apps"
   }
-
   function installHomebrewPackages() {
     unset LISTINSTALLED INSTALLCOMMAND RECIPES
 
@@ -450,13 +436,11 @@ function mainScript() {
       python3
       shellcheck
       wget
-
     )
     doInstall
 
     success "Done installing Homebrew packages"
   }
-
   function installRuby() {
 
     notice "Checking for RVM (Ruby Version Manager)..."
@@ -478,7 +462,6 @@ function mainScript() {
 
     success "RVM and Ruby are installed"
   }
-
   function installRubyGems() {
     unset LISTINSTALLED INSTALLCOMMAND RECIPES
 
@@ -510,7 +493,6 @@ function mainScript() {
 
     success "Done installing Ruby Gems"
   }
-
   function configureSSH() {
     notice "Configuring SSH"
 
@@ -536,7 +518,6 @@ function mainScript() {
 
     success "SSH Configured"
   }
-
   function configureMackup() {
     notice "Running mackup config..."
 
