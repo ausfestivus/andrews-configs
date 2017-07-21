@@ -39,7 +39,7 @@ alias nasquith="ssh -i ~/.ssh/id_rsa festivus@192.168.1.1"
 # Personal - AWS shortcuts
 #
 # Personal - Alibaba shortcuts
-alias alijump="ssh -i ~/.ssh/alibabacloud root@47.91.42.164"
+alias alijump="ssh -i ~/.ssh/alibabacloud abest@jump.cloud01.bestfamily.id.au"
 #
 # Diaxion - Azure shortcuts
 alias azjira="ssh -i ~/Documents/_My\ Projects/201701-Diaxion\ Azure\ Migration/azure-ubuntu-default ubuntu@diapapp01.australiasoutheast.cloudapp.azure.com"

@@ -7,7 +7,7 @@ See **Credits** below for additional contributed code.
 This repo contains my configurations for various parts of unixy systems. it includes:
 * dotfiles - a method of quickly building my terminal environments on macOS and Linux machines.
 * hostbuild - scripts which allow me to quickly setup a macOS or Linux host quickly.
-* ssh - my ssh configurations
+* ~~ssh - my ssh configurations~~
 
 ## Installation
 To start using these on one of my machines:
