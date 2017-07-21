@@ -18,6 +18,10 @@ To start using these on one of my machines:
 - enter username and access token
 - `~/andrews-configs/dotfiles/makesymlinks.sh`
 
+To update from master:
+- be in the ~/andrews-configs dir `cd ~andrews-configs`
+- run `git pull origin master`
+
 ## TODO
 See https://github.com/andrew-best-diaxion/andrews-configs/issues
 
