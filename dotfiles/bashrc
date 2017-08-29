@@ -46,3 +46,6 @@ alias azjira="ssh -i ~/Documents/_My\ Projects/201701-Diaxion\ Azure\ Migration/
 alias azconfluence="ssh -i ~/Documents/_My\ Projects/201701-Diaxion\ Azure\ Migration/azure-ubuntu-default ubuntu@diapapp02.australiasoutheast.cloudapp.azure.com"
 # Diaxion - AWS shortcuts
 # none Currently
+# Diaxion - GWF shortcuts
+alias gnrlabproxy="ssh -i ~/.ssh/id_rsa ubuntu@gnrlabproxy.gwf.com.au"
+alias gnrlabubuntu="ssh -i ~/.ssh/id_rsa ubuntu@10.1.154.40"
