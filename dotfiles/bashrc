@@ -21,7 +21,7 @@ fi
 # do the needful things on any *nix
 # Enable AWS CLI completion if AWS CLI is installed
 if [[ -e `which aws_completer` ]]; then
-  complete -C `which aws_completer` aws
+  complete -C "which aws_completer" aws
 fi
 
 # Configure our AWS profile switching shortcut if we have it installed
@@ -35,17 +35,19 @@ fi
 
 # Personal - home shortcuts
 # nasquith
-alias nasquith="ssh -i ~/.ssh/id_rsa festivus@192.168.1.1"
+alias nasquith="ssh -i ~/.ssh/id_rsa festivus@nasquith.mtcolah.bestfamily.id.au"
+alias homegw="ssh -i ~/.ssh/id_rsa admin@homegw.mtcolah.bestfamily.id.au"
 # Personal - AWS shortcuts
 #
 # Personal - Alibaba shortcuts
 alias alijump="ssh -i ~/.ssh/alibabacloud abest@jump.cloud01.bestfamily.id.au"
 #
 # Diaxion - Azure shortcuts
-alias azjira="ssh -i ~/Documents/_My\ Projects/201701-Diaxion\ Azure\ Migration/azure-ubuntu-default ubuntu@diapapp01.australiasoutheast.cloudapp.azure.com"
-alias azconfluence="ssh -i ~/Documents/_My\ Projects/201701-Diaxion\ Azure\ Migration/azure-ubuntu-default ubuntu@diapapp02.australiasoutheast.cloudapp.azure.com"
+alias azjira="ssh -i ~/.ssh/azure-ubuntu-default ubuntu@diapapp01.australiasoutheast.cloudapp.azure.com"
+alias azconfluence="ssh -i ~/.ssh/azure-ubuntu-default ubuntu@diapapp02.australiasoutheast.cloudapp.azure.com"
 # Diaxion - AWS shortcuts
 # none Currently
 # Diaxion - GWF shortcuts
 alias gnrlabproxy="ssh -i ~/.ssh/id_rsa ubuntu@gnrlabproxy.gwf.com.au"
 alias gnrlabubuntu="ssh -i ~/.ssh/id_rsa ubuntu@10.1.154.40"
+alias ic2smokeping="ssh -i ~/.ssh/id_rsa gwf@10.0.235.110"
