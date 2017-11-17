@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-if [ $OSTYPE == "darwin16" ]; then # do the needful things on MacOS
+if [ $OSTYPE == "darwin16" ] || [ $OSTYPE = "darwin17" ]; then # do the needful things on MacOS
   # taken from http://ianlunn.co.uk/articles/quickly-showhide-hidden-files-mac-os-x-mavericks/
   alias showhidden="defaults write com.apple.finder AppleShowAllFiles YES" # display hidden files
   alias hidehidden="defaults write com.apple.finder AppleShowAllFiles NO" # hide hidden files
