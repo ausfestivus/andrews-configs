@@ -59,7 +59,7 @@ domagic ()
 }
 
 # first up, which OS are we on?
-if [ $OSTYPE == "darwin16" ]; then
+if [ $OSTYPE == "darwin16" ] || [ $OSTYPE = "darwin17" ]; then
   # macOS specific commands go here
   files=$Macfiles
   echo "Hi, im a Mac and my name is '$HOSTNAME'"
@@ -70,5 +70,5 @@ if [ $OSTYPE == "darwin16" ]; then
   echo "Hi, im a Linux machine and my name is '$HOSTNAME'"
   domagic #snap our dotfiles into place
 else
-  echo "Couldnt work out what we're on."
+  echo "Couldnt work out what OS we're running on."
 fi
