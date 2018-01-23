@@ -1,12 +1,7 @@
 #!/bin/bash
 
-# configure our base Ubuntu image
+# configure our base Ubuntu desktop image
 # based on https://confluence.diaxion.com/display/~abest/Ubuntu+Dev+VM+Build
-
-# NOTE - not required on a desktop machine.
-#echo "recreating SSH server host keys"
-## This regenerates our host keys
-#sudo sh -c "dpkg-reconfigure openssh-server"
 
 # add the Google Chrome repo so we can install Chrome a little later.
 # https://www.ubuntuupdates.org/ppa/google_chrome?dist=stable

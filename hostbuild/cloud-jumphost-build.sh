@@ -6,21 +6,21 @@
 # thats a future state problem.
 
 # Update the package indexes
-echo "Updating apt repo package indexes"
-sudo apt-get update
+/bin/echo "Updating apt repo package indexes"
+/usr/bin/sudo apt-get update
 
 # Install all the packages
-echo "installing our standard packages"
-sudo apt-get -y -o DPkg::Options::="--force-confnew" install pwgen htop sysstat dstat iotop vim molly-guard unattended-upgrades screen git
+/bin/echo "installing our standard packages"
+/usr/bin/sudo /usr/bin/apt-get -y -o DPkg::Options::="--force-confnew" install pwgen htop sysstat dstat iotop vim molly-guard unattended-upgrades screen git
 
 # update all the things
-echo "Applying all system updates"
-sudo DEBIAN_FRONTEND=noninteractive apt-get -y -o Dpkg::Options::="--force-confnew" dist-upgrade
+/bin/echo "Applying all system updates"
+/usr/bin/sudo DEBIAN_FRONTEND=noninteractive /usr/bin/apt-get -y -o Dpkg::Options::="--force-confnew" dist-upgrade
 
 # now we clean up left over packages
-echo "cleaning out old packages that are no longer required"
-sudo apt-get -y auto-remove
+/bin/echo "cleaning out old packages that are no longer required"
+/usr/bin/sudo /usr/bin/apt-get -y auto-remove
 
 # and then restart
-echo "restarting"
-sudo init 6
+/bin/echo "restarting"
+/usr/bin/sudo init 6

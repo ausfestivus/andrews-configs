@@ -15,7 +15,7 @@ version="1.0.1"              # Sets version variable
 function mainScript() {
   # invoke verbose usage when set
   if ${verbose}; then v="-v" ; fi
-
+  
   # Helper Functions
   # ###################
   function isAppInstalled() {
@@ -25,7 +25,7 @@ function mainScript() {
     # usage: if isAppInstalled 'finder' &>/dev/null; then ...
     #
     # http://stackoverflow.com/questions/6682335/how-can-check-if-particular-application-software-is-installed-in-mac-os
-
+    
     local appNameOrBundleId="$1" isAppName=0 bundleId
     # Determine whether an app *name* or *bundle ID* was specified.
     [[ $appNameOrBundleId =~ \.[aA][pP][pP]$ || $appNameOrBundleId =~ ^[^.]+$ ]] && isAppName=1
@@ -54,12 +54,12 @@ function mainScript() {
   }
   function brewCleanup () {
     # This function cleans up an initial Homebrew installation
-
+    
     notice "Running Homebrew maintenance..."
-
+    
     # This is where brew stores its binary symlinks
     binroot="$(brew --config | awk '/HOMEBREW_PREFIX/ {print $2}')"/bin
-
+    
     if [[ "$(type -P ${binroot}/bash)" && "$(cat /etc/shells | grep -q "$binroot/bash")" ]]; then
       info "Adding ${binroot}/bash to the list of acceptable shells"
       echo "$binroot/bash" | sudo tee -a /etc/shells >/dev/null
@@ -69,9 +69,9 @@ function mainScript() {
       sudo chsh -s "${binroot}/bash" "$USER" >/dev/null 2>&1
       success "Please exit and restart all your shells."
     fi
-
+    
     brew cleanup
-
+    
     if brew cask > /dev/null; then
       brew cask cleanup
     fi
@@ -94,7 +94,7 @@ function mainScript() {
     #                   )
     #
     # Credit: https://github.com/cowboy/dotfiles
-
+    
     function to_install() {
       local desired installed i desired_s installed_s remain
       # Convert args to arrays, handling both space- and newline-separated lists.
@@ -113,7 +113,7 @@ function mainScript() {
       )
       echo "${remain[@]}"
     }
-
+    
     function checkInstallItems() {
       # If we are working with 'cask' we need to dedupe lists
       # since apps might be installed by hand
@@ -134,7 +134,7 @@ function mainScript() {
         notice "$item --> $appName"
       fi
     }
-
+    
     # Log in to the Mac App Store if using mas
     if [[ $INSTALLCOMMAND =~ mas ]]; then
       mas signout
@@ -145,9 +145,9 @@ function mainScript() {
       echo ""
       mas signin $macStoreUsername "$macStorePass"
     fi
-
+    
     list=($(to_install "${RECIPES[*]}" "$(${LISTINSTALLED})"))
-
+    
     if [ ${#list[@]} -gt 0 ]; then
       seek_confirmation "Confirm each package before installing?"
       if is_confirmed; then
@@ -188,20 +188,20 @@ function mainScript() {
   # ###################
   function installCommandLineTools() {
     notice "Checking for Command Line Tools..."
-
+    
     if [[ ! "$(type -P gcc)" || ! "$(type -P make)" ]]; then
       #local osx_vers=$(sw_vers -productVersion | awk -F "." '{print $2}')
       local cmdLineToolsTmp="${tmpDir}/.com.apple.dt.CommandLineTools.installondemand.in-progress"
-
+      
       # Create the placeholder file which is checked by the software update tool
       # before allowing the installation of the Xcode command line tools.
       touch "${cmdLineToolsTmp}"
-
+      
       # Find the last listed update in the Software Update feed with "Command Line Tools" in the name
       cmd_line_tools=$(softwareupdate -l | awk '/\*\ Command Line Tools/ { $1=$1;print }' | tail -1 | sed 's/^[[ \t]]*//;s/[[ \t]]*$//;s/*//' | cut -c 2-)
-
+      
       softwareupdate -i "${cmd_line_tools}" -v
-
+      
       # Remove the temp file
       if [ -f "${cmdLineToolsTmp}" ]; then
         rm ${v} "${cmdLineToolsTmp}"
@@ -231,7 +231,7 @@ function mainScript() {
     success "Homebrew installed"
   }
   function checkTaps() {
-
+    
     verbose "Confirming we have required Homebrew taps"
     if ! brew cask help &>/dev/null; then
       installHomebrewTaps
@@ -254,16 +254,16 @@ function mainScript() {
     notice "Checking for XCode..."
     if ! isAppInstalled 'xcode' &>/dev/null; then
       unset LISTINSTALLED INSTALLCOMMAND RECIPES
-
+      
       checkTaps
-
+      
       LISTINSTALLED="mas list"
       INSTALLCOMMAND="mas install"
       RECIPES=(
         497799835 #xCode
       )
       doInstall
-
+      
       # we also accept the license
       sudo xcodebuild -license accept
     fi
@@ -273,9 +273,9 @@ function mainScript() {
     # This function checks for Dropbox being installed.
     # If it is not found, we install it and its prerequisites
     notice "Checking for Dropbox..."
-
+    
     checkTaps
-
+    
     if ! isAppInstalled 'Dropbox' &>/dev/null; then
       unset LISTINSTALLED INSTALLCOMMAND RECIPES
       LISTINSTALLED="brew cask list"
@@ -286,26 +286,26 @@ function mainScript() {
       doInstall
       open -a dropbox
     fi
-
+    
     success "Dropbox installed"
   }
   function installffmpeg () {
-
+    
     notice "Checking for ffmpeg...."
     # My preferred install of ffmpeg
     if [ ! $(type -P "ffmpeg") ]; then
       brew install ffmpeg --with-faac --with-fdk-aac --with-ffplay --with-fontconfig --with-freetype --with-libcaca --with-libass --with-frei0r --with-libass --with-libbluray --with-libcaca --with-libquvi --with-libvidstab --with-libsoxr --with-libssh --with-libvo-aacenc --with-libvidstab --with-libvorbis --with-libvpx --with-opencore-amr --with-openjpeg --with-openssl --with-opus --with-rtmpdump --with-schroedinger --with-speex --with-theora --with-tools --with-webp --with-x265
     fi
-
+    
     success "Done ffmpeg installed"
   }
   function installCaskApps() {
     unset LISTINSTALLED INSTALLCOMMAND RECIPES
-
+    
     notice "Checking for casks to install..."
-
+    
     checkTaps
-
+    
     LISTINSTALLED="brew cask list"
     INSTALLCOMMAND="brew cask install --appdir=/Applications"
     RECIPES=(
@@ -316,25 +316,26 @@ function mainScript() {
       microsoft-office
       skype
       skype-for-business
+      terraform
       things
       vlc
       xmind
     )
-
+    
     # for item in "${RECIPES[@]}"; do
     #   info "$item"
     # done
     doInstall
-
+    
     success "Done installing cask apps"
   }
   function installAppStoreApps() {
     unset LISTINSTALLED INSTALLCOMMAND RECIPES
-
+    
     notice "Checking for App Store apps to install..."
-
+    
     checkTaps
-
+    
     LISTINSTALLED="mas list"
     INSTALLCOMMAND="mas install"
     RECIPES=(
@@ -342,16 +343,16 @@ function mainScript() {
       494803304 # WiFi Explorer
     )
     doInstall
-
+    
     success "Done installing app store apps"
   }
   function installDevApps() {
     unset LISTINSTALLED INSTALLCOMMAND RECIPES
-
+    
     notice "Checking for dev apps to install"
-
+    
     checkTaps
-
+    
     LISTINSTALLED="brew cask list"
     INSTALLCOMMAND="brew cask install --appdir=/Applications"
     RECIPES=(
@@ -367,24 +368,24 @@ function mainScript() {
       paw # REST IDE
       tower # Mac GUI for git
     )
-
+    
     # for item in "${RECIPES[@]}"; do
     #   info "$item"
     # done
     doInstall
-
+    
     success "Done installing dev apps"
   }
   function installHomebrewPackages() {
     unset LISTINSTALLED INSTALLCOMMAND RECIPES
-
+    
     notice "Checking for Homebrew packages to install..."
-
+    
     checkTaps
-
+    
     LISTINSTALLED="brew list"
     INSTALLCOMMAND="brew install"
-
+    
     RECIPES=(
       # autoconf
       # automake
@@ -438,15 +439,15 @@ function mainScript() {
       wget
     )
     doInstall
-
+    
     success "Done installing Homebrew packages"
   }
   function installRuby() {
-
+    
     notice "Checking for RVM (Ruby Version Manager)..."
-
+    
     local RUBYVERSION="2.1.2" # Version of Ruby to install via RVM
-
+    
     # Check for RVM
     if [ ! "$(type -P rvm)" ]; then
       seek_confirmation "Couldn't find RVM. Install it?"
@@ -459,17 +460,17 @@ function mainScript() {
         rvm use ${RUBYVERSION} --default
       fi
     fi
-
+    
     success "RVM and Ruby are installed"
   }
   function installRubyGems() {
     unset LISTINSTALLED INSTALLCOMMAND RECIPES
-
+    
     notice "Checking for Ruby gems..."
-
+    
     LISTINSTALLED="gem list | awk '{print $1}'"
     INSTALLCOMMAND="gem install"
-
+    
     RECIPES=(
       bundler
       classifier
@@ -488,43 +489,43 @@ function mainScript() {
       sass
       smusher
     )
-
+    
     doInstall
-
+    
     success "Done installing Ruby Gems"
   }
   function configureSSH() {
     notice "Configuring SSH"
-
+    
     info "Checking for SSH key in ~/.ssh/id_rsa.pub, generating one if it doesn't exist"
     [[ -f "${HOME}/.ssh/id_rsa.pub" ]] || ssh-keygen -t rsa
-
+    
     info "Copying public key to clipboard"
     [[ -f "${HOME}/.ssh/id_rsa.pub" ]] && cat "${HOME}/.ssh/id_rsa.pub" | pbcopy
-
+    
     # Add SSH keys to Github
     seek_confirmation "Add SSH key to Github?"
     if is_confirmed; then
       info "Paste the key into Github"
-
+      
       open https://github.com/account/ssh
-
+      
       seek_confirmation "Test Github Authentication via ssh?"
       if is_confirmed; then
         info "Note that even when successful, this will fail the script."
         ssh -T git@github.com
       fi
     fi
-
+    
     success "SSH Configured"
   }
   function configureMackup() {
     notice "Running mackup config..."
-
+    
     local DIRCFG="${HOME}/Dropbox/sharedConfiguration/Mackup"
-
+    
     #installDropbox
-
+    
     dropboxFilesTest=(
       "Dropbox/sharedConfiguration/Mackup/Library/Application Support/PaxGalaxia/net.txt"
       "Dropbox/sharedConfiguration/Mackup/Pictures/DeviantartBackup/clouds2.jpg"
@@ -533,10 +534,10 @@ function mainScript() {
       "Dropbox/sharedConfiguration/App Configuration Files/Alfred2/Alfred.alfredpreferences"
       "Dropbox/sharedConfiguration/Mackup/Library/Preferences/com.dustinrue.ControlPlane.plist"
     )
-
+    
     info "Confirming that Dropbox has synced by looking for files..."
     info "(This might fail if the list of files is out of date)"
-
+    
     for dropboxFile in "${dropboxFilesTest[@]}"; do
       verbose "Checking: $dropboxFile"
       while [ ! -e "${HOME}/${dropboxFile}" ]; do
@@ -544,22 +545,22 @@ function mainScript() {
         sleep 10
       done
     done
-
+    
     #Add some additional time just to be sure....
     for ((i=1; i<=6; i++)); do
       info "  Waiting for Dropbox to Sync files..."
       sleep 10
     done
-
+    
     # Sync Complete
     success "Dropbox has synced"
-
+    
     # Confirm Mackup exists
     if [ ! "$(type -P mackup)" ]; then
       installHomebrew
       brew install mackup
     fi
-
+    
     notice "Checking for Mackup config files..."
     if [ ! -L "${HOME}/.mackup" ]; then
       info "Symlinking ~/.mackup"
@@ -574,21 +575,21 @@ function mainScript() {
       verbose "~${HOME}.mackup.cfg is symlinked"
     fi
     success "Mackup config files are symlinked"
-
+    
     seek_confirmation "Run Mackup Restore?"
     if is_confirmed; then
       mackup restore
     fi
   }
-
-
+  
+  
   # ###################
   # Run the script
   # ###################
-
+  
   # Ask for the administrator password upfront
   sudo -v
-
+  
   installCommandLineTools
   installHomebrew
   checkTaps
@@ -650,7 +651,7 @@ function seek_confirmation() {
   #
   # Credt: https://github.com/kevva/dotfiles
   # ------------------------------------------------------
-
+  
   input "$@"
   if ${force}; then
     notice "Forcing confirmation with '--force' flag set"
@@ -741,10 +742,10 @@ while (($#)); do
       # Loop over each character starting with the second
       for ((i=1; i < ${#1}; i++)); do
         c=${1:i:1}
-
+        
         # Add current char to options
         options+=("-$c")
-
+        
         # If option takes a required argument, and it's not the last char make
         # the rest of the string its argument
         if [[ $optstring = *"$c:"* && ${1:i+1} ]]; then
@@ -753,7 +754,7 @@ while (($#)); do
         fi
       done
     ;;
-
+    
     # If option is of type --foo=bar
     --?*=*) options+=("${1%%=*}" "${1#*=}") ;;
     # add --endopts for --
@@ -822,12 +823,12 @@ function _alert() {
   if [ "${1}" = "info" ] || [ "${1}" = "notice" ]; then local color=""; fi
   # Don't use colors on pipes or non-recognized terminals
   if [[ "${TERM}" != "xterm"* ]] || [ -t 1 ]; then color=""; reset=""; fi
-
+  
   # Print to $logFile
   if ${printLog}; then
     echo -e "$(date +"%m-%d-%Y %r") $(printf "[%9s]" "${1}") ${_message}" >> "${logFile}";
   fi
-
+  
   # Print to console when script is not 'quiet'
   if ${quiet}; then
     return
