@@ -13,19 +13,9 @@ The rules and configuration details are maintained in https://confluence.diaxion
 - Azure related directories and files **MUST** start with `azure`
 - AWS related directories and files **MUST** start with `aws`
 
-
 **TODO**
 
-- `azureControlPlaneHome`
-  - Move the RG name to a proper var.
-  - Fix the tagging
-  - VPN config to Home. https://trello.com/c/msf6qcO6
-- `LAB` (with optional peer to the ControlPlane)
-- `DNS`
-- `OS CUSTOMISE`
-  - standard cloud host build steps
-  - apt config to install patches etc
-- `modularisation`
+See https://github.com/andrew-best-diaxion/andrews-configs/issues
 
 ----------------------------------------------
 

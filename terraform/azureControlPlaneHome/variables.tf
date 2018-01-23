@@ -1,6 +1,6 @@
 variable "prefix" {
   description = "Default prefix to use with your resource names."
-  default = "ctrlpln"
+  default = "azurecontrolplanehome"
 }
 
 variable "location" {
@@ -21,12 +21,12 @@ variable "dns_servers" {
 
 variable "subnet_prefixes" {
   description = "The address prefix to use for the subnet."
-  default     = ["10.0.0.0/24"]
+  default     = ["10.0.0.0/26", "10.0.0.192/26"]
 }
 
 variable "subnet_names" {
   description = "A list of public subnets inside the vNet."
-  default     = ["subnet0"]
+  default     = ["subnet0","GatewaySubnet"]
 }
 
 variable "sg_name" {
