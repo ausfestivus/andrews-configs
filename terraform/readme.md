@@ -25,7 +25,11 @@ See https://github.com/andrew-best-diaxion/andrews-configs/issues
 
 Start with the basic terraform install/config instructions available from https://docs.microsoft.com/en-us/azure/virtual-machines/linux/terraform-install-configure
 
+Configuration Syntax
+https://www.terraform.io/docs/configuration/syntax.html
 
+Terraform and Environment variables
+https://www.terraform.io/docs/configuration/environment-variables.html
 
 **information**
  - `setEnvCredentials.sh` currently only sets the environment variables to use a SP in the Diaxion AAD.
