@@ -9,9 +9,6 @@ resource "azurerm_public_ip" "jumpbox" {
   public_ip_address_allocation = "static"
   domain_name_label            = "${azurerm_resource_group.rg.name}-ssh"
   tags                         = "${var.tags}"
-  # tags {
-  #   environment = "dev"
-  # }
 }
 
 resource "azurerm_network_security_group" "jumpbox" {
@@ -89,7 +86,4 @@ resource "azurerm_virtual_machine" "jumpbox" {
   }
 
   tags                          = "${var.tags}"
-  # tags {
-  #   environment = "dev"
-  # }
 }
