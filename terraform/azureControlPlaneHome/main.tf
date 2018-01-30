@@ -17,6 +17,6 @@ module "network" "azureControlPlaneNetwork" {
   address_space       = "${var.address_space}"
   subnet_prefixes     = ["${var.subnet_prefixes}"]
   subnet_names        = ["${var.subnet_names}"]
-  vnet_name           = "azureControlPlaneNetwork"
-  tags     = "${var.tags}"
+  vnet_name           = "${var.prefix}-vNet"
+  tags                = "${var.tags}"
 }

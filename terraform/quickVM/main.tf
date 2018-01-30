@@ -1,32 +1,37 @@
-# main.tf
 # -----------------------------------------------------------------------------
 # resourceGroup configuration
 # -----------------------------------------------------------------------------
 resource "azurerm_resource_group" "rg" {
-  name     = "${var.prefix}-rg"
+  name     = "${var.resource_group}-rg"
   location = "${var.location}"
   tags     = "${var.tags}"
+
 }
 
 # -----------------------------------------------------------------------------
 # vnet configuration
 # -----------------------------------------------------------------------------
-module "network" "azureControlPlaneNetwork" {
-  source              = "github.com/Azure/terraform-azurerm-network"
-  resource_group_name = "${azurerm_resource_group.rg.name}"
+resource "azurerm_virtual_network" "vnet" {
+  name                = "${var.virtual_network_name}-vnet"
   location            = "${var.location}"
-  address_space       = "${var.address_space}"
-  subnet_prefixes     = ["${var.subnet_prefixes}"]
-  subnet_names        = ["${var.subnet_names}"]
-  vnet_name           = "vNet-${var.prefix}"
+  address_space       = ["${var.address_space}"]
+  resource_group_name = "${azurerm_resource_group.rg.name}"
   tags                = "${var.tags}"
+
+}
+
+resource "azurerm_subnet" "subnet" {
+  name                 = "${var.rg_prefix}-subnet"
+  resource_group_name  = "${azurerm_resource_group.rg.name}"
+  virtual_network_name = "${azurerm_virtual_network.vnet.name}"
+  address_prefix       = "${var.subnet_prefix}"
 }
 
 # -----------------------------------------------------------------------------
 # nsg configuration
 # -----------------------------------------------------------------------------
-resource "azurerm_network_security_group" "quickVM" {
-  name                = "${var.prefix}-nsg"
+resource "azurerm_network_security_group" "nsg" {
+  name                = "${var.rg_prefix}-nsg"
   location            = "${var.location}"
   resource_group_name = "${azurerm_resource_group.rg.name}"
   tags                = "${var.tags}"
@@ -34,14 +39,14 @@ resource "azurerm_network_security_group" "quickVM" {
 
 resource "azurerm_network_security_rule" "ssh_access" {
   name                        = "ssh-access-rule"
-  network_security_group_name = "${azurerm_network_security_group.quickVM.name}"
+  network_security_group_name = "${azurerm_network_security_group.nsg.name}"
   resource_group_name         = "${azurerm_resource_group.rg.name}"
   direction                   = "Inbound"
   access                      = "Allow"
   priority                    = 200
   source_address_prefix       = "*"
   source_port_range           = "*"
-  destination_address_prefixes  = ["${var.subnet_prefixes}"]
+  destination_address_prefixes  = ["${var.subnet_prefix}"]
   destination_port_range      = "22"
   protocol                    = "TCP"
 }
@@ -50,81 +55,99 @@ resource "azurerm_network_security_rule" "ssh_access" {
 # Linux vm configuration
 # -----------------------------------------------------------------------------
 
-resource "azurerm_public_ip" "quickVM" {
-  name                          = "${var.prefix}-pip"
-  location                      = "${var.location}"
-  resource_group_name           = "${azurerm_resource_group.rg.name}"
-  public_ip_address_allocation  = "dynamic"
-  tags                          = "${var.tags}"
-}
-
-resource "azurerm_network_interface" "quickVM" {
-  name                      = "${var.prefix}-nic"
-  location                  = "${var.location}"
-  resource_group_name       = "${azurerm_resource_group.rg.name}"
-  network_security_group_id = "${azurerm_network_security_group.quickVM.id}"
+resource "azurerm_network_interface" "nic" {
+  name                = "${var.rg_prefix}-nic"
+  location            = "${var.location}"
+  resource_group_name = "${azurerm_resource_group.rg.name}"
 
   ip_configuration {
-    name                          = "IPConfiguration"
-    subnet_id                     = "${module.network.vnet_subnets[0]}"
-    private_ip_address_allocation = "dynamic"
-    public_ip_address_id          = "${azurerm_public_ip.quickVM.id}"
+    name                          = "${var.rg_prefix}-ipconfig"
+    subnet_id                     = "${azurerm_subnet.subnet.id}"
+    private_ip_address_allocation = "Dynamic"
+    public_ip_address_id          = "${azurerm_public_ip.pip.id}"
   }
-  tags                      = "${var.tags}"
+  tags                = "${var.tags}"
+
 }
 
-resource "azurerm_virtual_machine" "quickVM" {
-  name                          = "${var.prefix}-vm"
-  location                      = "${var.location}"
-  resource_group_name           = "${azurerm_resource_group.rg.name}"
-  network_interface_ids         = ["${azurerm_network_interface.quickVM.id}"]
-  vm_size                       = "Standard_DS1_v2"
+resource "azurerm_public_ip" "pip" {
+  name                         = "${var.rg_prefix}-pip"
+  location                     = "${var.location}"
+  resource_group_name          = "${azurerm_resource_group.rg.name}"
+  public_ip_address_allocation = "Dynamic"
+  domain_name_label            = "${var.dns_name}"
+  tags                         = "${var.tags}"
+
+}
+
+# resource "azurerm_storage_account" "stor" {
+#   name                     = "${var.dns_name}-stor"
+#   location                 = "${var.location}"
+#   resource_group_name      = "${azurerm_resource_group.rg.name}"
+#   account_tier             = "${var.storage_account_tier}"
+#   account_replication_type = "${var.storage_replication_type}"
+# }
+
+resource "azurerm_managed_disk" "datadisk" {
+  name                 = "${var.hostname}-datadisk"
+  location             = "${var.location}"
+  resource_group_name  = "${azurerm_resource_group.rg.name}"
+  storage_account_type = "Standard_LRS"
+  create_option        = "Empty"
+  disk_size_gb         = "1023"
+  tags                 = "${var.tags}"
+}
+
+resource "azurerm_virtual_machine" "vm" {
+  name                  = "${var.rg_prefix}-vm"
+  location              = "${var.location}"
+  resource_group_name   = "${azurerm_resource_group.rg.name}"
+  vm_size               = "${var.vm_size}"
+  network_interface_ids = ["${azurerm_network_interface.nic.id}"]
   delete_os_disk_on_termination = true
+  tags                  = "${var.tags}"
+
 
   storage_image_reference {
-    publisher = "Canonical"
-    offer     = "UbuntuServer"
-    sku       = "16.04-LTS"
-    version   = "latest"
+    publisher = "${var.image_publisher}"
+    offer     = "${var.image_offer}"
+    sku       = "${var.image_sku}"
+    version   = "${var.image_version}"
   }
 
   storage_os_disk {
-    name              = "quickVM-osdisk"
-    caching           = "ReadWrite"
-    create_option     = "FromImage"
+    name                          = "${var.hostname}-osdisk"
+    managed_disk_type             = "Standard_LRS"
+    caching                       = "ReadWrite"
+    create_option                 = "FromImage"
+  }
+
+  storage_data_disk {
+    name              = "${var.hostname}-datadisk"
+    managed_disk_id   = "${azurerm_managed_disk.datadisk.id}"
     managed_disk_type = "Standard_LRS"
+    disk_size_gb      = "1023"
+    create_option     = "Attach"
+    lun               = 0
   }
 
   os_profile {
-    computer_name  = "quickvm"
-    admin_username = "ubuntu"
+    computer_name  = "${var.hostname}"
+    admin_username = "${var.admin_username}"
     admin_password = "${var.ubuntu_user_secret}"
   }
 
   os_profile_linux_config {
     disable_password_authentication = true
-
     ssh_keys {
       path     = "/home/ubuntu/.ssh/authorized_keys"
       key_data = "${var.ssh_key_public}"
     }
+
   }
 
-  tags                          = "${var.tags}"
-}
-
-data "azurerm_public_ip" "quickVM" {
-  name                = "${azurerm_public_ip.quickVM.name}"
-  resource_group_name = "${azurerm_resource_group.rg.name}"
-  depends_on          = ["azurerm_virtual_machine.quickVM"]
-}
-
-output "jumpbox_public_ip" {
-  description = "public IP address of the quickVM server"
-  value       = "${data.azurerm_public_ip.quickVM.ip_address}"
-}
-
-output "jumpbox_private_ip" {
-  description = "private IP address of the quickVM server"
-  value       = "${azurerm_network_interface.quickVM.private_ip_address}"
+  # boot_diagnostics {
+  #   enabled     = false
+  #   storage_uri = "${azurerm_storage_account.stor.primary_blob_endpoint}"
+  # }
 }
