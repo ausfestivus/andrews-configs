@@ -113,9 +113,15 @@ resource "azurerm_virtual_machine" "quickVM" {
   tags                          = "${var.tags}"
 }
 
+data "azurerm_public_ip" "quickVM" {
+  name                = "${azurerm_public_ip.quickVM.name}"
+  resource_group_name = "${azurerm_resource_group.rg.name}"
+  depends_on          = ["azurerm_virtual_machine.quickVM"]
+}
+
 output "jumpbox_public_ip" {
   description = "public IP address of the quickVM server"
-  value       = "${azurerm_public_ip.quickVM.ip_address}"
+  value       = "${data.azurerm_public_ip.quickVM.ip_address}"
 }
 
 output "jumpbox_private_ip" {
