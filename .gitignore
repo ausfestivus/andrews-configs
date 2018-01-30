@@ -6,6 +6,6 @@ scratch*.md
 *credentials*
 
 # ignore terraform related files
-.terraform/
+.terraform*
 *.tfstate
 *.tfstate.backup
