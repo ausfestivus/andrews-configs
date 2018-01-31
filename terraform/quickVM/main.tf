@@ -80,14 +80,6 @@ resource "azurerm_public_ip" "pip" {
 
 }
 
-# resource "azurerm_storage_account" "stor" {
-#   name                     = "${var.dns_name}-stor"
-#   location                 = "${var.location}"
-#   resource_group_name      = "${azurerm_resource_group.rg.name}"
-#   account_tier             = "${var.storage_account_tier}"
-#   account_replication_type = "${var.storage_replication_type}"
-# }
-
 resource "azurerm_managed_disk" "datadisk" {
   name                 = "${var.hostname}-datadisk"
   location             = "${var.location}"
@@ -146,13 +138,10 @@ resource "azurerm_virtual_machine" "vm" {
 
   connection {
     type     = "ssh"
-    #host        = "${data.azurerm_public_ip.quickVM.ip_address}"
-    #host        = "${azurerm_public_ip.pip.ip_address}"
     host        = "${azurerm_public_ip.pip.fqdn}"
     user        = "ubuntu"
-    #password    = "${var.ssh_key_public}"
-    # NOTE - using a private key login for the connection requires that the private key NOT have a password on it
-    #private_key = "${var.ssh_key_private}"
+    # By default, terraform will use a running ssh-agent on a *nix host.
+    # on windows it uses pagent.
     #agent       = false
   }
 
@@ -165,10 +154,6 @@ resource "azurerm_virtual_machine" "vm" {
     ]
   }
 
-  # boot_diagnostics {
-  #   enabled     = false
-  #   storage_uri = "${azurerm_storage_account.stor.primary_blob_endpoint}"
-  # }
 }
 
 data "azurerm_public_ip" "pip" {
