@@ -107,7 +107,6 @@ resource "azurerm_virtual_machine" "vm" {
   delete_os_disk_on_termination = true
   tags                  = "${var.tags}"
 
-
   storage_image_reference {
     publisher = "${var.image_publisher}"
     offer     = "${var.image_offer}"
@@ -143,11 +142,37 @@ resource "azurerm_virtual_machine" "vm" {
       path     = "/home/ubuntu/.ssh/authorized_keys"
       key_data = "${var.ssh_key_public}"
     }
+  }
 
+  connection {
+    type     = "ssh"
+    #host        = "${data.azurerm_public_ip.quickVM.ip_address}"
+    #host        = "${azurerm_public_ip.pip.ip_address}"
+    host        = "${azurerm_public_ip.pip.fqdn}"
+    user        = "ubuntu"
+    #password    = "${var.ssh_key_public}"
+    # NOTE - using a private key login for the connection requires that the private key NOT have a password on it
+    #private_key = "${var.ssh_key_private}"
+    #agent       = false
+  }
+
+  provisioner "remote-exec" {
+    inline = [
+      "/usr/bin/sudo DEBIAN_FRONTEND=noninteractive /usr/bin/apt-get -y update",
+      "/usr/bin/sudo DEBIAN_FRONTEND=noninteractive /usr/bin/apt-get -y install pwgen htop sysstat dstat iotop vim molly-guard unattended-upgrades screen git",
+      "/usr/bin/sudo DEBIAN_FRONTEND=noninteractive /usr/bin/apt-get -y dist-upgrade",
+      "/usr/bin/sudo DEBIAN_FRONTEND=noninteractive /usr/bin/apt-get -y auto-remove",
+    ]
   }
 
   # boot_diagnostics {
   #   enabled     = false
   #   storage_uri = "${azurerm_storage_account.stor.primary_blob_endpoint}"
   # }
+}
+
+data "azurerm_public_ip" "pip" {
+  name                = "${azurerm_public_ip.pip.name}"
+  resource_group_name = "${azurerm_resource_group.rg.name}"
+  depends_on          = ["azurerm_virtual_machine.vm"]
 }

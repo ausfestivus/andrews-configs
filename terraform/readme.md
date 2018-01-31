@@ -34,7 +34,7 @@ https://www.terraform.io/docs/configuration/environment-variables.html
 **information**
  - `setEnvCredentials.sh` currently only sets the environment variables to use a SP in the Diaxion AAD.
  - `azureControlPlaneHome` builds the controlplane vNet and services:
-  - jumphost (ubuntu VM)
+ - `quickVM` builds a simple Ubuntu VM in Azure with the necessary support infrastructure. Useful when a quick Linux VM is needed for something.
 
 
 ## Terraform and AWS
