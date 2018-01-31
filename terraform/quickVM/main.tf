@@ -126,6 +126,7 @@ resource "azurerm_virtual_machine" "vm" {
     computer_name  = "${var.hostname}"
     admin_username = "${var.admin_username}"
     admin_password = "${var.ubuntu_user_secret}"
+    custom_data    =  "${file("init.conf")}"
   }
 
   os_profile_linux_config {
@@ -134,24 +135,7 @@ resource "azurerm_virtual_machine" "vm" {
       path     = "/home/ubuntu/.ssh/authorized_keys"
       key_data = "${var.ssh_key_public}"
     }
-  }
 
-  connection {
-    type     = "ssh"
-    host        = "${azurerm_public_ip.pip.fqdn}"
-    user        = "ubuntu"
-    # By default, terraform will use a running ssh-agent on a *nix host.
-    # on windows it uses pagent.
-    #agent       = false
-  }
-
-  provisioner "remote-exec" {
-    inline = [
-      "/usr/bin/sudo DEBIAN_FRONTEND=noninteractive /usr/bin/apt-get -y update",
-      "/usr/bin/sudo DEBIAN_FRONTEND=noninteractive /usr/bin/apt-get -y install pwgen htop sysstat dstat iotop vim molly-guard unattended-upgrades screen git",
-      "/usr/bin/sudo DEBIAN_FRONTEND=noninteractive /usr/bin/apt-get -y dist-upgrade",
-      "/usr/bin/sudo DEBIAN_FRONTEND=noninteractive /usr/bin/apt-get -y auto-remove",
-    ]
   }
 
 }
