@@ -11,7 +11,6 @@ version="1.0.1"              # Sets version variable
 #
 # ##################################################
 
-
 function mainScript() {
   # invoke verbose usage when set
   if ${verbose}; then v="-v" ; fi
@@ -209,6 +208,7 @@ function mainScript() {
     fi
     success "Command Line Tools installed"
   }
+  
   function installHomebrew () {
     # Check for Homebrew
     notice "Checking for Homebrew..."
@@ -230,6 +230,7 @@ function mainScript() {
     fi
     success "Homebrew installed"
   }
+  
   function checkTaps() {
     
     verbose "Confirming we have required Homebrew taps"
@@ -240,6 +241,7 @@ function mainScript() {
       installHomebrewTaps
     fi
   }
+  
   function installHomebrewTaps() {
     #brew tap homebrew/dupes
     #brew tap homebrew/versions
@@ -250,6 +252,7 @@ function mainScript() {
     #brew tap caskroom/fonts
     #brew tap caskroom/versions # Subversion client for MacOS
   }
+  
   function installXcode() {
     notice "Checking for XCode..."
     if ! isAppInstalled 'xcode' &>/dev/null; then
@@ -269,6 +272,7 @@ function mainScript() {
     fi
     success "XCode installed"
   }
+  
   function installDropbox () {
     # This function checks for Dropbox being installed.
     # If it is not found, we install it and its prerequisites
@@ -289,6 +293,7 @@ function mainScript() {
     
     success "Dropbox installed"
   }
+  
   function installffmpeg () {
     
     notice "Checking for ffmpeg...."
@@ -299,6 +304,7 @@ function mainScript() {
     
     success "Done ffmpeg installed"
   }
+  
   function installCaskApps() {
     unset LISTINSTALLED INSTALLCOMMAND RECIPES
     
@@ -329,6 +335,7 @@ function mainScript() {
     
     success "Done installing cask apps"
   }
+  
   function installAppStoreApps() {
     unset LISTINSTALLED INSTALLCOMMAND RECIPES
     
@@ -346,6 +353,7 @@ function mainScript() {
     
     success "Done installing app store apps"
   }
+  
   function installDevApps() {
     unset LISTINSTALLED INSTALLCOMMAND RECIPES
     
@@ -376,6 +384,7 @@ function mainScript() {
     
     success "Done installing dev apps"
   }
+  
   function installHomebrewPackages() {
     unset LISTINSTALLED INSTALLCOMMAND RECIPES
     
@@ -395,7 +404,7 @@ function mainScript() {
       # coreutils
       # ffmpeg
       # gifsicle
-      # git
+      git
       # git-extras
       # git-flow
       # hub
@@ -410,7 +419,9 @@ function mainScript() {
       # libyaml
       # mackup
       # man2html
+      mtr
       # multimarkdown
+      nmap
       # node
       # openssl
       # optipng
@@ -419,29 +430,27 @@ function mainScript() {
       # p7zip
       # readline
       # rename
-      # shellcheck          # Bash linter
+      shellcheck          # Bash linter
       # sl
       # source-highlight
       # ssh-copy-id
       # sqlite
       # tag
-      # terminal-notifier
+      terminal-notifier
       # tldr                # Better man pages
       # tree
       # unison              # Rsynch like tool
-      aws-shell
-      mtr
-      awscli
-      git
-      nmap
-      python3
-      shellcheck
       wget
+      awscli
+      aws-shell
+      azure-cli
+      python3
     )
     doInstall
     
     success "Done installing Homebrew packages"
   }
+  
   function installRuby() {
     
     notice "Checking for RVM (Ruby Version Manager)..."
@@ -463,6 +472,7 @@ function mainScript() {
     
     success "RVM and Ruby are installed"
   }
+  
   function installRubyGems() {
     unset LISTINSTALLED INSTALLCOMMAND RECIPES
     
@@ -494,6 +504,7 @@ function mainScript() {
     
     success "Done installing Ruby Gems"
   }
+  
   function configureSSH() {
     notice "Configuring SSH"
     
@@ -519,6 +530,7 @@ function mainScript() {
     
     success "SSH Configured"
   }
+  
   function configureMackup() {
     notice "Running mackup config..."
     
@@ -581,7 +593,6 @@ function mainScript() {
       mackup restore
     fi
   }
-  
   
   # ###################
   # Run the script
