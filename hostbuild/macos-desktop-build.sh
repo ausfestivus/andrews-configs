@@ -11,7 +11,6 @@ version="1.0.1"              # Sets version variable
 #
 # ##################################################
 
-
 function mainScript() {
   # invoke verbose usage when set
   if ${verbose}; then v="-v" ; fi
@@ -209,6 +208,7 @@ function mainScript() {
     fi
     success "Command Line Tools installed"
   }
+  
   function installHomebrew () {
     # Check for Homebrew
     notice "Checking for Homebrew..."
@@ -230,6 +230,7 @@ function mainScript() {
     fi
     success "Homebrew installed"
   }
+  
   function checkTaps() {
     
     verbose "Confirming we have required Homebrew taps"
@@ -240,16 +241,15 @@ function mainScript() {
       installHomebrewTaps
     fi
   }
+  
   function installHomebrewTaps() {
     #brew tap homebrew/dupes
     #brew tap homebrew/versions
-    # Note that mas is currently unmaintained and doesnt work with 10.12.4
-    #brew install argon/mas/mas
-    #brew tap argon/mas
     brew tap caskroom/cask
     #brew tap caskroom/fonts
     #brew tap caskroom/versions # Subversion client for MacOS
   }
+  
   function installXcode() {
     notice "Checking for XCode..."
     if ! isAppInstalled 'xcode' &>/dev/null; then
@@ -269,6 +269,7 @@ function mainScript() {
     fi
     success "XCode installed"
   }
+  
   function installDropbox () {
     # This function checks for Dropbox being installed.
     # If it is not found, we install it and its prerequisites
@@ -289,6 +290,7 @@ function mainScript() {
     
     success "Dropbox installed"
   }
+  
   function installffmpeg () {
     
     notice "Checking for ffmpeg...."
@@ -299,6 +301,7 @@ function mainScript() {
     
     success "Done ffmpeg installed"
   }
+  
   function installCaskApps() {
     unset LISTINSTALLED INSTALLCOMMAND RECIPES
     
@@ -311,13 +314,13 @@ function mainScript() {
     RECIPES=(
       1password
       atom
-      github-desktop
+      #github-desktop # 20180201 - doesnt appear to exist in brew any more.
       google-chrome
-      microsoft-office
+      #microsoft-office # 20180201 - not installing by default any more
       skype
-      skype-for-business
-      terraform
-      things
+      # skype-for-business
+      #terraform
+      #things
       vlc
       xmind
     )
@@ -329,6 +332,7 @@ function mainScript() {
     
     success "Done installing cask apps"
   }
+  
   function installAppStoreApps() {
     unset LISTINSTALLED INSTALLCOMMAND RECIPES
     
@@ -339,13 +343,25 @@ function mainScript() {
     LISTINSTALLED="mas list"
     INSTALLCOMMAND="mas install"
     RECIPES=(
-      803453959 # Slack
+      405399194 # Kindle (1.21.1)
+      1278508951 # Trello (2.10.2)
+      425424353 # The Unarchiver (3.11.3)
+      715768417 # Microsoft Remote Desktop (8.0.27325)
+      1189824719 # Jayson (1.8.1)
+      823766827 # OneDrive (17.3.7131)
+      904280696 # Things3 (3.3)
+      1091189122 # Bear (1.4.1)
+      803453959 # Slack (3.0.5)
+      443823264 # FindSpace (1.0.0)
+      557168941 # Tweetbot (2.5.4)
+      568020055 # Scapple (1.30.1)
       494803304 # WiFi Explorer
     )
     doInstall
     
     success "Done installing app store apps"
   }
+  
   function installDevApps() {
     unset LISTINSTALLED INSTALLCOMMAND RECIPES
     
@@ -376,6 +392,7 @@ function mainScript() {
     
     success "Done installing dev apps"
   }
+  
   function installHomebrewPackages() {
     unset LISTINSTALLED INSTALLCOMMAND RECIPES
     
@@ -389,13 +406,13 @@ function mainScript() {
     RECIPES=(
       # autoconf
       # automake
-      # bash
-      # bash-completion
+      bash
+      bash-completion
       # colordiff
       # coreutils
       # ffmpeg
       # gifsicle
-      # git
+      git
       # git-extras
       # git-flow
       # hub
@@ -410,7 +427,10 @@ function mainScript() {
       # libyaml
       # mackup
       # man2html
+      mas
+      mtr
       # multimarkdown
+      nmap
       # node
       # openssl
       # optipng
@@ -419,29 +439,27 @@ function mainScript() {
       # p7zip
       # readline
       # rename
-      # shellcheck          # Bash linter
+      shellcheck          # Bash linter
       # sl
       # source-highlight
       # ssh-copy-id
       # sqlite
       # tag
-      # terminal-notifier
+      terminal-notifier
       # tldr                # Better man pages
       # tree
       # unison              # Rsynch like tool
-      aws-shell
-      mtr
-      awscli
-      git
-      nmap
-      python3
-      shellcheck
       wget
+      awscli
+      aws-shell
+      azure-cli
+      python3
     )
     doInstall
     
     success "Done installing Homebrew packages"
   }
+  
   function installRuby() {
     
     notice "Checking for RVM (Ruby Version Manager)..."
@@ -463,6 +481,7 @@ function mainScript() {
     
     success "RVM and Ruby are installed"
   }
+  
   function installRubyGems() {
     unset LISTINSTALLED INSTALLCOMMAND RECIPES
     
@@ -494,6 +513,7 @@ function mainScript() {
     
     success "Done installing Ruby Gems"
   }
+  
   function configureSSH() {
     notice "Configuring SSH"
     
@@ -519,6 +539,7 @@ function mainScript() {
     
     success "SSH Configured"
   }
+  
   function configureMackup() {
     notice "Running mackup config..."
     
@@ -582,12 +603,20 @@ function mainScript() {
     fi
   }
   
-  
+  function installSundry() {
+    # a catch all function to act as a hook for other sundry
+    # installations and configurations.
+    notice "Installing sundry items..."
+    info "  Installing homebrew-notifier..."
+    [[ -f "${HOME}/.homebrew-notifier/notifier.sh" ]] || curl -fsS https://raw.githubusercontent.com/grantovich/homebrew-notifier/master/install.sh | sh
+    success "  homebrew-notifier installed."
+  }
   # ###################
   # Run the script
   # ###################
   
   # Ask for the administrator password upfront
+  echo "administrator authorisation required. Please enter your administrator password."
   sudo -v
   
   installCommandLineTools
@@ -598,12 +627,13 @@ function mainScript() {
   #installDropbox
   installHomebrewPackages
   installCaskApps
-  #installAppStoreApps # mas is no longer maintained: https://github.com/mas-cli/mas/issues/47
+  installAppStoreApps
   #installDevApps
   #installRuby
   #installRubyGems
   #configureSSH
   #configureMackup
+  installSundry
 }
 
 ## SET SCRIPTNAME VARIABLE ##

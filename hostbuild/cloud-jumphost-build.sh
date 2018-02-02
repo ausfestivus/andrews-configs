@@ -11,7 +11,7 @@
 
 # Install all the packages
 /bin/echo "installing our standard packages"
-/usr/bin/sudo /usr/bin/apt-get -y -o DPkg::Options::="--force-confnew" install pwgen htop sysstat dstat iotop vim molly-guard unattended-upgrades screen git
+/usr/bin/sudo /usr/bin/apt-get -y -o DPkg::Options::="--force-confnew" install pwgen htop sysstat dstat iotop vim molly-guard unattended-upgrades screen git mtr
 
 # update all the things
 /bin/echo "Applying all system updates"
