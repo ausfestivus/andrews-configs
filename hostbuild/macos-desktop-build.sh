@@ -245,9 +245,6 @@ function mainScript() {
   function installHomebrewTaps() {
     #brew tap homebrew/dupes
     #brew tap homebrew/versions
-    # Note that mas is currently unmaintained and doesnt work with 10.12.4
-    #brew install argon/mas/mas
-    #brew tap argon/mas
     brew tap caskroom/cask
     #brew tap caskroom/fonts
     #brew tap caskroom/versions # Subversion client for MacOS
@@ -317,13 +314,13 @@ function mainScript() {
     RECIPES=(
       1password
       atom
-      github-desktop
+      #github-desktop # 20180201 - doesnt appear to exist in brew any more.
       google-chrome
-      microsoft-office
+      #microsoft-office # 20180201 - not installing by default any more
       skype
-      skype-for-business
-      terraform
-      things
+      # skype-for-business
+      #terraform
+      #things
       vlc
       xmind
     )
@@ -346,7 +343,18 @@ function mainScript() {
     LISTINSTALLED="mas list"
     INSTALLCOMMAND="mas install"
     RECIPES=(
-      803453959 # Slack
+      405399194 # Kindle (1.21.1)
+      1278508951 # Trello (2.10.2)
+      425424353 # The Unarchiver (3.11.3)
+      715768417 # Microsoft Remote Desktop (8.0.27325)
+      1189824719 # Jayson (1.8.1)
+      823766827 # OneDrive (17.3.7131)
+      904280696 # Things3 (3.3)
+      1091189122 # Bear (1.4.1)
+      803453959 # Slack (3.0.5)
+      443823264 # FindSpace (1.0.0)
+      557168941 # Tweetbot (2.5.4)
+      568020055 # Scapple (1.30.1)
       494803304 # WiFi Explorer
     )
     doInstall
@@ -398,8 +406,8 @@ function mainScript() {
     RECIPES=(
       # autoconf
       # automake
-      # bash
-      # bash-completion
+      bash
+      bash-completion
       # colordiff
       # coreutils
       # ffmpeg
@@ -419,6 +427,7 @@ function mainScript() {
       # libyaml
       # mackup
       # man2html
+      mas
       mtr
       # multimarkdown
       nmap
@@ -594,11 +603,20 @@ function mainScript() {
     fi
   }
   
+  function installSundry() {
+    # a catch all function to act as a hook for other sundry
+    # installations and configurations.
+    notice "Installing sundry items..."
+    info "  Installing homebrew-notifier..."
+    [[ -f "${HOME}/.homebrew-notifier/notifier.sh" ]] || curl -fsS https://raw.githubusercontent.com/grantovich/homebrew-notifier/master/install.sh | sh
+    success "  homebrew-notifier installed."
+  }
   # ###################
   # Run the script
   # ###################
   
   # Ask for the administrator password upfront
+  echo "administrator authorisation required. Please enter your administrator password."
   sudo -v
   
   installCommandLineTools
@@ -609,12 +627,13 @@ function mainScript() {
   #installDropbox
   installHomebrewPackages
   installCaskApps
-  #installAppStoreApps # mas is no longer maintained: https://github.com/mas-cli/mas/issues/47
+  installAppStoreApps
   #installDevApps
   #installRuby
   #installRubyGems
   #configureSSH
   #configureMackup
+  installSundry
 }
 
 ## SET SCRIPTNAME VARIABLE ##

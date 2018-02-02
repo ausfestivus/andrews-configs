@@ -18,7 +18,7 @@ sudo apt-get update
 
 # Install all the packages
 echo "installing our standard packages"
-sudo apt-get -y -o DPkg::Options::="--force-confnew" install open-vm-tools-desktop htop sysstat dstat iotop python python-pip google-chrome-stable atom vim
+sudo apt-get -y -o DPkg::Options::="--force-confnew" install open-vm-tools-desktop htop sysstat dstat iotop python python-pip google-chrome-stable atom vim mtr
 
 # update all the things
 echo "Applying all system updates"

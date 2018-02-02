@@ -33,6 +33,19 @@ if [[ -f ~/._awsAliases ]]; then
   alias awswho="aws configure list"
 fi
 
+# alias for us to pull and refresh our dotfiles.
+if [[ -d ~/andrews-configs ]]; then
+  # target directory already exists
+  # just cd to it and pull the files.
+  alias refreshdotfiles="cd ~/andrews-configs || exit && git pull origin master && ~/andrews-configs/dotfiles/makesymlinks.sh"
+else
+  # target directory doesnt exist. We need to install it for the first time.
+  cd ~ || exit
+  git clone https://github.com/andrew-best-diaxion/andrews-configs.git
+  ~/andrews-configs/dotfiles/makesymlinks.sh
+fi
+
+
 # Personal - home shortcuts
 # nasquith
 alias nasquith="ssh -i ~/.ssh/id_rsa festivus@nasquith.mtcolah.bestfamily.id.au -p 2223"
