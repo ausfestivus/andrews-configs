@@ -86,7 +86,7 @@ resource "azurerm_managed_disk" "datadisk" {
   resource_group_name  = "${azurerm_resource_group.rg.name}"
   storage_account_type = "Standard_LRS"
   create_option        = "Empty"
-  disk_size_gb         = "1023"
+  disk_size_gb         = "10"
   tags                 = "${var.tags}"
 }
 
@@ -117,7 +117,7 @@ resource "azurerm_virtual_machine" "vm" {
     name              = "${var.hostname}-datadisk"
     managed_disk_id   = "${azurerm_managed_disk.datadisk.id}"
     managed_disk_type = "Standard_LRS"
-    disk_size_gb      = "1023"
+    disk_size_gb      = "10"
     create_option     = "Attach"
     lun               = 0
   }
@@ -135,9 +135,7 @@ resource "azurerm_virtual_machine" "vm" {
       path     = "/home/ubuntu/.ssh/authorized_keys"
       key_data = "${var.ssh_key_public}"
     }
-
   }
-
 }
 
 data "azurerm_public_ip" "pip" {
