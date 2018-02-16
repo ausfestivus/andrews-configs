@@ -51,6 +51,20 @@ resource "azurerm_network_security_rule" "ssh_access" {
   protocol                    = "TCP"
 }
 
+resource "azurerm_network_security_rule" "www_access" {
+  name                        = "www-access-rule"
+  network_security_group_name = "${azurerm_network_security_group.nsg.name}"
+  resource_group_name         = "${azurerm_resource_group.rg.name}"
+  direction                   = "Inbound"
+  access                      = "Allow"
+  priority                    = 210
+  source_address_prefix       = "*"
+  source_port_range           = "*"
+  destination_address_prefixes  = ["${var.subnet_prefix}"]
+  destination_port_ranges      = ["80", "443"]
+  protocol                    = "TCP"
+}
+
 # -----------------------------------------------------------------------------
 # Linux vm configuration
 # -----------------------------------------------------------------------------
@@ -86,7 +100,7 @@ resource "azurerm_managed_disk" "datadisk" {
   resource_group_name  = "${azurerm_resource_group.rg.name}"
   storage_account_type = "Standard_LRS"
   create_option        = "Empty"
-  disk_size_gb         = "1023"
+  disk_size_gb         = "10"
   tags                 = "${var.tags}"
 }
 
@@ -117,7 +131,7 @@ resource "azurerm_virtual_machine" "vm" {
     name              = "${var.hostname}-datadisk"
     managed_disk_id   = "${azurerm_managed_disk.datadisk.id}"
     managed_disk_type = "Standard_LRS"
-    disk_size_gb      = "1023"
+    disk_size_gb      = "10"
     create_option     = "Attach"
     lun               = 0
   }
@@ -126,6 +140,7 @@ resource "azurerm_virtual_machine" "vm" {
     computer_name  = "${var.hostname}"
     admin_username = "${var.admin_username}"
     admin_password = "${var.ubuntu_user_secret}"
+    custom_data    =  "${file("init.conf")}"
   }
 
   os_profile_linux_config {
@@ -145,16 +160,37 @@ resource "azurerm_virtual_machine" "vm" {
     #agent       = false
   }
 
-  provisioner "remote-exec" {
-    inline = [
-      "/usr/bin/sudo DEBIAN_FRONTEND=noninteractive /usr/bin/apt-get -y update",
-      "/usr/bin/sudo DEBIAN_FRONTEND=noninteractive /usr/bin/apt-get -y install pwgen htop sysstat dstat iotop vim molly-guard unattended-upgrades screen git",
-      "/usr/bin/sudo DEBIAN_FRONTEND=noninteractive /usr/bin/apt-get -y dist-upgrade",
-      "/usr/bin/sudo DEBIAN_FRONTEND=noninteractive /usr/bin/apt-get -y auto-remove",
-    ]
-  }
+  # provisioner "remote-exec" {
+  #   inline = [
+  #     "/usr/bin/sudo DEBIAN_FRONTEND=noninteractive /usr/bin/apt-get -y update",
+  #     "/usr/bin/sudo DEBIAN_FRONTEND=noninteractive /usr/bin/apt-get -y install pwgen htop sysstat dstat iotop vim molly-guard unattended-upgrades screen git",
+  #     "/usr/bin/sudo DEBIAN_FRONTEND=noninteractive /usr/bin/apt-get -y dist-upgrade",
+  #     "/usr/bin/sudo DEBIAN_FRONTEND=noninteractive /usr/bin/apt-get -y auto-remove",
+  #   ]
+  # }
 
 }
+
+# -----------------------------------------------------------------------------
+# Linux vm DNS configuration
+# -----------------------------------------------------------------------------
+
+# output "vm_fqdn" {
+#   value = "${azurerm_public_ip.pip.fqdn}"
+# }
+
+resource "azurerm_dns_cname_record" "quickvm" {
+  name                = "quickvm"
+  zone_name           = "${var.parent_zone}"
+  resource_group_name   = "rgDNSZones"
+  ttl                 = 300
+  record              = "${azurerm_public_ip.pip.fqdn}"
+}
+
+# -----------------------------------------------------------------------------
+# Data items.
+# -----------------------------------------------------------------------------
+
 
 data "azurerm_public_ip" "pip" {
   name                = "${azurerm_public_ip.pip.name}"

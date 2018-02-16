@@ -74,6 +74,11 @@ variable "image_version" {
   default     = "latest"
 }
 
+variable "parent_zone" {
+  description = "the parent DNS zone this VM will create a CNAME record under"
+  default     = "cloud00.bestfamily.id.au"
+}
+
 variable "tags" {
   type = "map"
   default = {
