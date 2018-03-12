@@ -1,20 +1,21 @@
 #!/usr/bin/env bash
 
-if [ $OSTYPE == "darwin16" ] || [ $OSTYPE = "darwin17" ]; then # do the needful things on MacOS
+#if [ $OSTYPE == "darwin16" ] || [ $OSTYPE = "darwin17" ]; then # do the needful things on MacOS
+if [[ $OSTYPE == darwin* ]]; then # do the needful things on MacOS
   # taken from http://ianlunn.co.uk/articles/quickly-showhide-hidden-files-mac-os-x-mavericks/
   alias showhidden="defaults write com.apple.finder AppleShowAllFiles YES" # display hidden files
   alias hidehidden="defaults write com.apple.finder AppleShowAllFiles NO" # hide hidden files
-  
+
   # Finder Customisations
   defaults write com.apple.finder_FXShowPosixPathInTitle -bool true
   killall Finder
-  
+
   # adding brew items to $PATH if brew is installed.
   if [[ -e `which brew` ]]; then
     export PATH=/usr/local/bin:/usr/local/sbin:$PATH
   fi
-  
-  elif [ $OSTYPE == "linux-gnu" ]; then # do the needful things on Linux
+
+elif [[ $OSTYPE == "linux-gnu" ]]; then # do the needful things on Linux
   :
 fi
 
