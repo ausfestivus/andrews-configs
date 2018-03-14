@@ -174,11 +174,6 @@ resource "azurerm_virtual_machine" "vm" {
 # -----------------------------------------------------------------------------
 # Linux vm DNS configuration
 # -----------------------------------------------------------------------------
-
-# output "vm_fqdn" {
-#   value = "${azurerm_public_ip.pip.fqdn}"
-# }
-
 resource "azurerm_dns_cname_record" "quickvm" {
   name                = "quickvm"
   zone_name           = "${var.parent_zone}"
