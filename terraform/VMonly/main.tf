@@ -5,26 +5,21 @@ resource "azurerm_resource_group" "rg" {
   name     = "${var.resource_group}-rg"
   location = "${var.location}"
   tags     = "${var.tags}"
-
 }
 
 # -----------------------------------------------------------------------------
-# vnet configuration
+# vnet configuration import.
+# we use the remote state of the quickVnet config to get our values
+# see https://stackoverflow.com/questions/48650260/layered-deployments-with-terraform
 # -----------------------------------------------------------------------------
-resource "azurerm_virtual_network" "vnet" {
-  name                = "${var.virtual_network_name}-vnet"
-  location            = "${var.location}"
-  address_space       = ["${var.address_space}"]
-  resource_group_name = "${azurerm_resource_group.rg.name}"
-  tags                = "${var.tags}"
-
-}
-
-resource "azurerm_subnet" "subnet" {
-  name                 = "${var.rg_prefix}-subnet"
-  resource_group_name  = "${azurerm_resource_group.rg.name}"
-  virtual_network_name = "${azurerm_virtual_network.vnet.name}"
-  address_prefix       = "${var.subnet_prefix}"
+data "terraform_remote_state" "quickVnet" {
+  backend = "azurerm"
+  config {
+    resource_group_name  = "terraformstate-rg"
+    storage_account_name = "terraformstatesg"
+    container_name       = "tfstate"
+    key                  = "abconf.terraform.quickVnetState"
+  }
 }
 
 # -----------------------------------------------------------------------------
@@ -46,7 +41,7 @@ resource "azurerm_network_security_rule" "ssh_access" {
   priority                    = 200
   source_address_prefix       = "*"
   source_port_range           = "*"
-  destination_address_prefixes  = ["${var.subnet_prefix}"]
+  destination_address_prefixes  = ["${data.terraform_remote_state.quickVnet.subnet_prefix}"]
   destination_port_range      = "22"
   protocol                    = "TCP"
 }
@@ -60,7 +55,7 @@ resource "azurerm_network_security_rule" "www_access" {
   priority                    = 210
   source_address_prefix       = "*"
   source_port_range           = "*"
-  destination_address_prefixes  = ["${var.subnet_prefix}"]
+  #destination_address_prefixes  = ["${data.terraform_remote_state.quickVnet.subnet_prefix}"]
   destination_port_ranges      = ["80", "443"]
   protocol                    = "TCP"
 }
@@ -76,12 +71,11 @@ resource "azurerm_network_interface" "nic" {
 
   ip_configuration {
     name                          = "${var.rg_prefix}-ipconfig"
-    subnet_id                     = "${azurerm_subnet.subnet.id}"
+    subnet_id                     = "${data.terraform_remote_state.quickVnet.subnet_id}"
     private_ip_address_allocation = "Dynamic"
     public_ip_address_id          = "${azurerm_public_ip.pip.id}"
   }
   tags                = "${var.tags}"
-
 }
 
 resource "azurerm_public_ip" "pip" {
@@ -91,7 +85,6 @@ resource "azurerm_public_ip" "pip" {
   public_ip_address_allocation = "Dynamic"
   domain_name_label            = "${var.dns_name}"
   tags                         = "${var.tags}"
-
 }
 
 resource "azurerm_managed_disk" "datadisk" {
@@ -168,16 +161,15 @@ resource "azurerm_virtual_machine" "vm" {
   #     "/usr/bin/sudo DEBIAN_FRONTEND=noninteractive /usr/bin/apt-get -y auto-remove",
   #   ]
   # }
-
 }
 
 # -----------------------------------------------------------------------------
 # Linux vm DNS configuration
 # -----------------------------------------------------------------------------
-resource "azurerm_dns_cname_record" "quickvm" {
-  name                = "quickvm"
+resource "azurerm_dns_cname_record" "vmonly" {
+  name                = "vmonly"
   zone_name           = "${var.parent_zone}"
-  resource_group_name   = "rgDNSZones"
+  resource_group_name = "rgDNSZones"
   ttl                 = 300
   record              = "${azurerm_public_ip.pip.fqdn}"
 }
@@ -185,7 +177,6 @@ resource "azurerm_dns_cname_record" "quickvm" {
 # -----------------------------------------------------------------------------
 # Data items.
 # -----------------------------------------------------------------------------
-
 data "azurerm_public_ip" "pip" {
   name                = "${azurerm_public_ip.pip.name}"
   resource_group_name = "${azurerm_resource_group.rg.name}"

@@ -1,6 +1,6 @@
 variable "rg_prefix" {
   description = "The shortened abbreviation to represent your resource group that will go on the front of some resources."
-  default     = "quickVM"
+  default     = "VMonly"
 }
 
 variable "location" {
@@ -11,32 +11,17 @@ variable "location" {
 
 variable "resource_group" {
   description = "The name of the resource group in which to create the virtual network."
-  default = "quickVM"
+  default = "VMonly"
 }
 
 variable "hostname" {
   description = "VM name referenced also in storage-related names."
-  default     = "quickVM"
+  default     = "VMonly"
 }
 
 variable "dns_name" {
   description = " Label for the Domain Name. Will be used to make up the FQDN. If a domain name label is specified, an A DNS record is created for the public IP in the Microsoft Azure DNS system."
-  default     = "quickvm"
-}
-
-variable "virtual_network_name" {
-  description = "The name for the virtual network."
-  default     = "quickVM"
-}
-
-variable "address_space" {
-  description = "The address space that is used by the virtual network. You can supply more than one address space. Changing this forces a new resource to be created."
-  default     = "192.168.0.0/16"
-}
-
-variable "subnet_prefix" {
-  description = "The address prefix to use for the subnet."
-  default     = "192.168.254.0/24"
+  default     = "vmonly"
 }
 
 variable "storage_account_tier" {
@@ -84,7 +69,7 @@ variable "tags" {
   default = {
     environment = "dev"
     zone = "lab"
-    project = "quickVM"
+    project = "VMonly"
   }
 }
 
