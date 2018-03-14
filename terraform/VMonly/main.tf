@@ -5,19 +5,13 @@ resource "azurerm_resource_group" "rg" {
   name     = "${var.resource_group}-rg"
   location = "${var.location}"
   tags     = "${var.tags}"
-
 }
 
 # -----------------------------------------------------------------------------
 # vnet configuration import.
-# we use the remote state of the quickVnet to get our values
+# we use the remote state of the quickVnet config to get our values
 # see https://stackoverflow.com/questions/48650260/layered-deployments-with-terraform
 # -----------------------------------------------------------------------------
-
-# data.terraform_remote_state.quickVnet: Refreshing state...
-# azurerm_subnet.quickVNET-subnet: Refreshing state... (ID: /subscriptions/a98be5a5-256c-4966-a4ef-...uickVNET-vnet/subnets/quickVNET-subnet)
-# azurerm_virtual_network.quickVNET-vnet: Refreshing state... (ID: /subscriptions/a98be5a5-256c-4966-a4ef-...Network/virtualNetworks/quickVNET-vnet)
-
 data "terraform_remote_state" "quickVnet" {
   backend = "azurerm"
   config {
@@ -27,29 +21,6 @@ data "terraform_remote_state" "quickVnet" {
     key                  = "abconf.terraform.quickVnetState"
   }
 }
-
-# resource "azurerm_virtual_network" "quickVNET-vnet" {
-#   # #name                 = "${data.terraform_remote_state.quickVnet.azurerm_virtual_network.name}"
-#   # resource_group_name  = "${data.terraform_remote_state.quickVnet.azurerm_resource_group.name}"
-#   # location             = "${data.terraform_remote_state.quickVnet.azurerm_virtual_network.location}"
-#   # address_space        = ["${data.terraform_remote_state.quickVnet.azurerm_virtual_network.address_space}"]
-#   # tags                 = "${data.terraform_remote_state.quickVnet.azurerm_virtual_network.tags}"
-#
-#   name                 = "${data.terraform_remote_state.quickVnet.azurerm_virtual_network.name}"
-#   resource_group_name  = "${data.terraform_remote_state.quickVnet.azurerm_resource_group.name}"
-#   location             = "${data.terraform_remote_state.quickVnet.azurerm_virtual_network.location}"
-#   address_space        = ["${data.terraform_remote_state.quickVnet.azurerm_virtual_network.address_space}"]
-#   tags                 = "${data.terraform_remote_state.quickVnet.azurerm_virtual_network.tags}"
-#
-#
-# }
-#
-# resource "azurerm_subnet" "quickVNET-subnet" {
-#   name                 = "${data.terraform_remote_state.quickVnet.azurerm_subnet.name}"
-#   resource_group_name  = "${data.terraform_remote_state.quickVnet.azurerm_subnet.resource_group_name}"
-#   virtual_network_name = "${data.terraform_remote_state.quickVnet.azurerm_subnet.virtual_network_name}"
-#   address_prefix       = "${data.terraform_remote_state.quickVnet.azurerm_subnet.address_prefix}"
-# }
 
 # -----------------------------------------------------------------------------
 # nsg configuration
@@ -70,8 +41,7 @@ resource "azurerm_network_security_rule" "ssh_access" {
   priority                    = 200
   source_address_prefix       = "*"
   source_port_range           = "*"
-  #destination_address_prefixes  = ["${var.subnet_prefix}"]
-  destination_address_prefixes  = ["$azurerm_subnet.quickVNET-subnet"]
+  destination_address_prefixes  = ["${data.terraform_remote_state.quickVnet.subnet_prefix}"]
   destination_port_range      = "22"
   protocol                    = "TCP"
 }
@@ -85,8 +55,7 @@ resource "azurerm_network_security_rule" "www_access" {
   priority                    = 210
   source_address_prefix       = "*"
   source_port_range           = "*"
-  #destination_address_prefixes  = ["${var.subnet_prefix}"]
-  destination_address_prefixes  = ["$azurerm_subnet.quickVNET-subnet"]
+  #destination_address_prefixes  = ["${data.terraform_remote_state.quickVnet.subnet_prefix}"]
   destination_port_ranges      = ["80", "443"]
   protocol                    = "TCP"
 }
@@ -102,13 +71,11 @@ resource "azurerm_network_interface" "nic" {
 
   ip_configuration {
     name                          = "${var.rg_prefix}-ipconfig"
-    #subnet_id                     = "${azurerm_subnet.subnet.id}"
-    subnet_id                     = "$azurerm_subnet.quickVNET-subnet"
+    subnet_id                     = "${data.terraform_remote_state.quickVnet.subnet_id}"
     private_ip_address_allocation = "Dynamic"
     public_ip_address_id          = "${azurerm_public_ip.pip.id}"
   }
   tags                = "${var.tags}"
-
 }
 
 resource "azurerm_public_ip" "pip" {
@@ -118,7 +85,6 @@ resource "azurerm_public_ip" "pip" {
   public_ip_address_allocation = "Dynamic"
   domain_name_label            = "${var.dns_name}"
   tags                         = "${var.tags}"
-
 }
 
 resource "azurerm_managed_disk" "datadisk" {
@@ -195,21 +161,15 @@ resource "azurerm_virtual_machine" "vm" {
   #     "/usr/bin/sudo DEBIAN_FRONTEND=noninteractive /usr/bin/apt-get -y auto-remove",
   #   ]
   # }
-
 }
 
 # -----------------------------------------------------------------------------
 # Linux vm DNS configuration
 # -----------------------------------------------------------------------------
-
-# output "vm_fqdn" {
-#   value = "${azurerm_public_ip.pip.fqdn}"
-# }
-
-resource "azurerm_dns_cname_record" "quickvm" {
-  name                = "quickvm"
+resource "azurerm_dns_cname_record" "vmonly" {
+  name                = "vmonly"
   zone_name           = "${var.parent_zone}"
-  resource_group_name   = "rgDNSZones"
+  resource_group_name = "rgDNSZones"
   ttl                 = 300
   record              = "${azurerm_public_ip.pip.fqdn}"
 }
@@ -217,7 +177,6 @@ resource "azurerm_dns_cname_record" "quickvm" {
 # -----------------------------------------------------------------------------
 # Data items.
 # -----------------------------------------------------------------------------
-
 data "azurerm_public_ip" "pip" {
   name                = "${azurerm_public_ip.pip.name}"
   resource_group_name = "${azurerm_resource_group.rg.name}"

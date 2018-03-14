@@ -1,6 +1,6 @@
 variable "rg_prefix" {
   description = "The shortened abbreviation to represent your resource group that will go on the front of some resources."
-  default     = "quickVNET"
+  default     = "rg"
 }
 
 variable "location" {
@@ -13,16 +13,6 @@ variable "resource_group" {
   description = "The name of the resource group in which to create the virtual network."
   default = "quickVNET"
 }
-
-# variable "hostname" {
-#   description = "VM name referenced also in storage-related names."
-#   default     = "quickVM"
-# }
-#
-# variable "dns_name" {
-#   description = " Label for the Domain Name. Will be used to make up the FQDN. If a domain name label is specified, an A DNS record is created for the public IP in the Microsoft Azure DNS system."
-#   default     = "quickvm"
-# }
 
 variable "virtual_network_name" {
   description = "The name for the virtual network."

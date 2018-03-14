@@ -24,21 +24,6 @@ variable "dns_name" {
   default     = "vmonly"
 }
 
-# variable "virtual_network_name" {
-#   description = "The name for the virtual network."
-#   default     = "quickVM"
-# }
-#
-# variable "address_space" {
-#   description = "The address space that is used by the virtual network. You can supply more than one address space. Changing this forces a new resource to be created."
-#   default     = "192.168.0.0/16"
-# }
-#
-# variable "subnet_prefix" {
-#   description = "The address prefix to use for the subnet."
-#   default     = "192.168.254.0/24"
-# }
-
 variable "storage_account_tier" {
   description = "Defines the Tier of storage account to be created. Valid options are Standard and Premium."
   default     = "Standard"
@@ -84,7 +69,7 @@ variable "tags" {
   default = {
     environment = "dev"
     zone = "lab"
-    project = "quickVM"
+    project = "VMonly"
   }
 }
 
