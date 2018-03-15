@@ -53,14 +53,19 @@ alias nasquith="ssh -i ~/.ssh/id_rsa festivus@nasquith.mtcolah.bestfamily.id.au 
 alias homegw="ssh -i ~/.ssh/id_rsa admin@homegw.mtcolah.bestfamily.id.au -p 2222"
 # Personal - AWS shortcuts
 #
+# Personal - Azure shortcuts
+#
 # Personal - Alibaba shortcuts
 alias alijump="ssh -i ~/.ssh/alibabacloud abest@jump.cloud01.bestfamily.id.au"
 #
 # Diaxion - Azure shortcuts
 alias azjira="ssh -i ~/.ssh/azure-ubuntu-default ubuntu@diapapp01.australiasoutheast.cloudapp.azure.com"
 alias azconfluence="ssh -i ~/.ssh/azure-ubuntu-default ubuntu@diapapp02.australiasoutheast.cloudapp.azure.com"
-# Diaxion - AWS shortcuts # none Currently
+# Diaxion - AWS shortcuts
+# none Currently
 # Diaxion - GWF shortcuts
 # alias gnrlabproxy="ssh -i ~/.ssh/id_rsa ubuntu@gnrlabproxy.gwf.com.au"
 # alias gnrlabubuntu="ssh -i ~/.ssh/id_rsa ubuntu@10.1.154.40"
 # alias ic1smokeping="ssh -i ~/.ssh/id_rsa gwf@smokeping.gwf.com.au"
+# Diaxion - Uniting shortcuts
+alias unitingMtrVdi="sudo /usr/local/sbin/mtr vdsk0014.UnitingCare.local"
