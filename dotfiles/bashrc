@@ -44,6 +44,7 @@ else
   cd ~ || exit
   git clone https://github.com/andrew-best-diaxion/andrews-configs.git
   ~/andrews-configs/dotfiles/makesymlinks.sh
+  source ~/.bash_profile
 fi
 
 
