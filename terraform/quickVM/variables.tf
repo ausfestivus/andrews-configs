@@ -51,7 +51,7 @@ variable "storage_replication_type" {
 
 variable "vm_size" {
   description = "Specifies the size of the virtual machine."
-  default     = "Standard_A0"
+  default     = "Standard_B2s"
 }
 
 variable "image_publisher" {
