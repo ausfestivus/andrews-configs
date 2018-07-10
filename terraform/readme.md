@@ -15,7 +15,7 @@ The rules and configuration details are maintained in https://confluence.diaxion
 
 **TODO**
 
-See https://github.com/andrew-best-diaxion/andrews-configs/issues and filter by the "terraform" tag.
+See https://github.com/ausfestivus/andrews-configs/issues and filter by the "terraform" tag.
 
 **Description of components**
 

@@ -32,6 +32,35 @@ resource "azurerm_network_security_rule" "ssh_access" {
   resource_group_name         = "${azurerm_resource_group.rg.name}"
 }
 
+resource "azurerm_network_security_rule" "www_access" {
+  name                        = "www-access-rule"
+  network_security_group_name = "${azurerm_network_security_group.jumpbox.name}"
+  direction                   = "Inbound"
+  access                      = "Allow"
+  priority                    = 201
+  source_address_prefix       = "*"
+  source_port_range           = "*"
+  destination_address_prefix  = "${azurerm_network_interface.jumpbox.private_ip_address}"
+  destination_port_range      = "80"
+  protocol                    = "TCP"
+  resource_group_name         = "${azurerm_resource_group.rg.name}"
+}
+
+# resource "azurerm_network_security_rule" "admin_access" {
+#   name                        = "remote-admin-access-rule"
+#   network_security_group_name = "${azurerm_network_security_group.unitingAzureFoundation-nsg.name}"
+#   resource_group_name         = "${azurerm_resource_group.rg.name}"
+#   direction                   = "Inbound"
+#   access                      = "Allow"
+#   priority                    = 200
+#   #source_address_prefixes     = ["${var.unitingPublicIPrange}"]
+#   source_address_prefix       = "*"
+#   source_port_range           = "*"
+#   destination_address_prefixes  = ["${var.subnet_prefixes}"]
+#   destination_port_ranges      = ["22", "3389"]
+#   protocol                    = "TCP"
+# }
+
 resource "azurerm_network_interface" "jumpbox" {
   name                      = "jumpbox-nic"
   location                  = "${var.location}"
