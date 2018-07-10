@@ -15,7 +15,7 @@ To start using these on one of my machines:
 - ensure you have the CLI github token (see password safe)
 - be the user on the target machine (not root)
 - be in the user homedir (not root)
-- run `git clone https://github.com/andrew-best-diaxion/andrews-configs.git`
+- run `git clone https://github.com/ausfestivus/andrews-configs.git`
 - enter username and access token
 - run `~/andrews-configs/dotfiles/makesymlinks.sh`
 
@@ -29,16 +29,16 @@ To update from master:
 - run `~/andrews-configs/dotfiles/makesymlinks.sh`
 
 ## TODO
-See https://github.com/andrew-best-diaxion/andrews-configs/issues
+See https://github.com/ausfestivus/andrews-configs/issues
 
 ## Contributing
 Currently closed.
 
 ## History
-See: https://github.com/andrew-best-diaxion/andrews-configs/commits/master
+See: https://github.com/ausfestivus/andrews-configs/commits/master
 
 ## Credits
-See: https://github.com/andrew-best-diaxion/andrews-configs/graphs/contributors
+See: https://github.com/ausfestivus/andrews-configs/graphs/contributors
 
 Sites which had contributing examples:
 
