@@ -2,6 +2,10 @@ output "hostname" {
   value = "${var.hostname}"
 }
 
+output "vm_csp_pip" {
+  value = "${data.azurerm_public_ip.pip.ip_address}"
+}
+
 output "vm_csp_fqdn" {
   value = "${azurerm_public_ip.pip.fqdn}"
 }
