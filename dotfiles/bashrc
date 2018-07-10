@@ -59,6 +59,7 @@ alias alijump="ssh -i ~/.ssh/alibabacloud abest@jump.cloud01.bestfamily.id.au"
 # Diaxion - Azure shortcuts
 alias azjira="ssh -i ~/.ssh/azure-ubuntu-default ubuntu@diapapp01.australiasoutheast.cloudapp.azure.com"
 alias azconfluence="ssh -i ~/.ssh/azure-ubuntu-default ubuntu@diapapp02.australiasoutheast.cloudapp.azure.com"
+alias azterraform="ssh -i ~/.ssh/azure-ubuntu-default ubuntu@terraform.diaxion.com"
 # Diaxion - AWS shortcuts # none Currently
 # Diaxion - GWF shortcuts
 # alias gnrlabproxy="ssh -i ~/.ssh/id_rsa ubuntu@gnrlabproxy.gwf.com.au"

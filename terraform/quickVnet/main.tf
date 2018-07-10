@@ -42,24 +42,6 @@ resource "azurerm_virtual_network" "vnet" {
 }
 
 # -----------------------------------------------------------------------------
-# place the outputs of interest into the remote state
-# -----------------------------------------------------------------------------
-# vnet name output
-output "vnet_name" {
-  value = "${azurerm_virtual_network.vnet.name}"
-}
-
-# vnet location output
-output "vnet_location" {
-  value = "${azurerm_virtual_network.vnet.location}"
-}
-
-# vnet address space output
-output "vnet_address_space" {
-  value = "${azurerm_virtual_network.vnet.address_space}"
-}
-
-# -----------------------------------------------------------------------------
 # subnet configuration
 # -----------------------------------------------------------------------------
 resource "azurerm_subnet" "subnet" {
@@ -67,19 +49,4 @@ resource "azurerm_subnet" "subnet" {
   resource_group_name  = "${azurerm_resource_group.rg.name}"
   virtual_network_name = "${azurerm_virtual_network.vnet.name}"
   address_prefix       = "${var.subnet_prefix}"
-}
-
-# -----------------------------------------------------------------------------
-# place the outputs of interest into the remote state
-# -----------------------------------------------------------------------------
-output "subnet_id" {
-  value = "${azurerm_subnet.subnet.id}"
-}
-
-output "subnet_name" {
-  value = "${azurerm_subnet.subnet.name}"
-}
-
-output "subnet_prefix" {
-  value = "${azurerm_subnet.subnet.address_prefix}"
 }

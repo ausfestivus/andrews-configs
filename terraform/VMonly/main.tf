@@ -11,6 +11,7 @@ resource "azurerm_resource_group" "rg" {
 # vnet configuration import.
 # we use the remote state of the quickVnet config to get our values
 # see https://stackoverflow.com/questions/48650260/layered-deployments-with-terraform
+# and https://blog.gruntwork.io/how-to-manage-terraform-state-28f5697e68fa
 # -----------------------------------------------------------------------------
 data "terraform_remote_state" "quickVnet" {
   backend = "azurerm"

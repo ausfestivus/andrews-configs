@@ -5,13 +5,14 @@ variable "rg_prefix" {
 
 variable "location" {
   description = "The location/region where the core network will be created. The full list of Azure regions can be found at https://azure.microsoft.com/regions"
+
   #default = "australiaeast"
   default = "westus2"
 }
 
 variable "resource_group" {
   description = "The name of the resource group in which to create the virtual network."
-  default = "VMonly"
+  default     = "VMonly"
 }
 
 variable "hostname" {
@@ -20,7 +21,7 @@ variable "hostname" {
 }
 
 variable "dns_name" {
-  description = " Label for the Domain Name. Will be used to make up the FQDN. If a domain name label is specified, an A DNS record is created for the public IP in the Microsoft Azure DNS system."
+  description = "Label for the Domain Name. Will be used to make up the FQDN. If a domain name label is specified, an A DNS record is created for the public IP in the Microsoft Azure DNS system."
   default     = "vmonly"
 }
 
@@ -66,10 +67,11 @@ variable "parent_zone" {
 
 variable "tags" {
   type = "map"
+
   default = {
     environment = "dev"
-    zone = "lab"
-    project = "VMonly"
+    zone        = "lab"
+    project     = "VMonly"
   }
 }
 
