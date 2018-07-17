@@ -3,13 +3,12 @@
 # -----------------------------------------------------------------------------
 
 resource "azurerm_public_ip" "jumpvm" {
-  name                         = "${var.jumpvm_hostname}-ip"
+  name                         = "${var.jumpvm_hostname}-pip"
   location                     = "${var.location}"
   resource_group_name          = "${azurerm_resource_group.rg.name}"
-  public_ip_address_allocation = "static"
-
-  #domain_name_label            = "${azurerm_resource_group.rg.name}-ssh"
-  tags = "${var.tags}"
+  public_ip_address_allocation = "Dynamic"
+  domain_name_label            = "${var.jumpvm_hostname}"
+  tags                         = "${var.tags}"
 }
 
 resource "azurerm_network_security_group" "jumpvm" {
@@ -42,9 +41,11 @@ resource "azurerm_network_security_rule" "https_access" {
   source_address_prefix       = "*"
   source_port_range           = "*"
   destination_address_prefix  = "${azurerm_network_interface.jumpvm.private_ip_address}"
-  destination_port_range      = "443"
-  protocol                    = "TCP"
-  resource_group_name         = "${azurerm_resource_group.rg.name}"
+
+  #destination_port_range      = "443"
+  destination_port_ranges = ["80", "443"]
+  protocol                = "TCP"
+  resource_group_name     = "${azurerm_resource_group.rg.name}"
 }
 
 resource "azurerm_network_interface" "jumpvm" {
@@ -101,4 +102,12 @@ resource "azurerm_virtual_machine" "jumpvm" {
   }
 
   tags = "${var.tags}"
+}
+
+resource "azurerm_dns_cname_record" "jumpvm" {
+  name                = "${var.jumpvm_hostname}"
+  zone_name           = "${var.dns_zone_name}"
+  resource_group_name = "${var.dns_zone_rg}"
+  ttl                 = 300
+  record              = "${azurerm_public_ip.jumpvm.fqdn}"
 }
