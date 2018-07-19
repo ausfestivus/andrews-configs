@@ -10,6 +10,9 @@ variable "prefix" {
 variable "location" {
   description = "The location/region where the core network will be created. The full list of Azure regions can be found at https://azure.microsoft.com/regions"
   default     = "westus2"
+
+  #default     = "australiaeast"
+  #default     = "australiasoutheast"
 }
 
 variable "tags" {

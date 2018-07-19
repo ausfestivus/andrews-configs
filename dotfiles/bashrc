@@ -44,6 +44,7 @@ else
   cd ~ || exit
   git clone https://github.com/ausfestivus/andrews-configs.git
   ~/andrews-configs/dotfiles/makesymlinks.sh
+  # shellcheck source=/dev/null
   source ~/.bash_profile
 fi
 
@@ -58,7 +59,7 @@ alias homegw="ssh -i ~/.ssh/id_rsa admin@homegw.mtcolah.bestfamily.id.au -p 2222
 alias azjump="ssh ubuntu@jump00.cloud00.bestfamily.id.au"
 #
 # Personal - Alibaba shortcuts
-alias alijump="ssh -i ~/.ssh/alibabacloud abest@jump.cloud01.bestfamily.id.au"
+#alias alijump="ssh -i ~/.ssh/alibabacloud abest@jump.cloud01.bestfamily.id.au"
 #
 # Diaxion - Azure shortcuts
 alias azjira="ssh -i ~/.ssh/azure-ubuntu-default ubuntu@diapapp01.australiasoutheast.cloudapp.azure.com"
