@@ -9,9 +9,9 @@ variable "prefix" {
 
 variable "location" {
   description = "The location/region where the core network will be created. The full list of Azure regions can be found at https://azure.microsoft.com/regions"
-  default     = "westus2"
+  default     = "australiaeast"
 
-  #default     = "australiaeast"
+  #default     = "westus2"
   #default     = "australiasoutheast"
 }
 
@@ -50,6 +50,14 @@ variable "subnet_names" {
 }
 
 # -----------------------------------------------------------------------------
+# vpn configuration
+# -----------------------------------------------------------------------------
+variable "vpn_psk" {
+  description = ""
+  default     = "qTbTynGbnDR3M"
+}
+
+# -----------------------------------------------------------------------------
 # security group configuration
 # -----------------------------------------------------------------------------
 variable "sg_name" {
@@ -66,8 +74,11 @@ variable "admin_username" {
 }
 
 variable "vm_size" {
+  # `az vm list-sizes -l australiaeast` to output a list of available SKUs on a Subscription
   description = "Specifies the size of the virtual machine."
-  default     = "Standard_DS1_v2"
+  default     = "Standard_B2s"
+
+  #default     = "Standard_DS1_v2"
 }
 
 variable "image_publisher" {
