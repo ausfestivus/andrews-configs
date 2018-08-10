@@ -13,13 +13,14 @@ resource "azurerm_resource_group" "rg" {
 # see https://stackoverflow.com/questions/48650260/layered-deployments-with-terraform
 # and https://blog.gruntwork.io/how-to-manage-terraform-state-28f5697e68fa
 # -----------------------------------------------------------------------------
-data "terraform_remote_state" "quickVnet" {
+data "terraform_remote_state" "azureControlPlaneHomeVnet" {
   backend = "azurerm"
+
   config {
     resource_group_name  = "terraformstate-rg"
     storage_account_name = "terraformstatesg"
     container_name       = "tfstate"
-    key                  = "abconf.terraform.quickVnetState"
+    key                  = "abconf.terraform.azureControlPlaneHome"
   }
 }
 
@@ -34,31 +35,31 @@ resource "azurerm_network_security_group" "nsg" {
 }
 
 resource "azurerm_network_security_rule" "ssh_access" {
-  name                        = "ssh-access-rule"
-  network_security_group_name = "${azurerm_network_security_group.nsg.name}"
-  resource_group_name         = "${azurerm_resource_group.rg.name}"
-  direction                   = "Inbound"
-  access                      = "Allow"
-  priority                    = 200
-  source_address_prefix       = "*"
-  source_port_range           = "*"
-  destination_address_prefixes  = ["${data.terraform_remote_state.quickVnet.subnet_prefix}"]
-  destination_port_range      = "22"
-  protocol                    = "TCP"
+  name                         = "ssh-access-rule"
+  network_security_group_name  = "${azurerm_network_security_group.nsg.name}"
+  resource_group_name          = "${azurerm_resource_group.rg.name}"
+  direction                    = "Inbound"
+  access                       = "Allow"
+  priority                     = 200
+  source_address_prefix        = "*"
+  source_port_range            = "*"
+  destination_address_prefixes = ["${data.terraform_remote_state.azureControlPlaneHomeVnet.subnet_prefix}"]
+  destination_port_range       = "22"
+  protocol                     = "TCP"
 }
 
 resource "azurerm_network_security_rule" "www_access" {
-  name                        = "www-access-rule"
-  network_security_group_name = "${azurerm_network_security_group.nsg.name}"
-  resource_group_name         = "${azurerm_resource_group.rg.name}"
-  direction                   = "Inbound"
-  access                      = "Allow"
-  priority                    = 210
-  source_address_prefix       = "*"
-  source_port_range           = "*"
-  destination_address_prefixes  = ["${data.terraform_remote_state.quickVnet.subnet_prefix}"]
+  name                         = "www-access-rule"
+  network_security_group_name  = "${azurerm_network_security_group.nsg.name}"
+  resource_group_name          = "${azurerm_resource_group.rg.name}"
+  direction                    = "Inbound"
+  access                       = "Allow"
+  priority                     = 210
+  source_address_prefix        = "*"
+  source_port_range            = "*"
+  destination_address_prefixes = ["${data.terraform_remote_state.azureControlPlaneHomeVnet.subnet_prefix}"]
   destination_port_ranges      = ["80", "443"]
-  protocol                    = "TCP"
+  protocol                     = "TCP"
 }
 
 # -----------------------------------------------------------------------------
@@ -72,11 +73,12 @@ resource "azurerm_network_interface" "nic" {
 
   ip_configuration {
     name                          = "${var.rg_prefix}-ipconfig"
-    subnet_id                     = "${data.terraform_remote_state.quickVnet.subnet_id}"
+    subnet_id                     = "${data.terraform_remote_state.azureControlPlaneHomeVnet.subnet_id}"
     private_ip_address_allocation = "Dynamic"
     public_ip_address_id          = "${azurerm_public_ip.pip.id}"
   }
-  tags                = "${var.tags}"
+
+  tags = "${var.tags}"
 }
 
 resource "azurerm_public_ip" "pip" {
@@ -99,13 +101,13 @@ resource "azurerm_managed_disk" "datadisk" {
 }
 
 resource "azurerm_virtual_machine" "vm" {
-  name                  = "${var.rg_prefix}-vm"
-  location              = "${var.location}"
-  resource_group_name   = "${azurerm_resource_group.rg.name}"
-  vm_size               = "${var.vm_size}"
-  network_interface_ids = ["${azurerm_network_interface.nic.id}"]
+  name                          = "${var.rg_prefix}-vm"
+  location                      = "${var.location}"
+  resource_group_name           = "${azurerm_resource_group.rg.name}"
+  vm_size                       = "${var.vm_size}"
+  network_interface_ids         = ["${azurerm_network_interface.nic.id}"]
   delete_os_disk_on_termination = true
-  tags                  = "${var.tags}"
+  tags                          = "${var.tags}"
 
   storage_image_reference {
     publisher = "${var.image_publisher}"
@@ -115,10 +117,10 @@ resource "azurerm_virtual_machine" "vm" {
   }
 
   storage_os_disk {
-    name                          = "${var.hostname}-osdisk"
-    managed_disk_type             = "Standard_LRS"
-    caching                       = "ReadWrite"
-    create_option                 = "FromImage"
+    name              = "${var.hostname}-osdisk"
+    managed_disk_type = "Standard_LRS"
+    caching           = "ReadWrite"
+    create_option     = "FromImage"
   }
 
   storage_data_disk {
@@ -134,11 +136,12 @@ resource "azurerm_virtual_machine" "vm" {
     computer_name  = "${var.hostname}"
     admin_username = "${var.admin_username}"
     admin_password = "${var.ubuntu_user_secret}"
-    custom_data    =  "${file("init.conf")}"
+    custom_data    = "${file("init.conf")}"
   }
 
   os_profile_linux_config {
     disable_password_authentication = true
+
     ssh_keys {
       path     = "/home/ubuntu/.ssh/authorized_keys"
       key_data = "${var.ssh_key_public}"
@@ -146,12 +149,9 @@ resource "azurerm_virtual_machine" "vm" {
   }
 
   connection {
-    type     = "ssh"
-    host        = "${azurerm_public_ip.pip.fqdn}"
-    user        = "ubuntu"
-    # By default, terraform will use a running ssh-agent on a *nix host.
-    # on windows it uses pagent.
-    #agent       = false
+    type = "ssh"
+    host = "${azurerm_public_ip.pip.fqdn}"
+    user = "ubuntu"
   }
 
   # provisioner "remote-exec" {
