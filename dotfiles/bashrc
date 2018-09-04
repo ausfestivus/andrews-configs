@@ -53,6 +53,7 @@ fi
 # nasquith
 alias nasquith="ssh -i ~/.ssh/id_rsa festivus@nasquith.mtcolah.bestfamily.id.au -p 2223"
 alias homegw="ssh -i ~/.ssh/id_rsa admin@homegw.mtcolah.bestfamily.id.au -p 2222"
+alias raspberrypi"ssh -i ~/.ssh/id_rsa pi@raspberrypi.mtcolah.bestfamily.id.au"
 # Personal - AWS shortcuts
 #
 # Personal - Azure shortcuts
