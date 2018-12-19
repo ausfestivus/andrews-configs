@@ -136,13 +136,21 @@ function mainScript() {
 
     # Log in to the Mac App Store if using mas
     if [[ $INSTALLCOMMAND =~ mas ]]; then
-      mas signout
-      input "Please enter your Mac app store username: "
-      read macStoreUsername
-      input "Please enter your Mac app store password: "
-      read -s macStorePass
-      echo ""
-      mas signin $macStoreUsername "$macStorePass"
+      ##
+      # mas signin with MFA doesnt work.
+      # ISSUE https://github.com/ausfestivus/andrews-configs/issues/1
+      #mas signin $macStoreUsername "$macStorePass"
+      # WORKAROUND from https://github.com/mas-cli/mas/issues/164
+      # sign into the app store manually before running this.
+      # mas signout
+      # input "Please enter your Mac app store username: "
+      # read macStoreUsername
+      # input "Please enter your Mac app store password: "
+      # read -s macStorePass
+      # echo ""
+      ##
+      open -a /Applications/App\ Store.app
+
     fi
 
     list=($(to_install "${RECIPES[*]}" "$(${LISTINSTALLED})"))
@@ -627,7 +635,7 @@ function mainScript() {
   #installDropbox
   installHomebrewPackages
   installCaskApps
-  #installAppStoreApps # Disabled till issue #1 is resolved.
+  installAppStoreApps
   #installDevApps
   #installRuby
   #installRubyGems
