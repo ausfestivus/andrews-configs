@@ -325,11 +325,12 @@ function mainScript() {
       #github-desktop # 20180201 - doesnt appear to exist in brew any more.
       google-chrome
       #microsoft-office # 20180201 - not installing by default any more
+      microsoft-teams
       skype
       # skype-for-business
-      #terraform
-      #things
+      slack
       vlc
+      vmware-fusion
       xmind
     )
 
