@@ -71,9 +71,9 @@ function mainScript() {
 
     brew cleanup
 
-    if brew cask > /dev/null; then
-      brew cask cleanup
-    fi
+    # if brew cask > /dev/null; then
+    #   brew cask cleanup
+    # fi
   }
   function doInstall () {
     # Reads a list of items, checks if they are installed, installs
@@ -428,7 +428,7 @@ function mainScript() {
       # id3tool
       # imagemagick
       # jpegoptim
-      # jq
+      jq
       # lesspipe
       # libksba
       # libtool
@@ -631,7 +631,7 @@ function mainScript() {
   installHomebrew
   checkTaps
   brewCleanup
-  #installXcode
+  installXcode
   #installDropbox
   installHomebrewPackages
   installCaskApps
