@@ -347,16 +347,13 @@ function mainScript() {
       405399194 # Kindle (1.21.1)
       1278508951 # Trello (2.10.2)
       425424353 # The Unarchiver (3.11.3)
-      715768417 # Microsoft Remote Desktop (8.0.27325)
       1189824719 # Jayson (1.8.1)
       823766827 # OneDrive (17.3.7131)
-      904280696 # Things3 (3.3)
       1091189122 # Bear (1.4.1)
-      803453959 # Slack (3.0.5)
       443823264 # FindSpace (1.0.0)
       557168941 # Tweetbot (2.5.4)
       568020055 # Scapple (1.30.1)
-      494803304 # WiFi Explorer
+      585829637 # Todoist (7.1.1)
     )
     doInstall
 
@@ -619,7 +616,7 @@ function mainScript() {
   brewCleanup
   installHomebrewPackages
   installCaskApps
-  installXcode
+  #installXcode
   #installDropbox
   installAppStoreApps
   #installDevApps
