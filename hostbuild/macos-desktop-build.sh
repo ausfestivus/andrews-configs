@@ -17,6 +17,12 @@ function mainScript() {
 
   # Helper Functions
   # ###################
+  function preflights() {
+    # Preflight checks that must be successful for the script to run further. Checks are:
+    # 1. Signed into to iCloud
+    # 2. Signed into App Store
+    true
+  }
   function isAppInstalled() {
     # Feed this function either the bundleID (com.apple.finder) or a name (finder) for a native
     # mac app and it will determine whether it is installed or not
@@ -594,6 +600,11 @@ function mainScript() {
       mackup restore
     fi
   }
+  function installPip3() {
+    # Function for install of some required pip3 packages.
+    # See #25
+    true
+  }
   function installSundry() {
     # a catch all function to act as a hook for other sundry
     # installations and configurations.
@@ -724,10 +735,10 @@ tmpDir="/tmp/${scriptName}.$RANDOM.$RANDOM.$RANDOM.$$"
 # Log is only used when the '-l' flag is set.
 #
 # To never save a logfile change variable to '/dev/null'
-# Save to Desktop use: $HOME/Desktop/${scriptBasename}.log
-# Save to standard user log location use: $HOME/Library/Logs/${scriptBasename}.log
+# Save to Desktop use: $HOME/Desktop/${scriptName}.log
+# Save to standard user log location use: $HOME/Library/Logs/${scriptName}.log
 # -----------------------------------
-logFile="${HOME}/Library/Logs/${scriptBasename}.log"
+logFile="${HOME}/Library/Logs/${scriptName}.log"
 
 
 # Options and Usage
