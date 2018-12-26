@@ -19,12 +19,12 @@ domagic ()
   echo -n "Creating $olddir for backup of any existing dotfiles in ~"
   mkdir -p $olddir
   echo "...done"
-  
+
   # change to the dotfiles directory
   echo -n "Changing to the $dir directory"
   cd $dir || exit
   echo "...done"
-  
+
   # move any existing dotfiles in homedir to dotfiles_old directory, then create symlinks
   for file in $files; do
     echo "Working on $file"
@@ -59,12 +59,12 @@ domagic ()
 }
 
 # first up, which OS are we on?
-if [ $OSTYPE == "darwin16" ] || [ $OSTYPE = "darwin17" ]; then
+if [[ "$OSTYPE" =~ ^darwin ]]; then
   # macOS specific commands go here
   files=$Macfiles
   echo "Hi, im a Mac and my name is '$HOSTNAME'"
   domagic #snap our dotfiles into place
-  elif [ $OSTYPE == "linux-gnu" ]; then
+elif [[ "$OSTYPE" == linux-gnu ]]; then
   # Linux specifc commands go here
   files=$Linuxfiles
   echo "Hi, im a Linux machine and my name is '$HOSTNAME'"

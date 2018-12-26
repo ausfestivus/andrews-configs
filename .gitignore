@@ -9,3 +9,6 @@ scratch*.md
 .terraform*
 *.tfstate
 *.tfstate.backup
+
+# ignore mac related special files
+.DS_Store
