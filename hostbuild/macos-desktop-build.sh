@@ -17,6 +17,12 @@ function mainScript() {
 
   # Helper Functions
   # ###################
+  function preflights() {
+    # Preflight checks that must be successful for the script to run further. Checks are:
+    # 1. Signed into to iCloud
+    # 2. Signed into App Store
+    true
+  }
   function isAppInstalled() {
     # Feed this function either the bundleID (com.apple.finder) or a name (finder) for a native
     # mac app and it will determine whether it is installed or not
@@ -71,9 +77,9 @@ function mainScript() {
 
     brew cleanup
 
-    if brew cask > /dev/null; then
-      brew cask cleanup
-    fi
+    # if brew cask > /dev/null; then
+    #   brew cask cleanup
+    # fi
   }
   function doInstall () {
     # Reads a list of items, checks if they are installed, installs
@@ -136,13 +142,21 @@ function mainScript() {
 
     # Log in to the Mac App Store if using mas
     if [[ $INSTALLCOMMAND =~ mas ]]; then
-      mas signout
-      input "Please enter your Mac app store username: "
-      read macStoreUsername
-      input "Please enter your Mac app store password: "
-      read -s macStorePass
-      echo ""
-      mas signin $macStoreUsername "$macStorePass"
+      ##
+      # mas signin with MFA doesnt work.
+      # ISSUE https://github.com/ausfestivus/andrews-configs/issues/1
+      #mas signin $macStoreUsername "$macStorePass"
+      # WORKAROUND from https://github.com/mas-cli/mas/issues/164
+      # sign into the app store manually before running this.
+      # mas signout
+      # input "Please enter your Mac app store username: "
+      # read macStoreUsername
+      # input "Please enter your Mac app store password: "
+      # read -s macStorePass
+      # echo ""
+      ##
+      open -a /Applications/App\ Store.app
+
     fi
 
     list=($(to_install "${RECIPES[*]}" "$(${LISTINSTALLED})"))
@@ -208,7 +222,6 @@ function mainScript() {
     fi
     success "Command Line Tools installed"
   }
-
   function installHomebrew () {
     # Check for Homebrew
     notice "Checking for Homebrew..."
@@ -230,7 +243,6 @@ function mainScript() {
     fi
     success "Homebrew installed"
   }
-
   function checkTaps() {
 
     verbose "Confirming we have required Homebrew taps"
@@ -241,7 +253,6 @@ function mainScript() {
       installHomebrewTaps
     fi
   }
-
   function installHomebrewTaps() {
     #brew tap homebrew/dupes
     #brew tap homebrew/versions
@@ -249,7 +260,6 @@ function mainScript() {
     #brew tap caskroom/fonts
     #brew tap caskroom/versions # Subversion client for MacOS
   }
-
   function installXcode() {
     notice "Checking for XCode..."
     if ! isAppInstalled 'xcode' &>/dev/null; then
@@ -269,7 +279,6 @@ function mainScript() {
     fi
     success "XCode installed"
   }
-
   function installDropbox () {
     # This function checks for Dropbox being installed.
     # If it is not found, we install it and its prerequisites
@@ -290,7 +299,6 @@ function mainScript() {
 
     success "Dropbox installed"
   }
-
   function installffmpeg () {
 
     notice "Checking for ffmpeg...."
@@ -301,7 +309,6 @@ function mainScript() {
 
     success "Done ffmpeg installed"
   }
-
   function installCaskApps() {
     unset LISTINSTALLED INSTALLCOMMAND RECIPES
 
@@ -317,11 +324,12 @@ function mainScript() {
       #github-desktop # 20180201 - doesnt appear to exist in brew any more.
       google-chrome
       #microsoft-office # 20180201 - not installing by default any more
+      microsoft-teams
       skype
       # skype-for-business
-      #terraform
-      #things
+      slack
       vlc
+      vmware-fusion
       xmind
     )
 
@@ -332,7 +340,6 @@ function mainScript() {
 
     success "Done installing cask apps"
   }
-
   function installAppStoreApps() {
     unset LISTINSTALLED INSTALLCOMMAND RECIPES
 
@@ -346,22 +353,18 @@ function mainScript() {
       405399194 # Kindle (1.21.1)
       1278508951 # Trello (2.10.2)
       425424353 # The Unarchiver (3.11.3)
-      715768417 # Microsoft Remote Desktop (8.0.27325)
       1189824719 # Jayson (1.8.1)
       823766827 # OneDrive (17.3.7131)
-      904280696 # Things3 (3.3)
       1091189122 # Bear (1.4.1)
-      803453959 # Slack (3.0.5)
       443823264 # FindSpace (1.0.0)
       557168941 # Tweetbot (2.5.4)
       568020055 # Scapple (1.30.1)
-      494803304 # WiFi Explorer
+      585829637 # Todoist (7.1.1)
     )
     doInstall
 
     success "Done installing app store apps"
   }
-
   function installDevApps() {
     unset LISTINSTALLED INSTALLCOMMAND RECIPES
 
@@ -392,7 +395,6 @@ function mainScript() {
 
     success "Done installing dev apps"
   }
-
   function installHomebrewPackages() {
     unset LISTINSTALLED INSTALLCOMMAND RECIPES
 
@@ -420,7 +422,7 @@ function mainScript() {
       # id3tool
       # imagemagick
       # jpegoptim
-      # jq
+      jq
       # lesspipe
       # libksba
       # libtool
@@ -459,7 +461,6 @@ function mainScript() {
 
     success "Done installing Homebrew packages"
   }
-
   function installRuby() {
 
     notice "Checking for RVM (Ruby Version Manager)..."
@@ -481,7 +482,6 @@ function mainScript() {
 
     success "RVM and Ruby are installed"
   }
-
   function installRubyGems() {
     unset LISTINSTALLED INSTALLCOMMAND RECIPES
 
@@ -513,7 +513,6 @@ function mainScript() {
 
     success "Done installing Ruby Gems"
   }
-
   function configureSSH() {
     notice "Configuring SSH"
 
@@ -539,7 +538,6 @@ function mainScript() {
 
     success "SSH Configured"
   }
-
   function configureMackup() {
     notice "Running mackup config..."
 
@@ -602,7 +600,11 @@ function mainScript() {
       mackup restore
     fi
   }
-
+  function installPip3() {
+    # Function for install of some required pip3 packages.
+    # See #25
+    true
+  }
   function installSundry() {
     # a catch all function to act as a hook for other sundry
     # installations and configurations.
@@ -623,11 +625,11 @@ function mainScript() {
   installHomebrew
   checkTaps
   brewCleanup
-  #installXcode
-  #installDropbox
   installHomebrewPackages
   installCaskApps
-  #installAppStoreApps # Disabled till issue #1 is resolved.
+  #installXcode
+  #installDropbox
+  installAppStoreApps
   #installDevApps
   #installRuby
   #installRubyGems
@@ -733,10 +735,10 @@ tmpDir="/tmp/${scriptName}.$RANDOM.$RANDOM.$RANDOM.$$"
 # Log is only used when the '-l' flag is set.
 #
 # To never save a logfile change variable to '/dev/null'
-# Save to Desktop use: $HOME/Desktop/${scriptBasename}.log
-# Save to standard user log location use: $HOME/Library/Logs/${scriptBasename}.log
+# Save to Desktop use: $HOME/Desktop/${scriptName}.log
+# Save to standard user log location use: $HOME/Library/Logs/${scriptName}.log
 # -----------------------------------
-logFile="${HOME}/Library/Logs/${scriptBasename}.log"
+logFile="${HOME}/Library/Logs/${scriptName}.log"
 
 
 # Options and Usage

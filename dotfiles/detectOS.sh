@@ -4,7 +4,7 @@
 # This script detects which OS were running in.
 ############################
 
-if  [ $OSTYPE == "darwin16" ] || [ $OSTYPE == "darwin17" ]
+if  [[ "$OSTYPE" =~ ^darwin ]]
 # macOS specific commands go here
 then
   echo "Hi, im a Mac and my name is '$HOSTNAME'"
