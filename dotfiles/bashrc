@@ -23,7 +23,7 @@ fi
 # do the needful things on any *nix
 # Enable AWS CLI completion if AWS CLI is installed
 if [[ -e `which aws_completer` ]]; then
-  complete -C "which aws_completer" aws
+  complete -C `which aws_completer` aws
 fi
 
 # Configure our AWS profile switching shortcut if we have it installed
