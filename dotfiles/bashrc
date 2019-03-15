@@ -23,7 +23,7 @@ fi
 # do the needful things on any *nix
 # Enable AWS CLI completion if AWS CLI is installed
 if [[ -e `which aws_completer` ]]; then
-  complete -C "which aws_completer" aws
+  complete -C `which aws_completer` aws
 fi
 
 # Configure our AWS profile switching shortcut if we have it installed
@@ -51,22 +51,19 @@ fi
 
 
 # Personal - home shortcuts
-alias homegw="ssh -i ~/.ssh/id_rsa admin@homegw.mtcolah.bestfamily.id.au -p 2222"
-alias homegw-root="ssh -i ~/.ssh/id_rsa root@homegw.mtcolah.bestfamily.id.au -p 2222"
-alias nasquith="ssh -i ~/.ssh/id_rsa festivus@nasquith.mtcolah.bestfamily.id.au -p 2223"
-alias raspberrypi="ssh -i ~/.ssh/id_rsa pi@raspberrypi.mtcolah.bestfamily.id.au -p 2224"
+alias homegw="ssh -v -i ~/.ssh/id_rsa admin@homegw.mtcolah.bestfamily.id.au -p 2222"
+alias homegw-root="ssh -v -i ~/.ssh/id_rsa root@homegw.mtcolah.bestfamily.id.au -p 2222"
+alias nasquith="ssh -v -i ~/.ssh/id_rsa festivus@nasquith.mtcolah.bestfamily.id.au -p 2223"
+alias raspberrypi="ssh -v -i ~/.ssh/id_rsa pi@raspberrypi.mtcolah.bestfamily.id.au -p 2224"
 # Personal - AWS shortcuts
 #
 # Personal - Azure shortcuts
-alias azjump="ssh ubuntu@jump00.cloud00.bestfamily.id.au"
-#
-# Personal - Alibaba shortcuts
-#alias alijump="ssh -i ~/.ssh/alibabacloud abest@jump.cloud01.bestfamily.id.au"
+alias azjump="ssh -v ubuntu@jump00.cloud00.bestfamily.id.au"
 #
 # Diaxion - Azure shortcuts
-alias azjira="ssh -i ~/.ssh/azure-ubuntu-default ubuntu@diapapp04.australiasoutheast.cloudapp.azure.com"
-alias azconfluence="ssh -i ~/.ssh/azure-ubuntu-default ubuntu@diapapp05.australiasoutheast.cloudapp.azure.com"
-alias azterraform="ssh -i ~/.ssh/azure-ubuntu-default ubuntu@terraform.diaxion.com"
+alias azjira="ssh -v -i ~/.ssh/azure-ubuntu-default ubuntu@diapapp04.australiasoutheast.cloudapp.azure.com"
+alias azconfluence="ssh -v -i ~/.ssh/azure-ubuntu-default ubuntu@diapapp05.australiasoutheast.cloudapp.azure.com"
+alias azterraform="ssh -v -i ~/.ssh/azure-ubuntu-default ubuntu@terraform.diaxion.com"
 #
 # Diaxion - AWS shortcuts # none Currently
 #
