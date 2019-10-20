@@ -26,7 +26,7 @@ function detectOS {
     echo "Hi, im a Mac and my name is '$HOSTNAME'"
     #
     echo "Building basic Mac OS environment."
-    curl -sL https://raw.githubusercontent.com/ausfestivus/andrews-configs/master/hostbuild/macos-desktop-build.sh | bash
+    curl -sL https://raw.githubusercontent.com/ausfestivus/andrews-configs/develop/hostbuild/macos-desktop-build.sh | bash
     #
     echo "Installing shell customisations."
     cd ~ && git clone https://github.com/ausfestivus/andrews-configs.git
@@ -36,7 +36,7 @@ function detectOS {
     # Linux specific commands go here
     then
     echo "Hi, im a Linux machine and my name is '$HOSTNAME'"
-    curl -sL https://raw.githubusercontent.com/ausfestivus/andrews-configs/master/hostbuild/cloud-jumphost-build.sh | bash
+    curl -sL https://raw.githubusercontent.com/ausfestivus/andrews-configs/develop/hostbuild/cloud-jumphost-build.sh | bash
     exit 1
     # TODO
     # detect a Windows machine?

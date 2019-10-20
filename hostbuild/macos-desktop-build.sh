@@ -54,7 +54,7 @@ function mainScript() {
     if is_confirmed; then
       brew doctor
       brew update
-      brew upgrade --all
+      brew upgrade
     fi
   }
   function brewCleanup () {
