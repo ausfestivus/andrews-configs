@@ -19,9 +19,7 @@ To start using these on one of my machines:
 
 * be the user on the target machine (not root)
 * be in the user homedir (not root)
-* run `curl -sL https://github.com/ausfestivus/andrews-configs/blob/develop/install.sh`
-* run `git clone https://github.com/ausfestivus/andrews-configs.git`
-* enter username and access token
+* run `curl -sL https://raw.githubusercontent.com/ausfestivus/andrews-configs/master/install.sh`
 * run `~/andrews-configs/dotfiles/makesymlinks.sh`
 
 To compare your local clone with the master branch:
