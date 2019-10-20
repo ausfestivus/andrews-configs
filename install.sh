@@ -1,0 +1,65 @@
+#!/usr/bin/env bash
+
+#
+# This script does the following:
+#
+# * sets up the necessary directories
+# * pulls the necessary files
+# * runs the build
+
+function doTheNeedful { # Our main.
+  # invoke verbose usage when set
+  if ${verbose}; then v="-v" ; fi
+  
+  # Work ot what OS we're running only
+  detectOS
+
+}
+
+## SET SCRIPTNAME VARIABLE ##
+scriptName=$(basename "$0")
+
+function detectOS {
+    if  [[ "$OSTYPE" =~ ^darwin ]]
+    # macOS specific commands go here
+    then
+    echo "Hi, im a Mac and my name is '$HOSTNAME'"
+    curl -sL https://raw.githubusercontent.com/ausfestivus/andrews-configs/master/hostbuild/macos-desktop-build.sh | bash
+    elif [ $OSTYPE == "linux-gnu" ]
+    # Linux specific commands go here
+    then
+    echo "Hi, im a Linux machine and my name is '$HOSTNAME'"
+    curl -sL https://raw.githubusercontent.com/ausfestivus/andrews-configs/master/hostbuild/cloud-jumphost-build.sh | bash
+    exit 1
+    # TODO
+    # detect a Windows machine?
+    # Couldnt work it out. Die.
+    else
+    echo "No idea what you ran me on."
+    exit 1
+    fi
+}
+
+function safeExit() {
+  # safeExit
+  # -----------------------------------
+  # Non destructive exit for when script exits naturally.
+  # Usage: Add this function at the end of every script.
+  # -----------------------------------
+  # Delete temp files, if any
+  if [ -d "${tmpDir}" ] ; then
+    rm -r "${tmpDir}"
+  fi
+  trap - INT TERM EXIT
+  exit
+}
+
+# Bash will remember & return the highest exitcode in a chain of pipes.
+# This way you can catch the error in case mysqldump fails in `mysqldump |gzip`, for example.
+set -o pipefail
+
+# Run your script
+doTheNeedful
+
+# Exit cleanly
+safeExit

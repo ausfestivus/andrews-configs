@@ -2,7 +2,7 @@
 
 # ##################################################
 #
-version="1.0.1"              # Sets version variable
+version="1.0.2"              # Sets version variable
 #
 # HISTORY:
 #
@@ -612,6 +612,11 @@ function mainScript() {
     info "  Installing homebrew-notifier..."
     [[ -f "${HOME}/.homebrew-notifier/notifier.sh" ]] || curl -fsS https://raw.githubusercontent.com/grantovich/homebrew-notifier/master/install.sh | sh
     success "  homebrew-notifier installed."
+    # check for existence of ~/bin
+    info "  Creating ${HOME}/bin if it doesnt exist..."
+    [[ -d "${HOME}/bin"]] || mkdir "${HOME}/bin"]]
+    success "  ${HOME}/bin created."
+    # install some of our scripts
   }
   # ###################
   # Run the script

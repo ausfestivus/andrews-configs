@@ -1,43 +1,54 @@
 # andrews-configs
+
 Bringing all my dotfiles other assorted config files into github.
-Based on http://blog.smalleycreative.com/tutorials/using-git-and-github-to-manage-your-dotfiles/
+
+Based on [http://blog.smalleycreative.com/tutorials/using-git-and-github-to-manage-your-dotfiles/](http://blog.smalleycreative.com/tutorials/using-git-and-github-to-manage-your-dotfiles/)
+
 See **Credits** below for additional contributed code.
 
 ## Introduction
+
 This repo contains my configurations for various parts of unixy systems. it includes:
+
 * dotfiles - a method of quickly building my terminal environments on macOS and Linux machines.
 * hostbuild - scripts which allow me to quickly setup a macOS or Linux host quickly.
-* terraform - terraform used to build my CSP services.
-* ~~ssh - my ssh configurations~~
 
 ## Installation
+
 To start using these on one of my machines:
-- ensure you have the CLI github token (see password safe)
-- be the user on the target machine (not root)
-- be in the user homedir (not root)
-- run `git clone https://github.com/ausfestivus/andrews-configs.git`
-- enter username and access token
-- run `~/andrews-configs/dotfiles/makesymlinks.sh`
+
+* be the user on the target machine (not root)
+* be in the user homedir (not root)
+* run `curl -sL https://github.com/ausfestivus/andrews-configs/blob/develop/install.sh`
+* run `git clone https://github.com/ausfestivus/andrews-configs.git`
+* enter username and access token
+* run `~/andrews-configs/dotfiles/makesymlinks.sh`
 
 To compare your local clone with the master branch:
-- be in the ~/andrews-configs dir `cd ~andrews-configs`
-- run `git status`
+
+* be in the ~/andrews-configs dir `cd ~andrews-configs`
+* run `git status`
 
 To update from master:
-- be in the ~/andrews-configs dir `cd ~andrews-configs`
-- run `git pull origin master`
-- run `~/andrews-configs/dotfiles/makesymlinks.sh`
+
+* be in the ~/andrews-configs dir `cd ~andrews-configs`
+* run `git pull origin master`
+* run `~/andrews-configs/dotfiles/makesymlinks.sh`
 
 ## TODO
+
 See https://github.com/ausfestivus/andrews-configs/issues
 
 ## Contributing
+
 Currently closed.
 
 ## History
+
 See: https://github.com/ausfestivus/andrews-configs/commits/master
 
 ## Credits
+
 See: https://github.com/ausfestivus/andrews-configs/graphs/contributors
 
 Sites which had contributing examples:
