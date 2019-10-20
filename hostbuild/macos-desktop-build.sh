@@ -614,7 +614,7 @@ function mainScript() {
     success "  homebrew-notifier installed."
     # check for existence of ~/bin
     info "  Creating ${HOME}/bin if it doesnt exist..."
-    [[ -d "${HOME}/bin"]] || mkdir "${HOME}/bin"]]
+    [[ -d "${HOME}/bin" ]] || mkdir "${HOME}/bin"
     success "  ${HOME}/bin created."
     # install some of our scripts
   }
