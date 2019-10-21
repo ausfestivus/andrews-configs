@@ -309,7 +309,55 @@ function mainScript() {
 
     success "Done ffmpeg installed"
   }
-  function installCaskApps() {
+  function installCaskApps() { # Install apps regardless of physical or virtual machine.
+    unset LISTINSTALLED INSTALLCOMMAND RECIPES
+
+    notice "Checking for casks to install..."
+
+    checkTaps
+
+    LISTINSTALLED="brew cask list"
+    INSTALLCOMMAND="brew cask install --appdir=/Applications"
+    # The recipe list we use depends on if we're in a VM or not.
+    # eg we dont want to install a virtualisation engine if we're in VMware Fusion.
+    # Start by pulling and storing the manufacturer info
+    isVMware=""
+    isVMware=$(ioreg -l | grep -e "\"manufacturer\" \= <\"VMware, Inc.\">" 2>/dev/null)
+    # Choose which recipe list to use if were a VM or not.
+    if [[ $isVMware == *VMware* ]]; then
+      # we are a VM
+      notice "Virtual Machine Detected. Not installing virtualisation engines..."
+      RECIPES=(
+        1password
+        github
+        google-chrome
+        microsoft-teams
+        slack
+        vlc
+        xmind
+    else
+      # we are NOT a VM.
+      notice "Virtual Machine Detected. Not installing virtualisation engines..."
+      RECIPES=(
+        1password
+        github
+        google-chrome
+        microsoft-teams
+        slack
+        vlc
+        xmind
+        vmware-fusion
+    fi
+
+    )
+    # for item in "${RECIPES[@]}"; do
+    #   info "$item"
+    # done
+    doInstall
+
+    success "Done installing cask apps"
+  }
+  function installCaskAppsWhenPhysical() { # Install apps when on a physical machine.
     unset LISTINSTALLED INSTALLCOMMAND RECIPES
 
     notice "Checking for casks to install..."
@@ -319,18 +367,7 @@ function mainScript() {
     LISTINSTALLED="brew cask list"
     INSTALLCOMMAND="brew cask install --appdir=/Applications"
     RECIPES=(
-      1password
-      atom
-      #github-desktop # 20180201 - doesnt appear to exist in brew any more.
-      google-chrome
-      #microsoft-office # 20180201 - not installing by default any more
-      microsoft-teams
-      skype
-      # skype-for-business
-      slack
-      vlc
       vmware-fusion
-      xmind
     )
 
     # for item in "${RECIPES[@]}"; do
@@ -640,6 +677,7 @@ function mainScript() {
   #installRubyGems
   #configureSSH
   #configureMackup
+  #installPip3
   installSundry
 }
 
