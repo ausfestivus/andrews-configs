@@ -17,10 +17,10 @@ This repo contains my configurations for various parts of unixy systems. it incl
 
 To start using these on one of my machines:
 
+* open `Terminal`
 * be the user on the target machine (not root)
 * be in the user homedir (not root)
 * run `curl -sL https://raw.githubusercontent.com/ausfestivus/andrews-configs/develop/install.sh | bash`
-* run `~/andrews-configs/dotfiles/makesymlinks.sh`
 
 To compare your local clone with the master branch:
 

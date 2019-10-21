@@ -335,9 +335,10 @@ function mainScript() {
         slack
         vlc
         xmind
+      )
     else
       # we are NOT a VM.
-      notice "Virtual Machine Detected. Not installing virtualisation engines..."
+      notice "Physical Machine Detected. Installing virtualisation engines..."
       RECIPES=(
         1password
         github
@@ -347,28 +348,8 @@ function mainScript() {
         vlc
         xmind
         vmware-fusion
+      ) 
     fi
-
-    )
-    # for item in "${RECIPES[@]}"; do
-    #   info "$item"
-    # done
-    doInstall
-
-    success "Done installing cask apps"
-  }
-  function installCaskAppsWhenPhysical() { # Install apps when on a physical machine.
-    unset LISTINSTALLED INSTALLCOMMAND RECIPES
-
-    notice "Checking for casks to install..."
-
-    checkTaps
-
-    LISTINSTALLED="brew cask list"
-    INSTALLCOMMAND="brew cask install --appdir=/Applications"
-    RECIPES=(
-      vmware-fusion
-    )
 
     # for item in "${RECIPES[@]}"; do
     #   info "$item"
