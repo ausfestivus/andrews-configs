@@ -341,7 +341,6 @@ function mainScript() {
         google-chrome
         microsoft-teams
         slack
-        tflint
         vlc
       )
     else
@@ -353,7 +352,6 @@ function mainScript() {
         google-chrome
         microsoft-teams
         slack
-        tflint
         vlc
         vmware-fusion
       ) 
@@ -659,6 +657,7 @@ function mainScript() {
   echo "administrator authorisation required. Please enter your administrator password."
   sudo -v
 
+  isAppStoreSignedIn
   installCommandLineTools
   installHomebrew
   #checkTaps
@@ -667,7 +666,6 @@ function mainScript() {
   installCaskApps
   #installXcode
   #installDropbox
-  isAppStoreSignedIn
   installAppStoreApps
   #installDevApps
   #installRuby
