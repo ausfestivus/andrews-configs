@@ -26,7 +26,11 @@ function detectOS {
     echo "Hi, im a Mac and my name is '$HOSTNAME'"
     #
     echo "Building Mac OS environment."
-    bash -c "$(wget -O - https://raw.githubusercontent.com/ausfestivus/andrews-configs/develop/hostbuild/macos-desktop-build.sh)"
+    P=$( mktemp )
+    wget -O - https://raw.githubusercontent.com/ausfestivus/andrews-configs/develop/hostbuild/macos-desktop-build.sh > $P &
+    bash $P
+    rm $P
+    #bash -c "$(wget -O - https://raw.githubusercontent.com/ausfestivus/andrews-configs/develop/hostbuild/macos-desktop-build.sh)"
     #curl -sL https://raw.githubusercontent.com/ausfestivus/andrews-configs/develop/hostbuild/macos-desktop-build.sh | bash
     #
     echo "Installing shell customisations."
