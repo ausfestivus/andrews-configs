@@ -28,7 +28,6 @@ function mainScript() {
     # We need to throw a reminder here too make sure the user has signed in.
     notice "You must be signed into the App Store for this script to work..."
     notice "We will pause here while you go and do the sign in thing..."
-    notice "Press any key to continue once you have signed in to the App Store..."
     read -n 1 -s -r -p "Press any key to continue"
   }
   function isAppInstalled() {
@@ -342,6 +341,7 @@ function mainScript() {
         google-chrome
         microsoft-teams
         slack
+        tflint
         vlc
       )
     else
@@ -353,6 +353,7 @@ function mainScript() {
         google-chrome
         microsoft-teams
         slack
+        tflint
         vlc
         vmware-fusion
       ) 
