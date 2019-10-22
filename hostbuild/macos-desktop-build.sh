@@ -934,7 +934,7 @@ set -o pipefail
 # Make sure we are signed into the app store
 notice "You must be signed into the App Store for this script to work..."
 notice "We will pause here while you go and do the sign in thing..."
-read -s -r -p "Press enter to continue"
+read -n1 -s -r -p"Press enter to continue"
 
 # Run your script
 mainScript
