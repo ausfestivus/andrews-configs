@@ -650,11 +650,6 @@ function mainScript() {
   echo "administrator authorisation required. Please enter your administrator password."
   sudo -v
 
-  # Make sure we are signed into the app store
-  notice "You must be signed into the App Store for this script to work..."
-  notice "We will pause here while you go and do the sign in thing..."
-  read -n 1 -s -r -p "Press any key to continue"
-
   installCommandLineTools
   installHomebrew
   #checkTaps
@@ -935,6 +930,11 @@ if ${strict}; then set -o nounset ; fi
 # Bash will remember & return the highest exitcode in a chain of pipes.
 # This way you can catch the error in case mysqldump fails in `mysqldump |gzip`, for example.
 set -o pipefail
+
+# Make sure we are signed into the app store
+notice "You must be signed into the App Store for this script to work..."
+notice "We will pause here while you go and do the sign in thing..."
+read -n 1 -s -r -p "Press any key to continue"
 
 # Run your script
 mainScript
