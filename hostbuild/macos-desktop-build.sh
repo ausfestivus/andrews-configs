@@ -239,7 +239,7 @@ function mainScript() {
       fi
       # Install Homebrew
       ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-      installHomebrewTaps
+      #installHomebrewTaps
     fi
     success "Homebrew installed"
   }
