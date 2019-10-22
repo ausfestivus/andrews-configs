@@ -256,7 +256,7 @@ function mainScript() {
   function installHomebrewTaps() {
     #brew tap homebrew/dupes
     #brew tap homebrew/versions
-    brew tap caskroom/cask
+    brew tap homebrew/cask-cask   
     #brew tap caskroom/fonts
     #brew tap caskroom/versions # Subversion client for MacOS
   }
@@ -618,10 +618,20 @@ function mainScript() {
       mackup restore
     fi
   }
+  function instappPip3packages() {
+    
+  }
+
   function installPip3() {
     # Function for install of some required pip3 packages.
     # See #25
-    true
+    # Check for pip3
+    notice "Checking for pip3..."
+    if [ ! "$(type -P pip3)" ]; then
+      # pip3 binary not found.
+      notice "pip3 is not installed. Installing it..."
+    fi
+
   }
   function installSundry() {
     # a catch all function to act as a hook for other sundry
