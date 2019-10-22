@@ -265,7 +265,7 @@ function mainScript() {
     if ! isAppInstalled 'xcode' &>/dev/null; then
       unset LISTINSTALLED INSTALLCOMMAND RECIPES
 
-      checkTaps
+      #checkTaps
 
       LISTINSTALLED="mas list"
       INSTALLCOMMAND="mas install"
@@ -284,7 +284,7 @@ function mainScript() {
     # If it is not found, we install it and its prerequisites
     notice "Checking for Dropbox..."
 
-    checkTaps
+    #checkTaps
 
     if ! isAppInstalled 'Dropbox' &>/dev/null; then
       unset LISTINSTALLED INSTALLCOMMAND RECIPES
@@ -314,7 +314,7 @@ function mainScript() {
 
     notice "Checking for casks to install..."
 
-    checkTaps
+    #checkTaps
 
     LISTINSTALLED="brew cask list"
     INSTALLCOMMAND="brew cask install --appdir=/Applications"
@@ -363,7 +363,7 @@ function mainScript() {
 
     notice "Checking for App Store apps to install..."
 
-    checkTaps
+    #checkTaps
 
     LISTINSTALLED="mas list"
     INSTALLCOMMAND="mas install"
@@ -388,7 +388,7 @@ function mainScript() {
 
     notice "Checking for dev apps to install"
 
-    checkTaps
+    #checkTaps
 
     LISTINSTALLED="brew cask list"
     INSTALLCOMMAND="brew cask install --appdir=/Applications"
@@ -418,7 +418,7 @@ function mainScript() {
 
     notice "Checking for Homebrew packages to install..."
 
-    checkTaps
+    #checkTaps
 
     LISTINSTALLED="brew list"
     INSTALLCOMMAND="brew install"
