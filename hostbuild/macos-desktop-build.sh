@@ -654,7 +654,7 @@ function mainScript() {
 
   installCommandLineTools
   installHomebrew
-  checkTaps
+  #checkTaps
   brewCleanup
   installHomebrewPackages
   installCaskApps
