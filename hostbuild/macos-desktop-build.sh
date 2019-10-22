@@ -23,13 +23,6 @@ function mainScript() {
     # 2. Signed into App Store
     true
   }
-  function isAppStoreSignedIn() {
-    # This script will fail if you are not signed into the app store.
-    # We need to throw a reminder here too make sure the user has signed in.
-    notice "You must be signed into the App Store for this script to work..."
-    notice "We will pause here while you go and do the sign in thing..."
-    read -n 1 -s -r -p "Press any key to continue"
-  }
   function isAppInstalled() {
     # Feed this function either the bundleID (com.apple.finder) or a name (finder) for a native
     # mac app and it will determine whether it is installed or not
@@ -657,7 +650,11 @@ function mainScript() {
   echo "administrator authorisation required. Please enter your administrator password."
   sudo -v
 
-  isAppStoreSignedIn
+  # Make sure we are signed into the app store
+  notice "You must be signed into the App Store for this script to work..."
+  notice "We will pause here while you go and do the sign in thing..."
+  read -n 1 -s -r -p "Press any key to continue"
+
   installCommandLineTools
   installHomebrew
   #checkTaps
