@@ -618,7 +618,8 @@ function mainScript() {
       mackup restore
     fi
   }
-  function instappPip3packages() { 
+  function instappPip3packages() {
+    true
   }
   # function installPip3() {
   #   # Function for install of some required pip3 packages.
