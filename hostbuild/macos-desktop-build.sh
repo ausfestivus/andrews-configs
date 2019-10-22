@@ -23,6 +23,14 @@ function mainScript() {
     # 2. Signed into App Store
     true
   }
+  function isAppStoreSignedIn() {
+    # This script will fail if you are not signed into the app store.
+    # We need to throw a reminder here too make sure the user has signed in.
+    notice "You must be signed into the App Store for this script to work..."
+    notice "We will pause here while you go and do the sign in thing..."
+    notice "Press any key to continue once you have signed in to the App Store..."
+    read -n 1 -s -r -p "Press any key to continue"
+  }
   function isAppInstalled() {
     # Feed this function either the bundleID (com.apple.finder) or a name (finder) for a native
     # mac app and it will determine whether it is installed or not
@@ -142,6 +150,7 @@ function mainScript() {
 
     # Log in to the Mac App Store if using mas
     if [[ $INSTALLCOMMAND =~ mas ]]; then
+      # TODO Must work out a way to open app store and prompt for sign in.
       ##
       # mas signin with MFA doesnt work.
       # ISSUE https://github.com/ausfestivus/andrews-configs/issues/1
@@ -371,7 +380,6 @@ function mainScript() {
       405399194 # Kindle (1.21.1)
       1278508951 # Trello (2.10.2)
       425424353 # The Unarchiver (3.11.3)
-      1189824719 # Jayson (1.8.1)
       823766827 # OneDrive (17.3.7131)
       1091189122 # Bear (1.4.1)
       443823264 # FindSpace (1.0.0)
@@ -618,9 +626,9 @@ function mainScript() {
       mackup restore
     fi
   }
-  # function instappPip3packages() {
-  #   true
-  # }
+  function instappPip3packages() {
+    true
+  }
   # function installPip3() {
   #   # Function for install of some required pip3 packages.
   #   # See #25
@@ -660,6 +668,7 @@ function mainScript() {
   installCaskApps
   #installXcode
   #installDropbox
+  isAppStoreSignedIn
   installAppStoreApps
   #installDevApps
   #installRuby
