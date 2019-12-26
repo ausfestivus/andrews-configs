@@ -705,7 +705,7 @@ function safeExit() {
   # Usage: Add this function at the end of every script.
   # -----------------------------------
   # Delete temp files, if any
-  if [ -d "${tmpDir}" ] ; then
+  if [[ -d "${tmpDir}" ]] ; then
     rm -r "${tmpDir}"
   fi
   trap - INT TERM EXIT
