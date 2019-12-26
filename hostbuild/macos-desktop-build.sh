@@ -19,10 +19,11 @@ function mainScript() {
   # ###################
   function preflights() {
     # Preflight checks that must be successful for the script to run further. Checks are:
-    # 1. Signed into to iCloud
+    # 1. Signed into iCloud
     # 2. Signed into App Store
     true
   }
+
   function isAppInstalled() {
     # Feed this function either the bundleID (com.apple.finder) or a name (finder) for a native
     # mac app and it will determine whether it is installed or not
@@ -347,6 +348,7 @@ function mainScript() {
         slack
         vlc
         vmware-fusion
+        pycharm
       ) 
     fi
 
@@ -368,14 +370,13 @@ function mainScript() {
     INSTALLCOMMAND="mas install"
     RECIPES=(
       405399194 # Kindle (1.21.1)
-      1278508951 # Trello (2.10.2)
       425424353 # The Unarchiver (3.11.3)
-      823766827 # OneDrive (17.3.7131)
       1091189122 # Bear (1.4.1)
       443823264 # FindSpace (1.0.0)
-      557168941 # Tweetbot (2.5.4)
+      1384080005 # Tweetbot (3.3.3)
       568020055 # Scapple (1.30.1)
       585829637 # Todoist (7.1.1)
+      1081413713 # GIF Brewery 3 (3.9.5)
     )
     doInstall
 
@@ -450,7 +451,7 @@ function mainScript() {
       # multimarkdown
       nmap
       # node
-      # openssl
+      openssl
       # optipng
       # pkg-config
       # pngcrush
@@ -472,6 +473,13 @@ function mainScript() {
       aws-shell
       azure-cli
       python3
+      postgresql
+      pre-commit
+      terraform
+      terraform-docs
+      terraform@0.11
+      tflint
+      wget
     )
     doInstall
 

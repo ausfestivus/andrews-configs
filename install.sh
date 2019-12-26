@@ -13,7 +13,6 @@ function doTheNeedful { # Our main.
   
   # Work ot what OS we're running only
   detectOS
-
 }
 
 ## SET SCRIPTNAME VARIABLE ##
@@ -26,10 +25,6 @@ function detectOS {
     echo "Hi, im a Mac and my name is '$HOSTNAME'"
     #
     echo "Building Mac OS environment."
-    P=$( mktemp )
-    wget -O - https://raw.githubusercontent.com/ausfestivus/andrews-configs/develop/hostbuild/macos-desktop-build.sh > $P &
-    bash $P
-    rm $P
     #bash -c "$(wget -O - https://raw.githubusercontent.com/ausfestivus/andrews-configs/develop/hostbuild/macos-desktop-build.sh)"
     #curl -sL https://raw.githubusercontent.com/ausfestivus/andrews-configs/develop/hostbuild/macos-desktop-build.sh | bash
     #

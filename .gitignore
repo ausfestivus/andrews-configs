@@ -12,3 +12,5 @@ scratch*.md
 
 # ignore mac related special files
 .DS_Store
+
+.idea
