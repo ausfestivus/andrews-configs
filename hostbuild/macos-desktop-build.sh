@@ -766,7 +766,7 @@ args=()
 # Set Temp Directory
 # -----------------------------------
 # Create temp directory with three random numbers and the process ID
-# in the name.  This directory is removed automatically at exit.
+# in the name. This directory is removed automatically at exit.
 # -----------------------------------
 tmpDir="/tmp/${scriptName}.$RANDOM.$RANDOM.$RANDOM.$$"
 (umask 077 && mkdir "${tmpDir}") || {
@@ -782,7 +782,6 @@ tmpDir="/tmp/${scriptName}.$RANDOM.$RANDOM.$RANDOM.$$"
 # Save to standard user log location use: $HOME/Library/Logs/${scriptName}.log
 # -----------------------------------
 logFile="${HOME}/Library/Logs/${scriptName}.log"
-
 
 # Options and Usage
 # -----------------------------------
@@ -852,9 +851,6 @@ while [[ $1 = -?* ]]; do
   case $1 in
     -h|--help) usage >&2; safeExit ;;
     --version) echo "$(basename $0) ${version}"; safeExit ;;
-    -u|--username) shift; username=${1} ;;
-    -p|--password) shift; echo "Enter Pass: "; stty -echo; read PASS; stty echo;
-      echo ;;
     -v|--verbose) verbose=true ;;
     -l|--log) printLog=true ;;
     -q|--quiet) quiet=true ;;
@@ -869,7 +865,6 @@ done
 
 # Store the remaining part as arguments.
 args+=("$@")
-
 
 # Logging and Colors
 # -----------------------------------------------------
@@ -888,16 +883,16 @@ blue=$(tput setaf 38)
 underline=$(tput sgr 0 1)
 
 function _alert() {
-  if [ "${1}" = "emergency" ]; then local color="${bold}${red}"; fi
-  if [ "${1}" = "error" ]; then local color="${bold}${red}"; fi
-  if [ "${1}" = "warning" ]; then local color="${red}"; fi
-  if [ "${1}" = "success" ]; then local color="${green}"; fi
-  if [ "${1}" = "debug" ]; then local color="${purple}"; fi
-  if [ "${1}" = "header" ]; then local color="${bold}""${tan}"; fi
-  if [ "${1}" = "input" ]; then local color="${bold}"; printLog="false"; fi
-  if [ "${1}" = "info" ] || [ "${1}" = "notice" ]; then local color=""; fi
+  if [[ "${1}" = "emergency" ]]; then local color="${bold}${red}"; fi
+  if [[ "${1}" = "error" ]]; then local color="${bold}${red}"; fi
+  if [[ "${1}" = "warning" ]]; then local color="${red}"; fi
+  if [[ "${1}" = "success" ]]; then local color="${green}"; fi
+  if [[ "${1}" = "debug" ]]; then local color="${purple}"; fi
+  if [[ "${1}" = "header" ]]; then local color="${bold}""${tan}"; fi
+  if [[ "${1}" = "input" ]]; then local color="${bold}"; printLog="false"; fi
+  if [[ "${1}" = "info" ]] || [[ "${1}" = "notice" ]]; then local color=""; fi
   # Don't use colors on pipes or non-recognized terminals
-  if [[ "${TERM}" != "xterm"* ]] || [ -t 1 ]; then color=""; reset=""; fi
+  if [[ "${TERM}" != "xterm"* ]] || [[ -t 1 ]]; then color=""; reset=""; fi
 
   # Print to $logFile
   if ${printLog}; then
