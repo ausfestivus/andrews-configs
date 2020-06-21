@@ -331,6 +331,7 @@ function mainScript() {
       notice "Virtual Machine Detected. Not installing virtualisation engines..."
       RECIPES=(
         1password
+        1password-cli
         github
         google-chrome
         microsoft-teams
@@ -465,8 +466,8 @@ function mainScript() {
       # sqlite
       # tag
       terminal-notifier
-      # tldr                # Better man pages
-      # tree
+      tldr                # Better man pages
+      tree
       # unison              # Rsynch like tool
       wget
       awscli
@@ -475,9 +476,8 @@ function mainScript() {
       python3
       postgresql
       pre-commit
-      terraform
+      warrensbox/tap/tfswitch
       terraform-docs
-      terraform@0.11
       tflint
       wget
     )

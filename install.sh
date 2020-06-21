@@ -26,7 +26,7 @@ function detectOS {
     #
     echo "Building Mac OS environment."
     #bash -c "$(wget -O - https://raw.githubusercontent.com/ausfestivus/andrews-configs/develop/hostbuild/macos-desktop-build.sh)"
-    #curl -sL https://raw.githubusercontent.com/ausfestivus/andrews-configs/develop/hostbuild/macos-desktop-build.sh | bash
+    curl -sL https://raw.githubusercontent.com/ausfestivus/andrews-configs/develop/hostbuild/macos-desktop-build.sh | bash
     #
     echo "Installing shell customisations."
     cd ~ && git clone https://github.com/ausfestivus/andrews-configs.git
