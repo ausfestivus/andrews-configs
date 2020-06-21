@@ -11,7 +11,7 @@ function doTheNeedful { # Our main.
   # invoke verbose usage when set
   if ${verbose}; then v="-v" ; fi
   
-  # Work ot what OS we're running only
+  # Work out what OS we're running only
   detectOS
 }
 
@@ -26,7 +26,7 @@ function detectOS {
     #
     echo "Building Mac OS environment."
     #bash -c "$(wget -O - https://raw.githubusercontent.com/ausfestivus/andrews-configs/develop/hostbuild/macos-desktop-build.sh)"
-    curl -sL https://raw.githubusercontent.com/ausfestivus/andrews-configs/develop/hostbuild/macos-desktop-build.sh | bash
+    curl -sL https://raw.githubusercontent.com/ausfestivus/andrews-configs/ausfestivus/issue73/hostbuild/macos-desktop-build.sh | bash
     #
     echo "Installing shell customisations."
     cd ~ && git clone https://github.com/ausfestivus/andrews-configs.git
