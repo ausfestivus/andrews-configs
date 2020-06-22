@@ -157,8 +157,10 @@ function mainScript() {
       # read -s macStorePass
       # echo ""
       ##
+      warning "You must be signed into the App Store for this script to work..."
+      warning "We will pause here while you go and do the sign in thing..."
       open -a /Applications/App\ Store.app
-
+      read -n 1 -s -r -p "Press enter to continue"
     fi
 
     list=($(to_install "${RECIPES[*]}" "$(${LISTINSTALLED})"))
@@ -199,6 +201,7 @@ function mainScript() {
       fi
     fi
   }
+  
   # Installation Commands
   # ###################
   function installCommandLineTools() {

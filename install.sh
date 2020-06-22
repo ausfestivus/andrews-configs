@@ -19,31 +19,28 @@ function doTheNeedful { # Our main.
 scriptName=$(basename "$0")
 
 function detectOS {
-    if  [[ "$OSTYPE" =~ ^darwin ]]
-    # macOS specific commands go here
-    then
-    echo "Hi, im a Mac and my name is '$HOSTNAME'"
-    #
-    echo "Building Mac OS environment."
-    #bash -c "$(wget -O - https://raw.githubusercontent.com/ausfestivus/andrews-configs/develop/hostbuild/macos-desktop-build.sh)"
-    curl -sL https://raw.githubusercontent.com/ausfestivus/andrews-configs/ausfestivus/issue73/hostbuild/macos-desktop-build.sh | bash
-    #
-    echo "Installing shell customisations."
-    cd ~ && git clone https://github.com/ausfestivus/andrews-configs.git
-    ~/andrews-configs/dotfiles/makesymlinks.sh
-    #
-    elif [ $OSTYPE == "linux-gnu" ]
-    # Linux specific commands go here
-    then
-    echo "Hi, im a Linux machine and my name is '$HOSTNAME'"
-    curl -sL https://raw.githubusercontent.com/ausfestivus/andrews-configs/develop/hostbuild/cloud-jumphost-build.sh | bash
-    exit 1
-    # TODO
-    # detect a Windows machine?
-    # Couldnt work it out. Die.
+    if  [[ "$OSTYPE" =~ ^darwin ]] ; then
+      # macOS specific commands go here
+      echo "Hi, im a Mac and my name is '$HOSTNAME'"
+      #
+      echo "Building Mac OS environment."
+      #bash -c "$(wget -O - https://raw.githubusercontent.com/ausfestivus/andrews-configs/develop/hostbuild/macos-desktop-build.sh)"
+      #curl -sL https://raw.githubusercontent.com/ausfestivus/andrews-configs/ausfestivus/issue73/hostbuild/macos-desktop-build.sh | bash
+      #
+      echo "Installing shell customisations."
+      cd ~ && git clone https://github.com/ausfestivus/andrews-configs.git
+      ~/andrews-configs/dotfiles/makesymlinks.sh
+    elif [ "$OSTYPE" == "linux-gnu" ] ; then
+      # Linux specific commands go here
+      echo "Hi, im a Linux machine and my name is '$HOSTNAME'"
+      curl -sL https://raw.githubusercontent.com/ausfestivus/andrews-configs/develop/hostbuild/cloud-jumphost-build.sh | bash
+      exit 1
+      # TODO
+      # detect a Windows machine?
+      # Couldnt work it out. Die.
     else
-    echo "No idea what you ran me on."
-    exit 1
+      echo "No idea what you ran me on."
+      exit 1
     fi
 }
 
