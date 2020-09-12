@@ -157,8 +157,10 @@ function mainScript() {
       # read -s macStorePass
       # echo ""
       ##
+      warning "You must be signed into the App Store for this script to work..."
+      warning "We will pause here while you go and do the sign in thing..."
       open -a /Applications/App\ Store.app
-
+      read -n 1 -s -r -p "Press enter to continue"
     fi
 
     list=($(to_install "${RECIPES[*]}" "$(${LISTINSTALLED})"))
@@ -199,6 +201,7 @@ function mainScript() {
       fi
     fi
   }
+  
   # Installation Commands
   # ###################
   function installCommandLineTools() {
@@ -331,6 +334,7 @@ function mainScript() {
       notice "Virtual Machine Detected. Not installing virtualisation engines..."
       RECIPES=(
         1password
+        1password-cli
         github
         google-chrome
         microsoft-teams
@@ -465,8 +469,8 @@ function mainScript() {
       # sqlite
       # tag
       terminal-notifier
-      # tldr                # Better man pages
-      # tree
+      tldr                # Better man pages
+      tree
       # unison              # Rsynch like tool
       wget
       awscli
@@ -475,9 +479,8 @@ function mainScript() {
       python3
       postgresql
       pre-commit
-      terraform
+      warrensbox/tap/tfswitch
       terraform-docs
-      terraform@0.11
       tflint
       wget
     )
@@ -766,7 +769,7 @@ args=()
 # Set Temp Directory
 # -----------------------------------
 # Create temp directory with three random numbers and the process ID
-# in the name.  This directory is removed automatically at exit.
+# in the name. This directory is removed automatically at exit.
 # -----------------------------------
 tmpDir="/tmp/${scriptName}.$RANDOM.$RANDOM.$RANDOM.$$"
 (umask 077 && mkdir "${tmpDir}") || {
@@ -782,7 +785,6 @@ tmpDir="/tmp/${scriptName}.$RANDOM.$RANDOM.$RANDOM.$$"
 # Save to standard user log location use: $HOME/Library/Logs/${scriptName}.log
 # -----------------------------------
 logFile="${HOME}/Library/Logs/${scriptName}.log"
-
 
 # Options and Usage
 # -----------------------------------
@@ -852,9 +854,6 @@ while [[ $1 = -?* ]]; do
   case $1 in
     -h|--help) usage >&2; safeExit ;;
     --version) echo "$(basename $0) ${version}"; safeExit ;;
-    -u|--username) shift; username=${1} ;;
-    -p|--password) shift; echo "Enter Pass: "; stty -echo; read PASS; stty echo;
-      echo ;;
     -v|--verbose) verbose=true ;;
     -l|--log) printLog=true ;;
     -q|--quiet) quiet=true ;;
@@ -869,7 +868,6 @@ done
 
 # Store the remaining part as arguments.
 args+=("$@")
-
 
 # Logging and Colors
 # -----------------------------------------------------
@@ -888,16 +886,16 @@ blue=$(tput setaf 38)
 underline=$(tput sgr 0 1)
 
 function _alert() {
-  if [ "${1}" = "emergency" ]; then local color="${bold}${red}"; fi
-  if [ "${1}" = "error" ]; then local color="${bold}${red}"; fi
-  if [ "${1}" = "warning" ]; then local color="${red}"; fi
-  if [ "${1}" = "success" ]; then local color="${green}"; fi
-  if [ "${1}" = "debug" ]; then local color="${purple}"; fi
-  if [ "${1}" = "header" ]; then local color="${bold}""${tan}"; fi
-  if [ "${1}" = "input" ]; then local color="${bold}"; printLog="false"; fi
-  if [ "${1}" = "info" ] || [ "${1}" = "notice" ]; then local color=""; fi
+  if [[ "${1}" = "emergency" ]]; then local color="${bold}${red}"; fi
+  if [[ "${1}" = "error" ]]; then local color="${bold}${red}"; fi
+  if [[ "${1}" = "warning" ]]; then local color="${red}"; fi
+  if [[ "${1}" = "success" ]]; then local color="${green}"; fi
+  if [[ "${1}" = "debug" ]]; then local color="${purple}"; fi
+  if [[ "${1}" = "header" ]]; then local color="${bold}""${tan}"; fi
+  if [[ "${1}" = "input" ]]; then local color="${bold}"; printLog="false"; fi
+  if [[ "${1}" = "info" ]] || [[ "${1}" = "notice" ]]; then local color=""; fi
   # Don't use colors on pipes or non-recognized terminals
-  if [[ "${TERM}" != "xterm"* ]] || [ -t 1 ]; then color=""; reset=""; fi
+  if [[ "${TERM}" != "xterm"* ]] || [[ -t 1 ]]; then color=""; reset=""; fi
 
   # Print to $logFile
   if ${printLog}; then
