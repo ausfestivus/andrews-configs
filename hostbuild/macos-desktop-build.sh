@@ -163,7 +163,7 @@ function mainScript() {
       ##
       warning "You must be signed into the App Store for this script to work..."
       warning "We will pause here while you go and do the sign in thing..."
-      open -a /Applications/App\ Store.app
+      open -a /System/Applications/App\ Store.app
       read -n 1 -s -r -p "Press enter to continue"
     fi
 
