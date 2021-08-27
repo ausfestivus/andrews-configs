@@ -2,7 +2,7 @@
 
 # ##################################################
 #
-version="1.0.2"              # Sets version variable
+version="1.0.2" # Sets version variable
 #
 # HISTORY:
 #
@@ -13,7 +13,7 @@ version="1.0.2"              # Sets version variable
 
 function mainScript() {
   # invoke verbose usage when set
-  if ${verbose}; then v="-v" ; fi
+  if ${verbose}; then v="-v"; fi
 
   # Helper Functions
   # ###################
@@ -23,7 +23,6 @@ function mainScript() {
     # 2. Signed into App Store
     true
   }
-
   function isAppInstalled() {
     # Feed this function either the bundleID (com.apple.finder) or a name (finder) for a native
     # mac app and it will determine whether it is installed or not
@@ -35,18 +34,24 @@ function mainScript() {
     local appNameOrBundleId="$1" isAppName=0 bundleId
     # Determine whether an app *name* or *bundle ID* was specified.
     [[ $appNameOrBundleId =~ \.[aA][pP][pP]$ || $appNameOrBundleId =~ ^[^.]+$ ]] && isAppName=1
-    if (( isAppName )); then # an application NAME was specified
+    if ((isAppName)); then # an application NAME was specified
       # Translate to a bundle ID first.
       bundleId=$(osascript -e "id of application \"$appNameOrBundleId\"" 2>/dev/null) ||
-      { echo "$FUNCNAME: ERROR: Application with specified name not found: $appNameOrBundleId" 1>&2; return 1; }
+        {
+          echo "$FUNCNAME: ERROR: Application with specified name not found: $appNameOrBundleId" 1>&2
+          return 1
+        }
     else # a BUNDLE ID was specified
       bundleId=$appNameOrBundleId
     fi
     # Let AppleScript determine the full bundle path.
     osascript -e "tell application \"Finder\" to POSIX path of (get application file id \"$bundleId\" as alias)" 2>/dev/null ||
-    { echo "$FUNCNAME: ERROR: Application with specified bundle ID not found: $bundleId" 1>&2; return 1; }
+      {
+        echo "$FUNCNAME: ERROR: Application with specified bundle ID not found: $bundleId" 1>&2
+        return 1
+      }
   }
-  function brewMaintenance () {
+  function brewMaintenance() {
     # brewMaintenance
     # ------------------------------------------------------
     # Will run the recommended Homebrew maintenance scripts
@@ -58,7 +63,7 @@ function mainScript() {
       brew upgrade
     fi
   }
-  function brewCleanup () {
+  function brewCleanup() {
     # This function cleans up an initial Homebrew installation
 
     notice "Running Homebrew maintenance..."
@@ -77,12 +82,8 @@ function mainScript() {
     fi
 
     brew cleanup
-
-    # if brew cask > /dev/null; then
-    #   brew cask cleanup
-    # fi
   }
-  function doInstall () {
+  function doInstall() {
     # Reads a list of items, checks if they are installed, installs
     # those which are needed.
     #
@@ -107,14 +108,17 @@ function mainScript() {
       read -ra desired < <(echo "$1" | tr '\n' ' ')
       read -ra installed < <(echo "$2" | tr '\n' ' ')
       # Sort desired and installed arrays.
-      unset i; while read -r; do desired_s[i++]=$REPLY; done < <(
+      unset i
+      while read -r; do desired_s[i++]=$REPLY; done < <(
         printf "%s\n" "${desired[@]}" | sort
       )
-      unset i; while read -r; do installed_s[i++]=$REPLY; done < <(
+      unset i
+      while read -r; do installed_s[i++]=$REPLY; done < <(
         printf "%s\n" "${installed[@]}" | sort
       )
       # Get the difference. comm is awesome.
-      unset i; while read -r; do remain[i++]=$REPLY; done < <(
+      unset i
+      while read -r; do remain[i++]=$REPLY; done < <(
         comm -13 <(printf "%s\n" "${installed_s[@]}") <(printf "%s\n" "${desired_s[@]}")
       )
       echo "${remain[@]}"
@@ -133,7 +137,7 @@ function mainScript() {
       if [[ $INSTALLCOMMAND =~ mas ]]; then
         # Lookup the name of the application being installed
         appName="$(curl -s https://itunes.apple.com/lookup?id=$item | jq .results[].trackName)"
-        if isAppInstalled "${appName}" &> /dev/null; then
+        if isAppInstalled "${appName}" &>/dev/null; then
           return
         fi
         # Tell the user the name of the app
@@ -201,7 +205,7 @@ function mainScript() {
       fi
     fi
   }
-  
+
   # Installation Commands
   # ###################
   function installCommandLineTools() {
@@ -227,7 +231,7 @@ function mainScript() {
     fi
     success "Command Line Tools installed"
   }
-  function installHomebrew () {
+  function installHomebrew() {
     # Check for Homebrew
     notice "Checking for Homebrew..."
     if [ ! "$(type -P brew)" ]; then
@@ -243,13 +247,13 @@ function mainScript() {
         installCommandLineTools
       fi
       # Install Homebrew
-      ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+      #ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+      /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
       #installHomebrewTaps
     fi
     success "Homebrew installed"
   }
   function checkTaps() {
-
     verbose "Confirming we have required Homebrew taps"
     if ! brew cask help &>/dev/null; then
       installHomebrewTaps
@@ -261,7 +265,7 @@ function mainScript() {
   function installHomebrewTaps() {
     #brew tap homebrew/dupes
     #brew tap homebrew/versions
-    brew tap homebrew/cask-cask   
+    brew tap homebrew/cask-cask
     #brew tap caskroom/fonts
     #brew tap caskroom/versions # Subversion client for MacOS
   }
@@ -284,7 +288,7 @@ function mainScript() {
     fi
     success "XCode installed"
   }
-  function installDropbox () {
+  function installDropbox() {
     # This function checks for Dropbox being installed.
     # If it is not found, we install it and its prerequisites
     notice "Checking for Dropbox..."
@@ -293,8 +297,8 @@ function mainScript() {
 
     if ! isAppInstalled 'Dropbox' &>/dev/null; then
       unset LISTINSTALLED INSTALLCOMMAND RECIPES
-      LISTINSTALLED="brew cask list"
-      INSTALLCOMMAND="brew cask install --appdir=/Applications"
+      LISTINSTALLED="brew list --cask"
+      INSTALLCOMMAND="brew install --cask --appdir=/Applications"
       RECIPES=(
         dropbox
       )
@@ -304,7 +308,7 @@ function mainScript() {
 
     success "Dropbox installed"
   }
-  function installffmpeg () {
+  function installffmpeg() {
 
     notice "Checking for ffmpeg...."
     # My preferred install of ffmpeg
@@ -321,8 +325,8 @@ function mainScript() {
 
     #checkTaps
 
-    LISTINSTALLED="brew cask list"
-    INSTALLCOMMAND="brew cask install --appdir=/Applications"
+    LISTINSTALLED="brew list --cask"
+    INSTALLCOMMAND="brew install --cask --appdir=/Applications"
     # The recipe list we use depends on if we're in a VM or not.
     # eg we dont want to install a virtualisation engine if we're in VMware Fusion.
     # Start by pulling and storing the manufacturer info
@@ -353,7 +357,7 @@ function mainScript() {
         vlc
         vmware-fusion
         pycharm
-      ) 
+      )
     fi
 
     # for item in "${RECIPES[@]}"; do
@@ -373,13 +377,13 @@ function mainScript() {
     LISTINSTALLED="mas list"
     INSTALLCOMMAND="mas install"
     RECIPES=(
-      405399194 # Kindle (1.21.1)
-      425424353 # The Unarchiver (3.11.3)
+      405399194  # Kindle (1.21.1)
+      425424353  # The Unarchiver (3.11.3)
       1091189122 # Bear (1.4.1)
-      443823264 # FindSpace (1.0.0)
+      443823264  # FindSpace (1.0.0)
       1384080005 # Tweetbot (3.3.3)
-      568020055 # Scapple (1.30.1)
-      585829637 # Todoist (7.1.1)
+      568020055  # Scapple (1.30.1)
+      585829637  # Todoist (7.1.1)
       1081413713 # GIF Brewery 3 (3.9.5)
     )
     doInstall
@@ -393,8 +397,8 @@ function mainScript() {
 
     #checkTaps
 
-    LISTINSTALLED="brew cask list"
-    INSTALLCOMMAND="brew cask install --appdir=/Applications"
+    LISTINSTALLED="brew list --cask"
+    INSTALLCOMMAND="brew install --cask --appdir=/Applications"
     RECIPES=(
       charles
       codekit
@@ -404,9 +408,9 @@ function mainScript() {
       java
       kaleidoscope
       licecap # Movie screen captures
-      mamp # mac-based LAMP development stack
-      paw # REST IDE
-      tower # Mac GUI for git
+      mamp    # mac-based LAMP development stack
+      paw     # REST IDE
+      tower   # Mac GUI for git
     )
 
     # for item in "${RECIPES[@]}"; do
@@ -462,14 +466,14 @@ function mainScript() {
       # p7zip
       # readline
       # rename
-      shellcheck          # Bash linter
+      shellcheck # Bash linter
       # sl
       # source-highlight
       # ssh-copy-id
       # sqlite
       # tag
       terminal-notifier
-      tldr                # Better man pages
+      tldr # Better man pages
       tree
       # unison              # Rsynch like tool
       wget
@@ -593,7 +597,7 @@ function mainScript() {
     done
 
     #Add some additional time just to be sure....
-    for ((i=1; i<=6; i++)); do
+    for ((i = 1; i <= 6; i++)); do
       info "  Waiting for Dropbox to Sync files..."
       sleep 10
     done
@@ -695,7 +699,7 @@ function trapCleanup() {
   # -----------------------------------
   echo ""
   # Delete temp files, if any
-  if [ -d "${tmpDir}" ] ; then
+  if [ -d "${tmpDir}" ]; then
     rm -r "${tmpDir}"
   fi
   die "Exit trapped."
@@ -708,7 +712,7 @@ function safeExit() {
   # Usage: Add this function at the end of every script.
   # -----------------------------------
   # Delete temp files, if any
-  if [[ -d "${tmpDir}" ]] ; then
+  if [[ -d "${tmpDir}" ]]; then
     rm -r "${tmpDir}"
   fi
   trap - INT TERM EXIT
@@ -814,30 +818,30 @@ optstring=h
 unset options
 while (($#)); do
   case $1 in
-      # If option is of type -ab
-    -[!-]?*)
-      # Loop over each character starting with the second
-      for ((i=1; i < ${#1}; i++)); do
-        c=${1:i:1}
+  # If option is of type -ab
+  -[!-]?*)
+    # Loop over each character starting with the second
+    for ((i = 1; i < ${#1}; i++)); do
+      c=${1:i:1}
 
-        # Add current char to options
-        options+=("-$c")
+      # Add current char to options
+      options+=("-$c")
 
-        # If option takes a required argument, and it's not the last char make
-        # the rest of the string its argument
-        if [[ $optstring = *"$c:"* && ${1:i+1} ]]; then
-          options+=("${1:i+1}")
-          break
-        fi
-      done
-      ;;
+      # If option takes a required argument, and it's not the last char make
+      # the rest of the string its argument
+      if [[ $optstring = *"$c:"* && ${1:i+1} ]]; then
+        options+=("${1:i+1}")
+        break
+      fi
+    done
+    ;;
 
-      # If option is of type --foo=bar
-    --?*=*) options+=("${1%%=*}" "${1#*=}") ;;
-      # add --endopts for --
-    --) options+=(--endopts) ;;
-      # Otherwise, nothing special
-    *) options+=("$1") ;;
+    # If option is of type --foo=bar
+  --?*=*) options+=("${1%%=*}" "${1#*=}") ;;
+    # add --endopts for --
+  --) options+=(--endopts) ;;
+    # Otherwise, nothing special
+  *) options+=("$1") ;;
   esac
   shift
 done
@@ -852,16 +856,25 @@ unset options
 # Read the options and set stuff
 while [[ $1 = -?* ]]; do
   case $1 in
-    -h|--help) usage >&2; safeExit ;;
-    --version) echo "$(basename $0) ${version}"; safeExit ;;
-    -v|--verbose) verbose=true ;;
-    -l|--log) printLog=true ;;
-    -q|--quiet) quiet=true ;;
-    -s|--strict) strict=true ;;
-    -d|--debug) debug=true ;;
-    --force) force=true ;;
-    --endopts) shift; break ;;
-    *) die "invalid option: '$1'." ;;
+  -h | --help)
+    usage >&2
+    safeExit
+    ;;
+  --version)
+    echo "$(basename $0) ${version}"
+    safeExit
+    ;;
+  -v | --verbose) verbose=true ;;
+  -l | --log) printLog=true ;;
+  -q | --quiet) quiet=true ;;
+  -s | --strict) strict=true ;;
+  -d | --debug) debug=true ;;
+  --force) force=true ;;
+  --endopts)
+    shift
+    break
+    ;;
+  *) die "invalid option: '$1'." ;;
   esac
   shift
 done
@@ -892,36 +905,70 @@ function _alert() {
   if [[ "${1}" = "success" ]]; then local color="${green}"; fi
   if [[ "${1}" = "debug" ]]; then local color="${purple}"; fi
   if [[ "${1}" = "header" ]]; then local color="${bold}""${tan}"; fi
-  if [[ "${1}" = "input" ]]; then local color="${bold}"; printLog="false"; fi
+  if [[ "${1}" = "input" ]]; then
+    local color="${bold}"
+    printLog="false"
+  fi
   if [[ "${1}" = "info" ]] || [[ "${1}" = "notice" ]]; then local color=""; fi
   # Don't use colors on pipes or non-recognized terminals
-  if [[ "${TERM}" != "xterm"* ]] || [[ -t 1 ]]; then color=""; reset=""; fi
+  if [[ "${TERM}" != "xterm"* ]] || [[ -t 1 ]]; then
+    color=""
+    reset=""
+  fi
 
   # Print to $logFile
   if ${printLog}; then
-    echo -e "$(date +"%m-%d-%Y %r") $(printf "[%9s]" "${1}") ${_message}" >> "${logFile}";
+    echo -e "$(date +"%m-%d-%Y %r") $(printf "[%9s]" "${1}") ${_message}" >>"${logFile}"
   fi
 
   # Print to console when script is not 'quiet'
   if ${quiet}; then
     return
   else
-    echo -e "$(date +"%r") ${color}$(printf "[%9s]" "${1}") ${_message}${reset}";
+    echo -e "$(date +"%r") ${color}$(printf "[%9s]" "${1}") ${_message}${reset}"
   fi
 }
 
-function die ()       { local _message="${*} Exiting."; echo "$(_alert emergency)"; safeExit;}
-function error ()     { local _message="${*}"; echo "$(_alert error)"; }
-function warning ()   { local _message="${*}"; echo "$(_alert warning)"; }
-function notice ()    { local _message="${*}"; echo "$(_alert notice)"; }
-function info ()      { local _message="${*}"; echo "$(_alert info)"; }
-function debug ()     { local _message="${*}"; echo "$(_alert debug)"; }
-function success ()   { local _message="${*}"; echo "$(_alert success)"; }
-function input()      { local _message="${*}"; echo -n "$(_alert input)"; }
-function header()     { local _message="${*}"; echo "$(_alert header)"; }
+function die() {
+  local _message="${*} Exiting."
+  echo "$(_alert emergency)"
+  safeExit
+}
+function error() {
+  local _message="${*}"
+  echo "$(_alert error)"
+}
+function warning() {
+  local _message="${*}"
+  echo "$(_alert warning)"
+}
+function notice() {
+  local _message="${*}"
+  echo "$(_alert notice)"
+}
+function info() {
+  local _message="${*}"
+  echo "$(_alert info)"
+}
+function debug() {
+  local _message="${*}"
+  echo "$(_alert debug)"
+}
+function success() {
+  local _message="${*}"
+  echo "$(_alert success)"
+}
+function input() {
+  local _message="${*}"
+  echo -n "$(_alert input)"
+}
+function header() {
+  local _message="${*}"
+  echo "$(_alert header)"
+}
 
 # Log messages when verbose is set to "true"
-verbose() { if ${verbose}; then debug "$@"; fi }
+verbose() { if ${verbose}; then debug "$@"; fi; }
 
 # Trap bad exits with your cleanup function
 trap trapCleanup EXIT INT TERM
@@ -933,10 +980,10 @@ IFS=$' \n\t'
 set -o errexit
 
 # Run in debug mode, if set
-if ${debug}; then set -x ; fi
+if ${debug}; then set -x; fi
 
 # Exit on empty variable
-if ${strict}; then set -o nounset ; fi
+if ${strict}; then set -o nounset; fi
 
 # Bash will remember & return the highest exitcode in a chain of pipes.
 # This way you can catch the error in case mysqldump fails in `mysqldump |gzip`, for example.
