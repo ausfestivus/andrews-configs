@@ -71,7 +71,7 @@ function mainScript() {
     # This is where brew stores its binary symlinks
     binroot="$(brew --config | awk '/HOMEBREW_PREFIX/ {print $2}')"/bin
 
-    if [[ "$(type -P ${binroot}/bash)" && "$(cat /etc/shells | grep -q "$binroot/bash")" ]]; then
+    if [[ "$(which ${binroot}/bash)" && "$(cat /etc/shells | grep -q "$binroot/bash")" ]]; then
       info "Adding ${binroot}/bash to the list of acceptable shells"
       echo "$binroot/bash" | sudo tee -a /etc/shells >/dev/null
     fi
@@ -205,13 +205,12 @@ function mainScript() {
       fi
     fi
   }
-
   # Installation Commands
   # ###################
   function installCommandLineTools() {
     notice "Checking for Command Line Tools..."
 
-    if [[ ! "$(type -P gcc)" || ! "$(type -P make)" ]]; then
+    if [[ ! "$(which gcc)" || ! "$(which make)" ]]; then
       #local osx_vers=$(sw_vers -productVersion | awk -F "." '{print $2}')
       local cmdLineToolsTmp="${tmpDir}/.com.apple.dt.CommandLineTools.installondemand.in-progress"
 
@@ -234,47 +233,28 @@ function mainScript() {
   function installHomebrew() {
     # Check for Homebrew
     notice "Checking for Homebrew..."
-    if [ ! "$(type -P brew)" ]; then
+    if [ ! "$(which brew)" ]; then
       notice "No Homebrew. Gots to install it..."
       #   Ensure that we can actually, like, compile anything.
-      if [[ ! $(type -P gcc) && "$OSTYPE" =~ ^darwin ]]; then
+      if [[ ! $(which gcc) && "$OSTYPE" =~ ^darwin ]]; then
         notice "XCode or the Command Line Tools for XCode must be installed first."
         installCommandLineTools
       fi
       # Check for Git
-      if [ ! "$(type -P git)" ]; then
+      if [ ! "$(which git)" ]; then
         notice "XCode or the Command Line Tools for XCode must be installed first."
         installCommandLineTools
       fi
       # Install Homebrew
       #ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
       /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-      #installHomebrewTaps
     fi
     success "Homebrew installed"
-  }
-  function checkTaps() {
-    verbose "Confirming we have required Homebrew taps"
-    if ! brew cask help &>/dev/null; then
-      installHomebrewTaps
-    fi
-    if [ ! "$(type -P mas)" ]; then
-      installHomebrewTaps
-    fi
-  }
-  function installHomebrewTaps() {
-    #brew tap homebrew/dupes
-    #brew tap homebrew/versions
-    brew tap homebrew/cask-cask
-    #brew tap caskroom/fonts
-    #brew tap caskroom/versions # Subversion client for MacOS
   }
   function installXcode() {
     notice "Checking for XCode..."
     if ! isAppInstalled 'xcode' &>/dev/null; then
       unset LISTINSTALLED INSTALLCOMMAND RECIPES
-
-      #checkTaps
 
       LISTINSTALLED="mas list"
       INSTALLCOMMAND="mas install"
@@ -293,8 +273,6 @@ function mainScript() {
     # If it is not found, we install it and its prerequisites
     notice "Checking for Dropbox..."
 
-    #checkTaps
-
     if ! isAppInstalled 'Dropbox' &>/dev/null; then
       unset LISTINSTALLED INSTALLCOMMAND RECIPES
       LISTINSTALLED="brew list --cask"
@@ -312,7 +290,7 @@ function mainScript() {
 
     notice "Checking for ffmpeg...."
     # My preferred install of ffmpeg
-    if [ ! $(type -P "ffmpeg") ]; then
+    if [ ! $(which "ffmpeg") ]; then
       brew install ffmpeg --with-faac --with-fdk-aac --with-ffplay --with-fontconfig --with-freetype --with-libcaca --with-libass --with-frei0r --with-libass --with-libbluray --with-libcaca --with-libquvi --with-libvidstab --with-libsoxr --with-libssh --with-libvo-aacenc --with-libvidstab --with-libvorbis --with-libvpx --with-opencore-amr --with-openjpeg --with-openssl --with-opus --with-rtmpdump --with-schroedinger --with-speex --with-theora --with-tools --with-webp --with-x265
     fi
 
@@ -322,8 +300,6 @@ function mainScript() {
     unset LISTINSTALLED INSTALLCOMMAND RECIPES
 
     notice "Checking for casks to install..."
-
-    #checkTaps
 
     LISTINSTALLED="brew list --cask"
     INSTALLCOMMAND="brew install --cask --appdir=/Applications"
@@ -372,8 +348,6 @@ function mainScript() {
 
     notice "Checking for App Store apps to install..."
 
-    #checkTaps
-
     LISTINSTALLED="mas list"
     INSTALLCOMMAND="mas install"
     RECIPES=(
@@ -394,8 +368,6 @@ function mainScript() {
     unset LISTINSTALLED INSTALLCOMMAND RECIPES
 
     notice "Checking for dev apps to install"
-
-    #checkTaps
 
     LISTINSTALLED="brew list --cask"
     INSTALLCOMMAND="brew install --cask --appdir=/Applications"
@@ -424,8 +396,6 @@ function mainScript() {
     unset LISTINSTALLED INSTALLCOMMAND RECIPES
 
     notice "Checking for Homebrew packages to install..."
-
-    #checkTaps
 
     LISTINSTALLED="brew list"
     INSTALLCOMMAND="brew install"
@@ -499,7 +469,7 @@ function mainScript() {
     local RUBYVERSION="2.1.2" # Version of Ruby to install via RVM
 
     # Check for RVM
-    if [ ! "$(type -P rvm)" ]; then
+    if [ ! "$(which rvm)" ]; then
       seek_confirmation "Couldn't find RVM. Install it?"
       if is_confirmed; then
         curl -L https://get.rvm.io | bash -s stable
@@ -606,7 +576,7 @@ function mainScript() {
     success "Dropbox has synced"
 
     # Confirm Mackup exists
-    if [ ! "$(type -P mackup)" ]; then
+    if [ ! "$(which mackup)" ]; then
       installHomebrew
       brew install mackup
     fi
@@ -639,7 +609,7 @@ function mainScript() {
     # See #25
     # Check for pip3
     notice "Checking for pip3..."
-    if [ ! "$(type -P pip3)" ]; then
+    if [ ! "$(which pip3)" ]; then
       # pip3 binary not found.
       notice "pip3 is not installed. Installing it..."
     fi
@@ -672,7 +642,6 @@ function mainScript() {
 
   installCommandLineTools
   installHomebrew
-  #checkTaps
   brewCleanup
   installHomebrewPackages
   installCaskApps
