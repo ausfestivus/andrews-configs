@@ -315,10 +315,15 @@ function mainScript() {
       RECIPES=(
         1password
         1password-cli
+        discord
+        ghost-browser
+        git-credential-manager-core
         github
-        google-chrome
-        microsoft-teams
-        slack
+        minecraft
+        powershell
+        tower
+        tweetbot
+        visual-studio-code
         vlc
       )
     else
@@ -326,13 +331,18 @@ function mainScript() {
       notice "Physical Machine Detected. Installing virtualisation engines..."
       RECIPES=(
         1password
+        1password-cli
+        discord
+        ghost-browser
+        git-credential-manager-core
         github
-        google-chrome
-        microsoft-teams
-        slack
+        minecraft
+        powershell
+        tower
+        tweetbot
+        visual-studio-code
         vlc
         vmware-fusion
-        pycharm
       )
     fi
 
@@ -351,14 +361,14 @@ function mainScript() {
     LISTINSTALLED="mas list"
     INSTALLCOMMAND="mas install"
     RECIPES=(
-      405399194  # Kindle (1.21.1)
-      425424353  # The Unarchiver (3.11.3)
-      1091189122 # Bear (1.4.1)
-      443823264  # FindSpace (1.0.0)
-      1384080005 # Tweetbot (3.3.3)
-      568020055  # Scapple (1.30.1)
-      585829637  # Todoist (7.1.1)
-      1081413713 # GIF Brewery 3 (3.9.5)
+      405399194  # Kindle
+      1091189122 # Bear
+      1295203466 # Microsoft Remote Desktop
+      568020055  # Scapple
+      585829637  # Todoist
+      1081413713 # GIF Brewery 3
+      1484204619 # WakeOnCommend
+      1475921958 # MineSweeper
     )
     doInstall
 
@@ -401,61 +411,42 @@ function mainScript() {
     INSTALLCOMMAND="brew install"
 
     RECIPES=(
-      # autoconf
-      # automake
+      aws-shell
+      awscli
+      azure-cli
       bash
       bash-completion
-      # colordiff
-      # coreutils
-      # ffmpeg
-      # gifsicle
+      coreutils
+      cowsay
+      dos2unix
+      gawk
       git
-      # git-extras
-      # git-flow
-      # hub
-      # hr
-      # id3tool
-      # imagemagick
-      # jpegoptim
+      gnu-sed
+      grep
       jq
-      # lesspipe
-      # libksba
-      # libtool
-      # libyaml
-      # mackup
-      # man2html
       mas
+      microsoft-office
+      mkdocs
       mtr
-      # multimarkdown
       nmap
-      # node
       openssl
-      # optipng
-      # pkg-config
-      # pngcrush
-      # p7zip
-      # readline
-      # rename
+      packer
+      pre-commit
+      postgresql
+      python3
       shellcheck # Bash linter
-      # sl
-      # source-highlight
-      # ssh-copy-id
-      # sqlite
-      # tag
+      sl
+      ssh-copy-id
+      telnet
       terminal-notifier
+      terraform-docs
+      terrascan
+      tflint
+      tfsec
+      tfswitch
       tldr # Better man pages
       tree
-      # unison              # Rsynch like tool
-      wget
-      awscli
-      aws-shell
-      azure-cli
-      python3
-      postgresql
-      pre-commit
-      warrensbox/tap/tfswitch
-      terraform-docs
-      tflint
+      vault
       wget
     )
     doInstall
@@ -638,7 +629,8 @@ function mainScript() {
   # Make sure we are signed into the app store
   warning "You must be signed into the App Store for this script to work..."
   warning "We will pause here while you go and do the sign in thing..."
-  read -n 1 -s -r -p "Press enter to continue"
+  # https://zsh.sourceforge.io/Doc/Release/Shell-Builtin-Commands.html
+  /usr/bin/read -n 1 -s -r -p "Press enter to continue"
 
   installCommandLineTools
   installHomebrew
