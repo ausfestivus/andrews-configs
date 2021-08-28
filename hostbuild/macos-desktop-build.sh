@@ -144,9 +144,7 @@ function mainScript() {
         notice "$item --> $appName"
       fi
     }
-
-    # Log in to the Mac App Store if using mas
-    if [[ $INSTALLCOMMAND =~ mas ]]; then
+    if [[ $INSTALLCOMMAND =~ mas ]]; then # Log in to the Mac App Store if using mas
       # TODO Must work out a way to open app store and prompt for sign in.
       ##
       # mas signin with MFA doesnt work.
@@ -246,10 +244,12 @@ function mainScript() {
         installCommandLineTools
       fi
       # Install Homebrew
-      #ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
       /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
     fi
     success "Homebrew installed"
+  }
+  function installHomebrewTaps() {
+    brew tap microsoft/git
   }
   function installXcode() {
     notice "Checking for XCode..."
@@ -634,6 +634,7 @@ function mainScript() {
 
   installCommandLineTools
   installHomebrew
+  installHomebrewTaps
   brewCleanup
   installHomebrewPackages
   installCaskApps
