@@ -443,8 +443,8 @@ function mainScript() {
       terrascan
       tflint
       tfsec
-      tfswitch
-      tldr # Better man pages
+      warrensbox/tap/tfswitch # https://tfswitch.warrensbox.com/Install/
+      tldr                    # Better man pages
       tree
       vault
       wget
