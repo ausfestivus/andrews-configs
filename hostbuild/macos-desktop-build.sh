@@ -425,6 +425,7 @@ function mainScript() {
       grep
       jq
       mas
+      microsoft-azure-storage-explorer
       microsoft-office
       mkdocs
       mtr
@@ -433,10 +434,12 @@ function mainScript() {
       packer
       pre-commit
       postgresql
+      postman
       python3
       shellcheck # Bash linter
       sl
       ssh-copy-id
+      steam
       telnet
       terminal-notifier
       terraform-docs
@@ -445,9 +448,12 @@ function mainScript() {
       tfsec
       warrensbox/tap/tfswitch # https://tfswitch.warrensbox.com/Install/
       tldr                    # Better man pages
+      touchswitcher
+      transmission
       tree
       vault
       wget
+      zoom
     )
     doInstall
 
@@ -622,15 +628,12 @@ function mainScript() {
   # Run the script
   # ###################
 
-  # Ask for the administrator password upfront
-  echo "administrator authorisation required. Please enter your administrator password."
-  sudo -v
-
   # Make sure we are signed into the app store
   warning "You must be signed into the App Store for this script to work..."
-  warning "We will pause here while you go and do the sign in thing..."
-  # https://zsh.sourceforge.io/Doc/Release/Shell-Builtin-Commands.html
-  /usr/bin/read -n 1 -s -r -p "Press enter to continue"
+  warning "We will pause here while you go and sign in to the app store app."
+  # Ask for the administrator password upfront
+  notice "Please enter your administrator password after signing into the app store."
+  sudo -v
 
   installCommandLineTools
   installHomebrew
