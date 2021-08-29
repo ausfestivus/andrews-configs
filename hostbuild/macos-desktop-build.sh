@@ -617,7 +617,7 @@ function mainScript() {
     # installations and configurations.
     notice "Installing sundry items..."
     info "  Installing homebrew-notifier..."
-    [[ -f "${HOME}/.homebrew-notifier/notifier.sh" ]] || curl -fsS https://raw.githubusercontent.com/grantovich/homebrew-notifier/master/install.sh | sh
+    [[ -f "${HOME}/.homebrew-notifier/notifier.sh" ]] || curl -fsS https://raw.githubusercontent.com/ausfestivus/homebrew-notifier/master/install.sh | sh
     success "  homebrew-notifier installed."
     # check for existence of ~/bin
     info "  Creating ${HOME}/bin if it doesnt exist..."
