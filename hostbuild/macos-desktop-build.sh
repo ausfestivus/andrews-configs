@@ -958,5 +958,5 @@ set -o pipefail
 # Run your script
 mainScript
 
-# Exit cleanly
+### Exit cleanly
 safeExit
