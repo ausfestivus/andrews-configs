@@ -309,7 +309,7 @@ function mainScript() {
     isVMware=""
     isVMware=$(ioreg -l | grep -e "\"manufacturer\" \= <\"VMware, Inc.\">" 2>/dev/null)
     # Choose which recipe list to use if were a VM or not.
-    if [[ $isVMware == *VMware* ]]; then
+    if [[ "$isVMware" == *VMware* ]]; then
       # we are a VM
       notice "Virtual Machine Detected. Not installing virtualisation engines..."
       RECIPES=(
