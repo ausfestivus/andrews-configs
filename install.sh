@@ -7,14 +7,6 @@
 # * pulls the necessary files
 # * runs the build
 
-function doTheNeedful { # Our main.
-  # invoke verbose usage when set
-  if ${verbose}; then v="-v"; fi
-
-  # Work out what OS we're running only
-  detectOS
-}
-
 ## SET SCRIPTNAME VARIABLE ##
 scriptName=$(basename "$0")
 
@@ -55,6 +47,14 @@ function safeExit() {
   fi
   trap - INT TERM EXIT
   exit
+}
+
+function doTheNeedful { # Our main.
+  # invoke verbose usage when set
+  if ${verbose}; then v="-v"; fi
+
+  # Work out what OS we're running only
+  detectOS
 }
 
 # Bash will remember & return the highest exitcode in a chain of pipes.
