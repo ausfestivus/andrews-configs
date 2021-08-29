@@ -421,6 +421,7 @@ function mainScript() {
       dos2unix
       gawk
       git
+      gitify
       gnu-sed
       grep
       jq
