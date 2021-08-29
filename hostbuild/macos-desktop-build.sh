@@ -307,7 +307,7 @@ function mainScript() {
     # eg we dont want to install a virtualisation engine if we're in VMware Fusion.
     # Start by pulling and storing the manufacturer info
     isVMware=""
-    isVMware=$(ioreg -l | grep -e "\"manufacturer\" \= <\"VMware, Inc.\">" 2>/dev/null)
+    isVMware=$(ioreg -l | grep -e "\"manufacturer\" \= <\"VMware, Inc.\">" 2>/dev/null || true)
     # Choose which recipe list to use if were a VM or not.
     if [[ "$isVMware" == *VMware* ]]; then
       # we are a VM
