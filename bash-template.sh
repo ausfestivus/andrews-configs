@@ -2,7 +2,7 @@
 
 # ##################################################
 #
-version="0.1"              # Sets version variable
+version="0.1" # Sets version variable
 #
 # HISTORY:
 #
@@ -12,7 +12,7 @@ version="0.1"              # Sets version variable
 
 function mainScript() {
   # invoke verbose usage when set
-  if ${verbose}; then v="-v" ; fi
+  if ${verbose}; then v="-v"; fi
 
   # Helper Functions
   # ###################
@@ -23,7 +23,7 @@ function mainScript() {
     true
   }
 
-  function brewMaintenance () {
+  function brewMaintenance() {
     # brewMaintenance
     # ------------------------------------------------------
     # Will run the recommended Homebrew maintenance scripts
@@ -36,7 +36,7 @@ function mainScript() {
     fi
   }
 
-  function brewCleanup () {
+  function brewCleanup() {
     # This function cleans up an initial Homebrew installation
 
     notice "Running Homebrew maintenance..."
@@ -46,11 +46,11 @@ function mainScript() {
 
     if [[ "$(type -P ${binroot}/bash)" && "$(cat /etc/shells | grep -q "$binroot/bash")" ]]; then
       info "Adding ${binroot}/bash to the list of acceptable shells"
-      echo "$binroot/bash" | sudo tee -a /etc/shells >/dev/null
+      echo "$binroot/bash" | sudo tee -a /etc/shells > /dev/null
     fi
     if [[ "$SHELL" != "${binroot}/bash" ]]; then
       info "Making ${binroot}/bash your default shell"
-      sudo chsh -s "${binroot}/bash" "$USER" >/dev/null 2>&1
+      sudo chsh -s "${binroot}/bash" "$USER" > /dev/null 2>&1
       success "Please exit and restart all your shells."
     fi
 
@@ -86,7 +86,7 @@ function mainScript() {
     success "Command Line Tools installed"
   }
 
-  function installHomebrew () {
+  function installHomebrew() {
     # Check for Homebrew
     notice "Checking for Homebrew..."
     if [[ ! "$(type -P brew)" ]]; then
@@ -111,7 +111,7 @@ function mainScript() {
   function checkTaps() {
 
     verbose "Confirming we have required Homebrew taps"
-    if ! brew cask help &>/dev/null; then
+    if ! brew cask help &> /dev/null; then
       installHomebrewTaps
     fi
     if [ ! "$(type -P mas)" ]; then
@@ -122,7 +122,7 @@ function mainScript() {
     # FIXME - add our taps here
     #brew tap homebrew/dupes
     #brew tap homebrew/versions
-    brew tap homebrew/cask-cask   
+    brew tap homebrew/cask-cask
     #brew tap caskroom/fonts
     #brew tap caskroom/versions # Subversion client for MacOS
   }
@@ -146,7 +146,7 @@ function mainScript() {
   }
 
   function installHomebrewPackages() {
-  # FIXME - trim this list
+    # FIXME - trim this list
     unset LISTINSTALLED INSTALLCOMMAND RECIPES
 
     notice "Checking for Homebrew packages to install..."
@@ -192,7 +192,7 @@ function mainScript() {
       # p7zip
       # readline
       # rename
-      shellcheck          # Bash linter
+      shellcheck # Bash linter
       # sl
       # source-highlight
       # ssh-copy-id
@@ -257,7 +257,7 @@ function trapCleanup() {
   # -----------------------------------
   echo ""
   # Delete temp files, if any
-  if [[ -d "${tmpDir}" ]] ; then
+  if [[ -d "${tmpDir}" ]]; then
     rm -r "${tmpDir}"
   fi
   die "Exit trapped."
@@ -270,7 +270,7 @@ function safeExit() {
   # Usage: Add this function at the end of every script.
   # -----------------------------------
   # Delete temp files, if any
-  if [[ -d "${tmpDir}" ]] ; then
+  if [[ -d "${tmpDir}" ]]; then
     rm -r "${tmpDir}"
   fi
   trap - INT TERM EXIT
@@ -348,7 +348,6 @@ tmpDir="/tmp/${scriptName}.$RANDOM.$RANDOM.$RANDOM.$$"
 # -----------------------------------
 logFile="${HOME}/Desktop/${scriptName}.log"
 
-
 # Options and Usage
 # -----------------------------------
 # Print usage
@@ -377,10 +376,10 @@ optstring=h
 unset options
 while (($#)); do
   case $1 in
-      # If option is of type -ab
+    # If option is of type -ab
     -[!-]?*)
       # Loop over each character starting with the second
-      for ((i=1; i < ${#1}; i++)); do
+      for ((i = 1; i < ${#1}; i++)); do
         c=${1:i:1}
 
         # Add current char to options
@@ -415,18 +414,36 @@ unset options
 # Read the options and set stuff
 while [[ $1 = -?* ]]; do
   case $1 in
-    -h|--help) usage >&2; safeExit ;;
-    --version) echo "$(basename $0) ${version}"; safeExit ;;
-    -u|--username) shift; username=${1} ;;
-    -p|--password) shift; echo "Enter Pass: "; stty -echo; read PASS; stty echo;
-      echo ;;
-    -v|--verbose) verbose=true ;;
-    -l|--log) printLog=true ;;
-    -q|--quiet) quiet=true ;;
-    -s|--strict) strict=true ;;
-    -d|--debug) debug=true ;;
+    -h | --help)
+      usage >&2
+      safeExit
+      ;;
+    --version)
+      echo "$(basename $0) ${version}"
+      safeExit
+      ;;
+    -u | --username)
+      shift
+      username=${1}
+      ;;
+    -p | --password)
+      shift
+      echo "Enter Pass: "
+      stty -echo
+      read PASS
+      stty echo
+      echo
+      ;;
+    -v | --verbose) verbose=true ;;
+    -l | --log) printLog=true ;;
+    -q | --quiet) quiet=true ;;
+    -s | --strict) strict=true ;;
+    -d | --debug) debug=true ;;
     --force) force=true ;;
-    --endopts) shift; break ;;
+    --endopts)
+      shift
+      break
+      ;;
     *) die "invalid option: '$1'." ;;
   esac
   shift
@@ -434,7 +451,6 @@ done
 
 # Store the remaining part as arguments.
 args+=("$@")
-
 
 # Logging and Colors
 # -----------------------------------------------------
@@ -458,36 +474,70 @@ function _alert() {
   if [[ "${1}" = "warning" ]]; then local color="${red}"; fi
   if [[ "${1}" = "success" ]]; then local color="${green}"; fi
   if [[ "${1}" = "header" ]]; then local color="${bold}""${tan}"; fi
-  if [[ "${1}" = "input" ]]; then local color="${bold}"; printLog="false"; fi
+  if [[ "${1}" = "input" ]]; then
+    local color="${bold}"
+    printLog="false"
+  fi
   if [[ "${1}" = "info" ]] || [[ "${1}" = "notice" ]]; then local color=""; fi
   # Don't use colors on pipes or non-recognized terminals
-  if [[ "${TERM}" != "xterm"* ]] || [[ -t 1 ]]; then color=""; reset=""; fi
+  if [[ "${TERM}" != "xterm"* ]] || [[ -t 1 ]]; then
+    color=""
+    reset=""
+  fi
 
   # Print to $logFile
   if ${printLog}; then
-    echo -e "$(date +"%m-%d-%Y %r") $(printf "[%9s]" "${1}") ${_message}" >> "${logFile}";
+    echo -e "$(date +"%m-%d-%Y %r") $(printf "[%9s]" "${1}") ${_message}" >> "${logFile}"
   fi
 
   # Print to console when script is not 'quiet'
   if ${quiet}; then
     return
   else
-    echo -e "$(date +"%r") ${color}$(printf "[%9s]" "${1}") ${_message}${reset}";
+    echo -e "$(date +"%r") ${color}$(printf "[%9s]" "${1}") ${_message}${reset}"
   fi
 }
 
-function die ()       { local _message="${*} Exiting."; echo "$(_alert emergency)"; safeExit;}
-function error ()     { local _message="${*}"; echo "$(_alert error)"; }
-function warning ()   { local _message="${*}"; echo "$(_alert warning)"; }
-function notice ()    { local _message="${*}"; echo "$(_alert notice)"; }
-function info ()      { local _message="${*}"; echo "$(_alert info)"; }
-function debug ()     { local _message="${*}"; echo "$(_alert debug)"; }
-function success ()   { local _message="${*}"; echo "$(_alert success)"; }
-function input()      { local _message="${*}"; echo -n "$(_alert input)"; }
-function header()     { local _message="${*}"; echo "$(_alert header)"; }
+function die() {
+  local _message="${*} Exiting."
+  echo "$(_alert emergency)"
+  safeExit
+}
+function error() {
+  local _message="${*}"
+  echo "$(_alert error)"
+}
+function warning() {
+  local _message="${*}"
+  echo "$(_alert warning)"
+}
+function notice() {
+  local _message="${*}"
+  echo "$(_alert notice)"
+}
+function info() {
+  local _message="${*}"
+  echo "$(_alert info)"
+}
+function debug() {
+  local _message="${*}"
+  echo "$(_alert debug)"
+}
+function success() {
+  local _message="${*}"
+  echo "$(_alert success)"
+}
+function input() {
+  local _message="${*}"
+  echo -n "$(_alert input)"
+}
+function header() {
+  local _message="${*}"
+  echo "$(_alert header)"
+}
 
 # Log messages when verbose is set to "true"
-verbose() { if ${verbose}; then debug "$@"; fi }
+verbose() { if ${verbose}; then debug "$@"; fi; }
 
 # Trap bad exits with your cleanup function
 trap trapCleanup EXIT INT TERM
@@ -499,10 +549,10 @@ IFS=$' \n\t'
 set -o errexit
 
 # Run in debug mode, if set
-if ${debug}; then set -x ; fi
+if ${debug}; then set -x; fi
 
 # Exit on empty variable
-if ${strict}; then set -o nounset ; fi
+if ${strict}; then set -o nounset; fi
 
 # Bash will remember & return the highest exitcode in a chain of pipes.
 # This way you can catch the error in case mysqldump fails in `mysqldump |gzip`, for example.

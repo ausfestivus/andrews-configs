@@ -3,7 +3,7 @@
 if [[ "$OSTYPE" =~ ^darwin ]]; then # do the needful things on MacOS
   # taken from http://ianlunn.co.uk/articles/quickly-showhide-hidden-files-mac-os-x-mavericks/
   alias showhidden="defaults write com.apple.finder AppleShowAllFiles YES" # display hidden files
-  alias hidehidden="defaults write com.apple.finder AppleShowAllFiles NO" # hide hidden files
+  alias hidehidden="defaults write com.apple.finder AppleShowAllFiles NO"  # hide hidden files
   # unsure of source for this. Probably googlephoo
   alias flushdns="sudo killall -HUP mDNSResponder;sudo killall mDNSResponderHelper;sudo dscacheutil -flushcache"
 
@@ -12,7 +12,7 @@ if [[ "$OSTYPE" =~ ^darwin ]]; then # do the needful things on MacOS
   killall Finder
 
   # adding brew items to $PATH if brew is installed.
-  if [[ -e `which brew` ]]; then
+  if [[ -e $(which brew) ]]; then
     export PATH=/usr/local/bin:/usr/local/sbin:$PATH
   fi
 
@@ -22,8 +22,8 @@ fi
 
 # do the needful things on any *nix
 # Enable AWS CLI completion if AWS CLI is installed
-if [[ -e `which aws_completer` ]]; then
-  complete -C `which aws_completer` aws
+if [[ -e $(which aws_completer) ]]; then
+  complete -C $(which aws_completer) aws
 fi
 
 # Configure our AWS profile switching shortcut if we have it installed
@@ -48,7 +48,6 @@ else
   # shellcheck source=/dev/null
   source ~/.bash_profile
 fi
-
 
 # Personal - home shortcuts
 alias homegw="ssh -v -i ~/.ssh/id_rsa admin@homegw.mtcolah.bestfamily.id.au -p 2222"

@@ -1,0 +1,37 @@
+repos:
+- repo: https://github.com/pre-commit/pre-commit-hooks
+  rev: v4.5.0
+  hooks:
+    - id: check-yaml
+    - id: end-of-file-fixer
+    - id: trailing-whitespace
+    - id: check-case-conflict
+    - id: check-merge-conflict
+    - id: check-executables-have-shebangs
+      exclude_types:
+        - "yaml"
+        - "svg"
+    - id: detect-aws-credentials
+    - id: detect-private-key
+    - id: check-json
+- repo: https://github.com/jumanjihouse/pre-commit-hooks
+  rev: 3.0.0
+  hooks:
+    - id: shfmt
+      args: ['-l', '-i', '2', '-ci', '-sr', '-w']
+- repo: https://github.com/jorisroovers/gitlint
+  rev:  v0.19.1
+  hooks:
+    - id: gitlint
+      args: [--msg-filename]
+      stages: [commit-msg]
+- repo: https://github.com/zricethezav/gitleaks
+  rev: v8.18.0
+  hooks:
+    - id: gitleaks
+- repo: https://github.com/Lucas-C/pre-commit-hooks-nodejs
+  rev: v1.1.2
+  hooks:
+  -   id: markdown-toc
+      # optional custom config:
+      args: [--indent, "    ", -i]

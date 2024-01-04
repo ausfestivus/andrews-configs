@@ -36,7 +36,7 @@ function mainScript() {
     [[ $appNameOrBundleId =~ \.[aA][pP][pP]$ || $appNameOrBundleId =~ ^[^.]+$ ]] && isAppName=1
     if ((isAppName)); then # an application NAME was specified
       # Translate to a bundle ID first.
-      bundleId=$(osascript -e "id of application \"$appNameOrBundleId\"" 2>/dev/null) ||
+      bundleId=$(osascript -e "id of application \"$appNameOrBundleId\"" 2> /dev/null) ||
         {
           echo "$FUNCNAME: ERROR: Application with specified name not found: $appNameOrBundleId" 1>&2
           return 1
@@ -45,7 +45,7 @@ function mainScript() {
       bundleId=$appNameOrBundleId
     fi
     # Let AppleScript determine the full bundle path.
-    osascript -e "tell application \"Finder\" to POSIX path of (get application file id \"$bundleId\" as alias)" 2>/dev/null ||
+    osascript -e "tell application \"Finder\" to POSIX path of (get application file id \"$bundleId\" as alias)" 2> /dev/null ||
       {
         echo "$FUNCNAME: ERROR: Application with specified bundle ID not found: $bundleId" 1>&2
         return 1
@@ -73,11 +73,11 @@ function mainScript() {
 
     if [[ "$(which ${binroot}/bash)" && "$(cat /etc/shells | grep -q "$binroot/bash")" ]]; then
       info "Adding ${binroot}/bash to the list of acceptable shells"
-      echo "$binroot/bash" | sudo tee -a /etc/shells >/dev/null
+      echo "$binroot/bash" | sudo tee -a /etc/shells > /dev/null
     fi
     if [[ "$SHELL" != "${binroot}/bash" ]]; then
       info "Making ${binroot}/bash your default shell"
-      sudo chsh -s "${binroot}/bash" "$USER" >/dev/null 2>&1
+      sudo chsh -s "${binroot}/bash" "$USER" > /dev/null 2>&1
       success "Please exit and restart all your shells."
     fi
 
@@ -128,7 +128,7 @@ function mainScript() {
       # If we are working with 'cask' we need to dedupe lists
       # since apps might be installed by hand
       if [[ $INSTALLCOMMAND =~ cask ]]; then
-        if isAppInstalled "${item}" &>/dev/null; then
+        if isAppInstalled "${item}" &> /dev/null; then
           return
         fi
       fi
@@ -137,7 +137,7 @@ function mainScript() {
       if [[ $INSTALLCOMMAND =~ mas ]]; then
         # Lookup the name of the application being installed
         appName="$(curl -s https://itunes.apple.com/lookup?id=$item | jq .results[].trackName)"
-        if isAppInstalled "${appName}" &>/dev/null; then
+        if isAppInstalled "${appName}" &> /dev/null; then
           return
         fi
         # Tell the user the name of the app
@@ -255,7 +255,7 @@ function mainScript() {
   }
   function installXcode() {
     notice "Checking for XCode..."
-    if ! isAppInstalled 'xcode' &>/dev/null; then
+    if ! isAppInstalled 'xcode' &> /dev/null; then
       unset LISTINSTALLED INSTALLCOMMAND RECIPES
 
       LISTINSTALLED="mas list"
@@ -275,7 +275,7 @@ function mainScript() {
     # If it is not found, we install it and its prerequisites
     notice "Checking for Dropbox..."
 
-    if ! isAppInstalled 'Dropbox' &>/dev/null; then
+    if ! isAppInstalled 'Dropbox' &> /dev/null; then
       unset LISTINSTALLED INSTALLCOMMAND RECIPES
       LISTINSTALLED="brew list --cask"
       INSTALLCOMMAND="brew install --cask --appdir=/Applications"
@@ -309,7 +309,7 @@ function mainScript() {
     # eg we dont want to install a virtualisation engine if we're in VMware Fusion.
     # Start by pulling and storing the manufacturer info
     isVMware=""
-    isVMware=$(ioreg -l | grep -e "\"manufacturer\" \= <\"VMware, Inc.\">" 2>/dev/null || true)
+    isVMware=$(ioreg -l | grep -e "\"manufacturer\" \= <\"VMware, Inc.\">" 2> /dev/null || true)
     # Choose which recipe list to use if were a VM or not.
     if [[ "$isVMware" == *VMware* ]]; then
       # we are a VM
@@ -786,30 +786,30 @@ optstring=h
 unset options
 while (($#)); do
   case $1 in
-  # If option is of type -ab
-  -[!-]?*)
-    # Loop over each character starting with the second
-    for ((i = 1; i < ${#1}; i++)); do
-      c=${1:i:1}
+    # If option is of type -ab
+    -[!-]?*)
+      # Loop over each character starting with the second
+      for ((i = 1; i < ${#1}; i++)); do
+        c=${1:i:1}
 
-      # Add current char to options
-      options+=("-$c")
+        # Add current char to options
+        options+=("-$c")
 
-      # If option takes a required argument, and it's not the last char make
-      # the rest of the string its argument
-      if [[ $optstring = *"$c:"* && ${1:i+1} ]]; then
-        options+=("${1:i+1}")
-        break
-      fi
-    done
-    ;;
+        # If option takes a required argument, and it's not the last char make
+        # the rest of the string its argument
+        if [[ $optstring = *"$c:"* && ${1:i+1} ]]; then
+          options+=("${1:i+1}")
+          break
+        fi
+      done
+      ;;
 
-    # If option is of type --foo=bar
-  --?*=*) options+=("${1%%=*}" "${1#*=}") ;;
-    # add --endopts for --
-  --) options+=(--endopts) ;;
-    # Otherwise, nothing special
-  *) options+=("$1") ;;
+      # If option is of type --foo=bar
+    --?*=*) options+=("${1%%=*}" "${1#*=}") ;;
+      # add --endopts for --
+    --) options+=(--endopts) ;;
+      # Otherwise, nothing special
+    *) options+=("$1") ;;
   esac
   shift
 done
@@ -824,25 +824,25 @@ unset options
 # Read the options and set stuff
 while [[ $1 = -?* ]]; do
   case $1 in
-  -h | --help)
-    usage >&2
-    safeExit
-    ;;
-  --version)
-    echo "$(basename $0) ${version}"
-    safeExit
-    ;;
-  -v | --verbose) verbose=true ;;
-  -l | --log) printLog=true ;;
-  -q | --quiet) quiet=true ;;
-  -s | --strict) strict=true ;;
-  -d | --debug) debug=true ;;
-  --force) force=true ;;
-  --endopts)
-    shift
-    break
-    ;;
-  *) die "invalid option: '$1'." ;;
+    -h | --help)
+      usage >&2
+      safeExit
+      ;;
+    --version)
+      echo "$(basename $0) ${version}"
+      safeExit
+      ;;
+    -v | --verbose) verbose=true ;;
+    -l | --log) printLog=true ;;
+    -q | --quiet) quiet=true ;;
+    -s | --strict) strict=true ;;
+    -d | --debug) debug=true ;;
+    --force) force=true ;;
+    --endopts)
+      shift
+      break
+      ;;
+    *) die "invalid option: '$1'." ;;
   esac
   shift
 done
@@ -886,7 +886,7 @@ function _alert() {
 
   # Print to $logFile
   if ${printLog}; then
-    echo -e "$(date +"%m-%d-%Y %r") $(printf "[%9s]" "${1}") ${_message}" >>"${logFile}"
+    echo -e "$(date +"%m-%d-%Y %r") $(printf "[%9s]" "${1}") ${_message}" >> "${logFile}"
   fi
 
   # Print to console when script is not 'quiet'

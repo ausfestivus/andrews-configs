@@ -5,15 +5,14 @@
 ############################
 
 ########## Variables
-dir=~/andrews-configs/dotfiles     # dotfiles directory
+dir=~/andrews-configs/dotfiles        # dotfiles directory
 olddir=~/andrews-configs/dotfiles_old # old dotfiles backup directory
 # Add the dotfile name to the following items depending on which OS you want it in.
 # eg profile isnt relevant to macOS.
-Linuxfiles="vimrc bash_profile bashrc _awsAliases"    # list of files/folders to symlink in homedir
+Linuxfiles="vimrc bash_profile bashrc _awsAliases" # list of files/folders to symlink in homedir
 Macfiles="vimrc bash_profile bashrc _awsAliases"
 
-domagic ()
-{
+domagic() {
   ##########
   # create dotfiles_old in homedir
   echo -n "Creating $olddir for backup of any existing dotfiles in ~"
