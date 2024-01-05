@@ -177,34 +177,19 @@ function mainScript() {
           seek_confirmation "Install ${item}?"
           if is_confirmed; then
             notice "Installing ${item}"
-            ## FFMPEG takes additional flags
-            #if [[ "${item}" = "ffmpeg" ]]; then
-            #  installffmpeg
-            #  elif [[ "${item}" = "tldr" ]]; then
-            #  brew tap tldr-pages/tldr
-            #  brew install tldr
-            #else
             ${INSTALLCOMMAND} "${item}"
-            #fi
           fi
         done
       else
         for item in "${list[@]}"; do
           checkInstallItems
           notice "Installing ${item}"
-          ## FFMPEG takes additional flags
-          #if [[ "${item}" = "ffmpeg" ]]; then
-          #  installffmpeg
-          #  elif [[ "${item}" = "tldr" ]]; then
-          #  brew tap tldr-pages/tldr
-          #  brew install tldr
-          #else
           ${INSTALLCOMMAND} "${item}"
-          #fi
         done
       fi
     fi
   }
+
   # Installation Commands
   # ###################
   function installCommandLineTools() {
@@ -250,111 +235,9 @@ function mainScript() {
     fi
     success "Homebrew installed"
   }
-  function installHomebrewTaps() {
-    brew tap microsoft/git
-  }
-  function installXcode() {
-    notice "Checking for XCode..."
-    if ! isAppInstalled 'xcode' &> /dev/null; then
-      unset LISTINSTALLED INSTALLCOMMAND RECIPES
-
-      LISTINSTALLED="mas list"
-      INSTALLCOMMAND="mas install"
-      RECIPES=(
-        497799835 #xCode
-      )
-      doInstall
-
-      # we also accept the license
-      sudo xcodebuild -license accept
-    fi
-    success "XCode installed"
-  }
-  function installDropbox() {
-    # This function checks for Dropbox being installed.
-    # If it is not found, we install it and its prerequisites
-    notice "Checking for Dropbox..."
-
-    if ! isAppInstalled 'Dropbox' &> /dev/null; then
-      unset LISTINSTALLED INSTALLCOMMAND RECIPES
-      LISTINSTALLED="brew list --cask"
-      INSTALLCOMMAND="brew install --cask --appdir=/Applications"
-      RECIPES=(
-        dropbox
-      )
-      doInstall
-      open -a dropbox
-    fi
-
-    success "Dropbox installed"
-  }
-  function installffmpeg() {
-
-    notice "Checking for ffmpeg...."
-    # My preferred install of ffmpeg
-    if [ ! $(which "ffmpeg") ]; then
-      brew install ffmpeg --with-faac --with-fdk-aac --with-ffplay --with-fontconfig --with-freetype --with-libcaca --with-libass --with-frei0r --with-libass --with-libbluray --with-libcaca --with-libquvi --with-libvidstab --with-libsoxr --with-libssh --with-libvo-aacenc --with-libvidstab --with-libvorbis --with-libvpx --with-opencore-amr --with-openjpeg --with-openssl --with-opus --with-rtmpdump --with-schroedinger --with-speex --with-theora --with-tools --with-webp --with-x265
-    fi
-
-    success "Done ffmpeg installed"
-  }
-  function installCaskApps() { # Install apps regardless of physical or virtual machine.
-    unset LISTINSTALLED INSTALLCOMMAND RECIPES
-
-    notice "Checking for casks to install..."
-
-    LISTINSTALLED="brew list --cask"
-    INSTALLCOMMAND="brew install --cask --appdir=/Applications"
-    # The recipe list we use depends on if we're in a VM or not.
-    # eg we dont want to install a virtualisation engine if we're in VMware Fusion.
-    # Start by pulling and storing the manufacturer info
-    isVMware=""
-    isVMware=$(ioreg -l | grep -e "\"manufacturer\" \= <\"VMware, Inc.\">" 2> /dev/null || true)
-    # Choose which recipe list to use if were a VM or not.
-    if [[ "$isVMware" == *VMware* ]]; then
-      # we are a VM
-      notice "Virtual Machine Detected. Not installing virtualisation engines..."
-      RECIPES=(
-        1password
-        1password-cli
-        discord
-        ghost-browser
-        git-credential-manager-core
-        github
-        minecraft
-        powershell
-        tower
-        tweetbot
-        visual-studio-code
-        vlc
-      )
-    else
-      # we are NOT a VM.
-      notice "Physical Machine Detected. Installing virtualisation engines..."
-      RECIPES=(
-        1password
-        1password-cli
-        discord
-        ghost-browser
-        git-credential-manager-core
-        github
-        minecraft
-        powershell
-        tower
-        tweetbot
-        visual-studio-code
-        vlc
-        vmware-fusion
-      )
-    fi
-
-    # for item in "${RECIPES[@]}"; do
-    #   info "$item"
-    # done
-    doInstall
-
-    success "Done installing cask apps"
-  }
+  # function installHomebrewTaps() {
+  #   brew tap microsoft/git # https://github.com/microsoft/git
+  # }
   function installAppStoreApps() {
     unset LISTINSTALLED INSTALLCOMMAND RECIPES
 
@@ -363,46 +246,20 @@ function mainScript() {
     LISTINSTALLED="mas list"
     INSTALLCOMMAND="mas install"
     RECIPES=(
-      405399194  # Kindle
-      1091189122 # Bear
       1295203466 # Microsoft Remote Desktop
+      425424353  # The Unarchiver
+      1569813296 # 1Password for Safari
       568020055  # Scapple
       585829637  # Todoist
       1081413713 # GIF Brewery 3
       1484204619 # WakeOnCommend
       1475921958 # MineSweeper
+      6444602274 # Ivory
+      1327661892 # Xmind
     )
     doInstall
 
     success "Done installing app store apps"
-  }
-  function installDevApps() {
-    unset LISTINSTALLED INSTALLCOMMAND RECIPES
-
-    notice "Checking for dev apps to install"
-
-    LISTINSTALLED="brew list --cask"
-    INSTALLCOMMAND="brew install --cask --appdir=/Applications"
-    RECIPES=(
-      charles
-      codekit
-      github
-      imagealpha
-      imageoptim
-      java
-      kaleidoscope
-      licecap # Movie screen captures
-      mamp    # mac-based LAMP development stack
-      paw     # REST IDE
-      tower   # Mac GUI for git
-    )
-
-    # for item in "${RECIPES[@]}"; do
-    #   info "$item"
-    # done
-    doInstall
-
-    success "Done installing dev apps"
   }
   function installHomebrewPackages() {
     unset LISTINSTALLED INSTALLCOMMAND RECIPES
@@ -413,34 +270,55 @@ function mainScript() {
     INSTALLCOMMAND="brew install"
 
     RECIPES=(
+      1password
+      1password-cli
+      ansible
+      ansible-lint
       aws-shell
       awscli
       azure-cli
+      battle-net
       bash
       bash-completion
+      beyond-compare
+      citrix-workspace
       coreutils
-      cowsay
+      crossover
+      curseforge
+      discord
       dos2unix
+      firefox
       gawk
       git
+      git-credential-manager
+      github # Github Desktop
       gitify
+      gitleaks
       gnu-sed
       grep
+      htop
       jq
+      little-snitch
+      macs-fan-control
+      marathon
       mas
       microsoft-azure-storage-explorer
       microsoft-office
+      microsoft-teams
       mkdocs
       mtr
       nmap
+      obsidian
       openssl
       packer
       pre-commit
-      postgresql
       postman
+      powershell
       python3
+      readline
       shellcheck # Bash linter
-      sl
+      shfmt
+      sidequest
       ssh-copy-id
       steam
       telnet
@@ -450,69 +328,23 @@ function mainScript() {
       tflint
       tfsec
       warrensbox/tap/tfswitch # https://tfswitch.warrensbox.com/Install/
-      tldr                    # Better man pages
+      tfupdate
+      tldr # Better man pages
       touchswitcher
-      transmission
+      transmission-cli
       tree
       vault
+      visual-studio-code
+      vlc
+      vnc-viewer
+      watch
       wget
+      yamllint
       zoom
     )
     doInstall
 
     success "Done installing Homebrew packages"
-  }
-  function installRuby() {
-
-    notice "Checking for RVM (Ruby Version Manager)..."
-
-    local RUBYVERSION="2.1.2" # Version of Ruby to install via RVM
-
-    # Check for RVM
-    if [ ! "$(which rvm)" ]; then
-      seek_confirmation "Couldn't find RVM. Install it?"
-      if is_confirmed; then
-        curl -L https://get.rvm.io | bash -s stable
-        source "${HOME}/.rvm/scripts/rvm"
-        source "${HOME}/.bash_profile"
-        #rvm get stable --autolibs=enable
-        rvm install ${RUBYVERSION}
-        rvm use ${RUBYVERSION} --default
-      fi
-    fi
-
-    success "RVM and Ruby are installed"
-  }
-  function installRubyGems() {
-    unset LISTINSTALLED INSTALLCOMMAND RECIPES
-
-    notice "Checking for Ruby gems..."
-
-    LISTINSTALLED="gem list | awk '{print $1}'"
-    INSTALLCOMMAND="gem install"
-
-    RECIPES=(
-      bundler
-      classifier
-      compass
-      digest
-      fileutils
-      jekyll
-      kramdown
-      kss
-      less
-      logger
-      mini_magick
-      rake
-      reduce
-      s3_website
-      sass
-      smusher
-    )
-
-    doInstall
-
-    success "Done installing Ruby Gems"
   }
   function configureSSH() {
     notice "Configuring SSH"
@@ -538,81 +370,6 @@ function mainScript() {
     fi
 
     success "SSH Configured"
-  }
-  function configureMackup() {
-    notice "Running mackup config..."
-
-    local DIRCFG="${HOME}/Dropbox/sharedConfiguration/Mackup"
-
-    #installDropbox
-
-    dropboxFilesTest=(
-      "Dropbox/sharedConfiguration/Mackup/Library/Application Support/PaxGalaxia/net.txt"
-      "Dropbox/sharedConfiguration/Mackup/Pictures/DeviantartBackup/clouds2.jpg"
-      "Dropbox/sharedConfiguration/Mackup/Library/init/bash/aliases.bash"
-      "Dropbox/sharedConfiguration/Mackup/.mackup/my-files.cfg"
-      "Dropbox/sharedConfiguration/App Configuration Files/Alfred2/Alfred.alfredpreferences"
-      "Dropbox/sharedConfiguration/Mackup/Library/Preferences/com.dustinrue.ControlPlane.plist"
-    )
-
-    info "Confirming that Dropbox has synced by looking for files..."
-    info "(This might fail if the list of files is out of date)"
-
-    for dropboxFile in "${dropboxFilesTest[@]}"; do
-      verbose "Checking: $dropboxFile"
-      while [ ! -e "${HOME}/${dropboxFile}" ]; do
-        info "  Waiting for Dropbox to Sync files..."
-        sleep 10
-      done
-    done
-
-    #Add some additional time just to be sure....
-    for ((i = 1; i <= 6; i++)); do
-      info "  Waiting for Dropbox to Sync files..."
-      sleep 10
-    done
-
-    # Sync Complete
-    success "Dropbox has synced"
-
-    # Confirm Mackup exists
-    if [ ! "$(which mackup)" ]; then
-      installHomebrew
-      brew install mackup
-    fi
-
-    notice "Checking for Mackup config files..."
-    if [ ! -L "${HOME}/.mackup" ]; then
-      info "Symlinking ~/.mackup"
-      ln -s "${MACKUPDIR}/.mackup" "${HOME}/.mackup"
-    else
-      verbose "${HOME}/.mackup is symlinked"
-    fi
-    if [ ! -L "${HOME}/.mackup.cfg" ]; then
-      info "Symlinking ~/.mackup.cfg"
-      ln -s "${MACKUPDIR}"/.mackup.cfg "${HOME}"/.mackup.cfg
-    else
-      verbose "~${HOME}.mackup.cfg is symlinked"
-    fi
-    success "Mackup config files are symlinked"
-
-    seek_confirmation "Run Mackup Restore?"
-    if is_confirmed; then
-      mackup restore
-    fi
-  }
-  function instappPip3packages() {
-    true
-  }
-  function installPip3() {
-    # Function for install of some required pip3 packages.
-    # See #25
-    # Check for pip3
-    notice "Checking for pip3..."
-    if [ ! "$(which pip3)" ]; then
-      # pip3 binary not found.
-      notice "pip3 is not installed. Installing it..."
-    fi
   }
   function installSundry() {
     # a catch all function to act as a hook for other sundry
@@ -640,19 +397,11 @@ function mainScript() {
 
   installCommandLineTools
   installHomebrew
-  installHomebrewTaps
   brewCleanup
+  #installHomebrewTaps
   installHomebrewPackages
-  installCaskApps
-  #installXcode
-  #installDropbox
   installAppStoreApps
-  #installDevApps
-  #installRuby
-  #installRubyGems
   #configureSSH
-  #configureMackup
-  #installPip3
   installSundry
 }
 
